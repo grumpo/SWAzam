@@ -9,7 +9,7 @@ public class PeerWebService {
   public String IdentifyMP3Fingerprint(String requestingPeer) {
     String result = "Handling fingerprint identification request from" + requestingPeer;
     System.out.println(result);
-    return result;
+    return "Justin Bieber Crap";
   }
 
   public static void main(String[] argv) {
