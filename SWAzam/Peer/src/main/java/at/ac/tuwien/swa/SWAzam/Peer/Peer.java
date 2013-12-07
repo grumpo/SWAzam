@@ -1,7 +1,7 @@
 package at.ac.tuwien.swa.SWAzam.Peer;
 
-import at.ac.tuwien.swa.SWAzam.Peer.PerrWebServiceClient.*;
-import at.ac.tuwien.swa.SWAzam.Peer.PerrWebServiceClient.PeerWebService;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerWebServiceClient.*;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerWebServiceClient.PeerWebService;
 
 public class Peer {
 
