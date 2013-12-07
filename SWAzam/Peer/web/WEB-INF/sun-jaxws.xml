@@ -6,4 +6,8 @@
             name='PeerWebService'
             implementation='at.ac.tuwien.swa.SWAzam.Peer.PeerWebService'
             url-pattern='/services/PeerWebService'/>
+    <endpoint
+            name='ClientWebService'
+            implementation='at.ac.tuwien.swa.SWAzam.Peer.ClientWebService'
+            url-pattern='/services/ClientWebService'/>
 </endpoints>
