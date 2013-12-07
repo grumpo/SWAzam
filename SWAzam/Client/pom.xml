@@ -11,5 +11,12 @@
 
     <artifactId>Client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>ac.at.tuwien.infosys.swa.audio</groupId>
+            <artifactId>fingerprint</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
