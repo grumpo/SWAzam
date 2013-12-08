@@ -1,4 +1,7 @@
 package at.ac.tuwien.swa.SWAzam.Peer;
+import ac.at.tuwien.infosys.swa.audio.Fingerprint;
+import com.google.gson.Gson;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
@@ -10,9 +13,9 @@ import javax.xml.ws.Endpoint;
 public class ClientWebService {
   @WebMethod
   public String identifyMP3Fingerprint(String requestingClient) {
-      String result = "Handling fingerprint identification request from" + requestingClient;
-      System.out.println(result);
-      return "Some good piece of music";
+      System.out.println("Handling fingerprint identification request from" + requestingClient);
+      Fingerprint fingerprint = new Gson().fromJson(requestingClient, Fingerprint.class);
+      return "Some good piece of music: " + fingerprint.getShiftDuration();
   }
 
   public static void main(String[] argv) {
