@@ -13,11 +13,11 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
 
     @Override
     public String identifyMP3Fingerprint(Fingerprint fingerprint, String user, String password) {
+        log.info("Checking fingerprint: " + fingerprint.getShiftDuration());
         ClientWebService peerWebServicePort = getClientWebService();
         String fingerprintJson = serialize(fingerprint);
-        log.info("Checking fingerprint: " + fingerprintJson);
         return peerWebServicePort.identifyMP3Fingerprint(
-                fingerprintJson);
+                fingerprintJson, user, password);
     }
 
     private String serialize(Fingerprint fingerprint) {

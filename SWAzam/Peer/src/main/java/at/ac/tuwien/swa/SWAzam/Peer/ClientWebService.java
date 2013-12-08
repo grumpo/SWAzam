@@ -19,9 +19,9 @@ public class ClientWebService {
 
     @WebMethod
     @SuppressWarnings("unused")
-    public String identifyMP3Fingerprint(String requestingClient) {
-        log.info("Handling fingerprint identification request from" + requestingClient);
-        Fingerprint fingerprint = new Gson().fromJson(requestingClient, Fingerprint.class);
+    public String identifyMP3Fingerprint(String fingerprintJson, String user, String password) {
+        log.info("Handling fingerprint identification request from: " + user);
+        Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         return "Some good piece of music: " + fingerprint.getShiftDuration();
     }
 

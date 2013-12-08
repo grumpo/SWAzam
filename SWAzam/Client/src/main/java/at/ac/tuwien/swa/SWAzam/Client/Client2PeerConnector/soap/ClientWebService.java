@@ -26,6 +26,8 @@ public interface ClientWebService {
 
     /**
      * 
+     * @param arg2
+     * @param arg1
      * @param arg0
      * @return
      *     returns java.lang.String
@@ -37,6 +39,10 @@ public interface ClientWebService {
     @Action(input = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintRequest", output = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintResponse")
     public String identifyMP3Fingerprint(
         @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
 
 }
