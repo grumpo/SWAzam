@@ -1,5 +1,5 @@
 
-package at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient;
+package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,8 +32,8 @@ public interface ClientWebService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "identifyMP3Fingerprint", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient.IdentifyMP3Fingerprint")
-    @ResponseWrapper(localName = "identifyMP3FingerprintResponse", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient.IdentifyMP3FingerprintResponse")
+    @RequestWrapper(localName = "identifyMP3Fingerprint", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3Fingerprint")
+    @ResponseWrapper(localName = "identifyMP3FingerprintResponse", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3FingerprintResponse")
     @Action(input = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintRequest", output = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintResponse")
     public String identifyMP3Fingerprint(
         @WebParam(name = "arg0", targetNamespace = "")

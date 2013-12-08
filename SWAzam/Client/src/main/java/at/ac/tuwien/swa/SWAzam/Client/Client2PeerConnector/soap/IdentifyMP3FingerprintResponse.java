@@ -1,5 +1,5 @@
 
-package at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient;
+package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

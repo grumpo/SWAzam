@@ -1,5 +1,5 @@
 
-package at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient;
+package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap;
 
 import java.net.MalformedURLException;
 import java.net.URL;

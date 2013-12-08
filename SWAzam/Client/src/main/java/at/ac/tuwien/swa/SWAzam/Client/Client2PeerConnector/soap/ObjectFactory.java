@@ -1,5 +1,5 @@
 
-package at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient;
+package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient package. 
+ * generated in the at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -28,7 +28,7 @@ public class ObjectFactory {
     private final static QName _IdentifyMP3Fingerprint_QNAME = new QName("http://Peer.SWAzam.swa.tuwien.ac.at/", "identifyMP3Fingerprint");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: at.ac.tuwien.swa.SWAzam.Client.ClientWebServiceClient
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap
      * 
      */
     public ObjectFactory() {
