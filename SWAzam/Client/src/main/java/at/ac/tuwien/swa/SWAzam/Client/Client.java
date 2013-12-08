@@ -2,7 +2,10 @@ package at.ac.tuwien.swa.SWAzam.Client;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
-import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerSoapConnector;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import java.io.IOException;
 import java.util.Random;
@@ -16,14 +19,18 @@ public class Client {
 
     private final static Logger log = Logger.getLogger(Client.class.getName());
 
+    @Inject
+    private Client2PeerConnector client2PeerConnector;
+
     private String user = "user";
     private String pass = "pass";
 
     public static void main(String[] argv) throws IOException {
-        new Client().run();
+        Injector injector = Guice.createInjector(new ClientModule());
+        injector.getInstance(Client.class).run();
     }
 
-    private void run() {
+    public void run() {
         log.info("Client has been started an is running now...");
 
         // test identification
@@ -36,7 +43,7 @@ public class Client {
     }
 
     private String identify(Fingerprint fingerprint) {
-        return new Client2PeerSoapConnector().identifyMP3Fingerprint(fingerprint, user, pass);
+        return client2PeerConnector.identifyMP3Fingerprint(fingerprint, user, pass);
     }
 
 }
