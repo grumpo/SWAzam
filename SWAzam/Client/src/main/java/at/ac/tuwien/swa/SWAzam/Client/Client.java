@@ -8,22 +8,27 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
+ * The client console app.
  * Created by grumpo on 12/7/13.
  */
 public class Client {
-    public static void main(String[] argv) throws IOException {
-        System.out.println("Client has been started an is runing now...");
 
-        // test identification, needs "blah.mp3" in the project root dir.
+    private final static Logger log = Logger.getLogger(Client.class.getName());
+
+    public static void main(String[] argv) throws IOException {
+        log.info("Client has been started an is running now...");
+
+        // test identification
         FingerprintSystem fingerprintSystem = new FingerprintSystem(44f);
         byte[] fakeMp3 = new byte[23000];
         new Random().nextBytes(fakeMp3);
         Fingerprint fingerprint = fingerprintSystem.fingerprint(fakeMp3);
         String fingerPrintIdentificationResult = identify(fingerprint);
 
-        System.out.println("Fingerprint was identified to be: " + fingerPrintIdentificationResult);
+        log.info("Fingerprint was identified to be: " + fingerPrintIdentificationResult);
     }
 
     private static String identify(Fingerprint fingerprint) {
@@ -31,7 +36,7 @@ public class Client {
         ClientWebService peerWebServicePort = getClientWebService();
 
         String fingerprintJson = serialize(fingerprint);
-        System.out.println("Checking fingerprint: " + fingerprintJson);
+        log.info("Checking fingerprint: " + fingerprintJson);
         return peerWebServicePort.identifyMP3Fingerprint(
                 fingerprintJson);
     }

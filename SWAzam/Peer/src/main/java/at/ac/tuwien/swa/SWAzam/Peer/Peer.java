@@ -3,10 +3,15 @@ package at.ac.tuwien.swa.SWAzam.Peer;
 import at.ac.tuwien.swa.SWAzam.Peer.PeerWebServiceClient.*;
 import at.ac.tuwien.swa.SWAzam.Peer.PeerWebServiceClient.PeerWebService;
 
+import java.util.logging.Logger;
+
+
 public class Peer {
 
+    private final static Logger log = Logger.getLogger(Peer.class.getName());
+
     public static void main(String[] argv) {
-        System.out.println("Peer has been started an is running now...");
+        log.info("Peer has been started an is running now...");
 
         startServices();
 
@@ -15,7 +20,7 @@ public class Peer {
         PeerWebService peerWebServicePort = peerWebServiceService.getPeerWebServicePort();
         String fingerPrintIdentificationResult = peerWebServicePort.identifyMP3Fingerprint("CallingPeer");
 
-        System.out.println("Fingerprint was identified to be: " + fingerPrintIdentificationResult);
+        log.info("Fingerprint was identified to be: " + fingerPrintIdentificationResult);
 
     }
 
