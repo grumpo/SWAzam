@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _IdentifyMP3FingerprintResponse_QNAME = new QName("http://Peer.SWAzam.swa.tuwien.ac.at/", "identifyMP3FingerprintResponse");
-    private final static QName _IdentifyMP3Fingerprint_QNAME = new QName("http://Peer.SWAzam.swa.tuwien.ac.at/", "identifyMP3Fingerprint");
+    private final static QName _IdentifyMP3FingerprintResponse_QNAME = new QName("http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", "identifyMP3FingerprintResponse");
+    private final static QName _IdentifyMP3Fingerprint_QNAME = new QName("http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", "identifyMP3Fingerprint");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap
@@ -54,7 +54,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link IdentifyMP3FingerprintResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", name = "identifyMP3FingerprintResponse")
+    @XmlElementDecl(namespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", name = "identifyMP3FingerprintResponse")
     public JAXBElement<IdentifyMP3FingerprintResponse> createIdentifyMP3FingerprintResponse(IdentifyMP3FingerprintResponse value) {
         return new JAXBElement<IdentifyMP3FingerprintResponse>(_IdentifyMP3FingerprintResponse_QNAME, IdentifyMP3FingerprintResponse.class, null, value);
     }
@@ -63,7 +63,7 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link IdentifyMP3Fingerprint }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", name = "identifyMP3Fingerprint")
+    @XmlElementDecl(namespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", name = "identifyMP3Fingerprint")
     public JAXBElement<IdentifyMP3Fingerprint> createIdentifyMP3Fingerprint(IdentifyMP3Fingerprint value) {
         return new JAXBElement<IdentifyMP3Fingerprint>(_IdentifyMP3Fingerprint_QNAME, IdentifyMP3Fingerprint.class, null, value);
     }

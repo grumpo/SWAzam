@@ -1,4 +1,4 @@
-package at.ac.tuwien.swa.SWAzam.Peer;
+package at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import com.google.gson.Gson;
@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  * Created by grumpo on 12/7/13.
  */
 @WebService()
-public class ClientWebService {
+public class ClientWebServiceSoap implements ClientWebService {
 
-    private final static Logger log = Logger.getLogger(ClientWebService.class.getName());
+    private final static Logger log = Logger.getLogger(ClientWebServiceSoap.class.getName());
 
     @WebMethod
     @SuppressWarnings("unused")
@@ -25,9 +25,11 @@ public class ClientWebService {
         return "Some good piece of music: " + fingerprint.getShiftDuration();
     }
 
-    public static void main(String[] argv) {
-        Object implementor = new ClientWebService();
-        String address = "http://localhost:9000/ClientWebService";
-        Endpoint.publish(address, implementor);
+    @Override
+    @WebMethod(exclude=true)
+    public void run(int port) {
+        String address = String.format("http://localhost:%d/ClientWebService", port);
+        Endpoint.publish(address, this);
+        log.info("ClientWebService listens on: " + address);
     }
 }

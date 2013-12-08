@@ -17,11 +17,11 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "ClientWebService", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/")
+@WebService(name = "ClientWebServiceSoap", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/")
 @XmlSeeAlso({
     ObjectFactory.class
 })
-public interface ClientWebService {
+public interface ClientWebServiceSoap {
 
 
     /**
@@ -34,9 +34,9 @@ public interface ClientWebService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "identifyMP3Fingerprint", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3Fingerprint")
-    @ResponseWrapper(localName = "identifyMP3FingerprintResponse", targetNamespace = "http://Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3FingerprintResponse")
-    @Action(input = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintRequest", output = "http://Peer.SWAzam.swa.tuwien.ac.at/ClientWebService/identifyMP3FingerprintResponse")
+    @RequestWrapper(localName = "identifyMP3Fingerprint", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3Fingerprint")
+    @ResponseWrapper(localName = "identifyMP3FingerprintResponse", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3FingerprintResponse")
+    @Action(input = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintRequest", output = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintResponse")
     public String identifyMP3Fingerprint(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,

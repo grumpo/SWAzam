@@ -1,8 +1,8 @@
 package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
-import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebService;
-import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebServiceService;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebServiceSoap;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebServiceSoapService;
 import com.google.gson.Gson;
 
 import java.util.logging.Logger;
@@ -14,7 +14,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
     @Override
     public String identifyMP3Fingerprint(Fingerprint fingerprint, String user, String password) {
         log.info("Checking fingerprint: " + fingerprint.getShiftDuration());
-        ClientWebService peerWebServicePort = getClientWebService();
+        ClientWebServiceSoap peerWebServicePort = getClientWebService();
         String fingerprintJson = serialize(fingerprint);
         return peerWebServicePort.identifyMP3Fingerprint(
                 fingerprintJson, user, password);
@@ -24,7 +24,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
         return new Gson().toJson(fingerprint);
     }
 
-    private ClientWebService getClientWebService() {
-        return new ClientWebServiceService().getClientWebServicePort();
+    private ClientWebServiceSoap getClientWebService() {
+        return new ClientWebServiceSoapService().getClientWebServiceSoapPort();
     }
 }

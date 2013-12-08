@@ -21,5 +21,6 @@ public class PeerWebService {
         Object implementor = new PeerWebService();
         String address = "http://localhost:9000/PeerWebService";
         Endpoint.publish(address, implementor);
+        log.info("PeerWebService listens on: " + address);
     }
 }
