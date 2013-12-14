@@ -23,6 +23,7 @@ public class ClientWebServiceSoap implements ClientWebService {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         return "Some good piece of music: " + fingerprint.getShiftDuration();
+        // TODO: identify fingerprint
     }
 
     @Override
