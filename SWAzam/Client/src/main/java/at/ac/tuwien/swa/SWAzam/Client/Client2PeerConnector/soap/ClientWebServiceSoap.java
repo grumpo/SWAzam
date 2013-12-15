@@ -30,14 +30,14 @@ public interface ClientWebServiceSoap {
      * @param arg1
      * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.FingerprintResult
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "identifyMP3Fingerprint", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3Fingerprint")
     @ResponseWrapper(localName = "identifyMP3FingerprintResponse", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.IdentifyMP3FingerprintResponse")
     @Action(input = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintRequest", output = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintResponse")
-    public String identifyMP3Fingerprint(
+    public FingerprintResult identifyMP3Fingerprint(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")

@@ -51,6 +51,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link FingerprintResult }
+     * 
+     */
+    public FingerprintResult createFingerprintResult() {
+        return new FingerprintResult();
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IdentifyMP3FingerprintResponse }{@code >}}
      * 
      */

@@ -3,6 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Client;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -38,11 +39,11 @@ public class Client {
         byte[] fakeMp3 = new byte[23000];
         new Random().nextBytes(fakeMp3);
         Fingerprint fingerprint = fingerprintSystem.fingerprint(fakeMp3);
-        String fingerPrintIdentificationResult = identify(fingerprint);
-        log.info("Fingerprint was identified to be: " + fingerPrintIdentificationResult);
+        FingerprintResult fingerPrintIdentificationResult = identify(fingerprint);
+        log.info("Fingerprint was identified to be: " + fingerPrintIdentificationResult.getResult());
     }
 
-    private String identify(Fingerprint fingerprint) {
+    private FingerprintResult identify(Fingerprint fingerprint) {
         return client2PeerConnector.identifyMP3Fingerprint(fingerprint, user, pass);
     }
 
