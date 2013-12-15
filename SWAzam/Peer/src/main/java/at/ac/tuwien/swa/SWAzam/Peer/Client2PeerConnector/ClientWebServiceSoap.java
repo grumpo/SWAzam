@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -19,10 +20,13 @@ public class ClientWebServiceSoap implements ClientWebService {
 
     @WebMethod
     @SuppressWarnings("unused")
-    public String identifyMP3Fingerprint(String fingerprintJson, String user, String password) {
+    public FingerprintResult identifyMP3Fingerprint(String fingerprintJson, String user, String password) {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
-        return "Some good piece of music: " + fingerprint.getShiftDuration();
+        FingerprintResult result = new FingerprintResult();
+        result.setResult("Some good piece of music: " + fingerprint.getShiftDuration());
+        result.setHops(new ArrayList<String>());
+        return result;
         // TODO: identify fingerprint
     }
 

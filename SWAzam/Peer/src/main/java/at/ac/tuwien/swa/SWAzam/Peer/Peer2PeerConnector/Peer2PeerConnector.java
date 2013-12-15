@@ -1,7 +1,9 @@
 package at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector;
 
+import ac.at.tuwien.infosys.swa.audio.Fingerprint;
+
 import java.util.List;
 
 public interface Peer2PeerConnector {
-    FingerprintResult identifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops);
+    FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops);
 }

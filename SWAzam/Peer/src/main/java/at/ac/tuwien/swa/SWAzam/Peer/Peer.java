@@ -1,11 +1,11 @@
 package at.ac.tuwien.swa.SWAzam.Peer;
 
+import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebService;
-import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -36,13 +36,17 @@ public class Peer {
         startServices();
 
         // test request on self
-        FingerprintSystem fingerprintSystem = new FingerprintSystem(44f);
-        byte[] fakeMp3 = new byte[23000];
-        new Random().nextBytes(fakeMp3);
-        String fingerprint = new Gson().toJson(fingerprintSystem.fingerprint(fakeMp3));
+        Fingerprint fingerprint = generateTestFingerprint();
         FingerprintResult fingerprintResult = peer2PeerConnector.identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {});
 
         log.info("Fingerprint was identified to be: " + fingerprintResult.getResult());
+    }
+
+    private Fingerprint generateTestFingerprint() {
+        FingerprintSystem fingerprintSystem = new FingerprintSystem(44f);
+        byte[] fakeMp3 = new byte[23000];
+        new Random().nextBytes(fakeMp3);
+        return fingerprintSystem.fingerprint(fakeMp3);
     }
 
     private void startServices() {

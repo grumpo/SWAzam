@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @WebService()
 public class PeerWebServiceSoap implements PeerWebService {
 
-    private final static Logger log = Logger.getLogger(PeerWebService.class.getName());
+    private final static Logger log = Logger.getLogger(PeerWebServiceSoap.class.getName());
 
     @WebMethod
     public FingerprintResult IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops) {

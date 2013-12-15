@@ -1,6 +1,4 @@
-package at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector;
-
-import ac.at.tuwien.infosys.swa.audio.Fingerprint;
+package at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector;
 
 import java.util.List;
 
