@@ -12,13 +12,14 @@ import java.io.IOException;
  */
 public class FingerPrintExtractor {
     public static Fingerprint extractFingerPrint(AudioInputStream inStream){
-        Converter conv = new Converter(inStream);
-        Converter converted = conv.toPCM();
-
         try {
-            return FingerprintSystem.fingerprint(converted.getAudioInputStream());
+            return FingerprintSystem.fingerprint(inStream);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            System.out.println("Too short!");
+        } catch (NegativeArraySizeException e){
+            System.out.println("Too short: empty stream!");
         }
 
         return null;

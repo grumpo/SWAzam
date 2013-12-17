@@ -3,13 +3,40 @@ package at.ac.tuwien.swa.SWAzam.Client.MP3Recorder;
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by markus on 17.12.13.
  */
-public class MicRecorder implements Runnable {
+public class MicRecorder implements Runnable, IRecorder{
     private AudioInputStream result;
     boolean stopped;
+    Thread recorder;
+
+    public MicRecorder(){
+        this.result = null;
+        this.stopped = false;
+    }
+
+    public void startRecording(){
+        recorder = new Thread(this);
+        recorder.start();
+    }
+
+    public void stopRecording(){
+        this.setStop(true);
+
+        try {
+            recorder.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public AudioInputStream getStream(){
+        return result;
+    }
 
     @Override
     public void run() {
@@ -47,15 +74,16 @@ public class MicRecorder implements Runnable {
                 line.close();
 
                 ByteArrayInputStream bais = new ByteArrayInputStream(out.toByteArray());
+
+                File outFile = new File("/Users/markus/Desktop/test.wav");
+                //outFile.createNewFile();
+                //AudioSystem.write(new AudioInputStream(bais, format, out.toByteArray().length / format.getFrameSize()), AudioFileFormat.Type.WAVE, outFile);
+
                 result = new AudioInputStream(bais, format, out.toByteArray().length / format.getFrameSize());
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public AudioInputStream getResult(){
-        return this.result;
     }
 
     public void setStop(boolean stop){
