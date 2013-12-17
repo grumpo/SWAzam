@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -51,6 +53,11 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private JPanel panel_south;
 	
+	private JFrame chooseFileFrame;
+	private JFileChooser fileChooser;
+	
+	private JTextPane progress_label;
+	
 	private JTable table;
 	
 	private JButton record, open_file;
@@ -64,7 +71,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private void initComponents() {
 	    setTitle("SWAzam");
-	    setSize(600, 600);
+	    setSize(800, 800);
 	    setVisible(true);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocationRelativeTo(null);
@@ -95,11 +102,16 @@ public class MainFrame extends JFrame implements ActionListener {
         mbar.add(Box.createHorizontalGlue());
         mbar.add(logout);
 
-        JPanel panel_center = new JPanel(new BorderLayout());
+        JPanel panel_center = new JPanel(new GridLayout(6,1));
         
         JTextPane overview = new JTextPane();
+        JTextPane coins = new JTextPane();
+        JTextPane progress = new JTextPane();
         Font f = new Font(Font.SERIF, 0, 25);
         overview.setFont(f);
+        coins.setFont(f);
+        coins.setFont(f);
+        progress.setFont(f);
         
         overview.setText("Request History");
         overview.setEditable(false);
@@ -110,11 +122,52 @@ public class MainFrame extends JFrame implements ActionListener {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         
+        coins.setText("Coins");
+        coins.setEditable(false);
+        coins.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        doc = coins.getStyledDocument();
+        center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        
+        progress.setText("Current Progress");
+        progress.setEditable(false);
+        progress.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        doc = progress.getStyledDocument();
+        center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        
+        
         panel_center.add(overview, BorderLayout.PAGE_START);
         fillTablewithDummyData();
         panel_center.add(new JScrollPane(table));
+        panel_center.add(coins);
+        
+        //TODO get the # coins
+        JTextPane coin_label = new JTextPane();
+        coin_label.setText("You have currently " + 5 + " coins left.");
+        coin_label.setEditable(false);
+        panel_center.add(coin_label);
+        
+        panel_center.add(coin_label);
+        
+        progress_label = new JTextPane();
+        progress_label.setText("");
+        progress_label.setEditable(false);
+        panel_center.add(progress);
+        panel_center.add(progress_label);
         
         panel_south = new JPanel(new GridLayout(1,2));
+        chooseFileFrame = new JFrame();
+        fileChooser = new JFileChooser();
+        chooseFileFrame.add(fileChooser);
+        chooseFileFrame.setSize(600, 600);
+        chooseFileFrame.setLocationRelativeTo(null);
         
         record = new JButton();
         open_file = new JButton();
@@ -130,6 +183,7 @@ public class MainFrame extends JFrame implements ActionListener {
         panel_south.add(open_file);
         
         record.addActionListener(this);
+        open_file.addActionListener(this);
         
         add(mbar, BorderLayout.NORTH);
         add(panel_center, BorderLayout.CENTER);
@@ -167,14 +221,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		// Start the recording
 		// TODO
 		if (record.getIcon().equals(record_icon)) {
-			log.info("Recording started.");
+			progress_label.setText("Recording started.");
 			record.setIcon(record_stop_icon);		
 		}
 		
 		// Stop the recording
 		// TODO
 		else {
-			log.info("Recording stopped.");
+			// TODO - check if correct mp3, wav file??
+			progress_label.setText("Recording stopped. Sending file to Peers for fingerprint recognition...");
 			record.setIcon(record_icon);		
 		}
 	}
@@ -249,6 +304,18 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		else if (e.getSource() == record) {
 			start_stop_recording();
+		}
+		
+		else if (e.getSource() == open_file) {
+			chooseFileFrame.setVisible(true);
+			int returnVal = fileChooser.showOpenDialog(this);
+
+	        if (returnVal == JFileChooser.APPROVE_OPTION) {
+	            File file = fileChooser.getSelectedFile();
+	            progress_label.setText("Opened: " + file.getName() + ".");    
+	        } 
+	        
+	        chooseFileFrame.setVisible(false);
 		}
 		
 	}
