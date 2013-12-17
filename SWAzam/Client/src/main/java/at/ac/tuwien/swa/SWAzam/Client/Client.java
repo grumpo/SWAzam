@@ -1,17 +1,15 @@
 package at.ac.tuwien.swa.SWAzam.Client;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
-import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
-import at.ac.tuwien.swa.SWAzam.Client.gui.LoginFrame;
+import at.ac.tuwien.swa.SWAzam.Client.GUIView.LoginFrame;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.logging.Logger;
 
 /**
