@@ -41,17 +41,19 @@ public class Client {
 
         System.out.println("Extracted from File!");
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Start Recording: ");
-        br.readLine();
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        System.out.println("Start Recording: ");
+//        br.readLine();
+//
+//        recorder.startRecordingFromMic();
+//
+//        System.out.println("Stop Recording: ");
+//        br.readLine();
+//        recorder.stopRecordingFromMic();
+//
+//        Fingerprint fp2 = FingerPrintExtractor.extractFingerPrint(recorder.getMp3FromMic());
 
-        recorder.startRecordingFromMic();
-
-        System.out.println("Stop Recording: ");
-        br.readLine();
-        recorder.stopRecordingFromMic();
-
-        Fingerprint fp2 = FingerPrintExtractor.extractFingerPrint(recorder.getMp3FromMic());
+        Fingerprint fp2 = FingerPrintExtractor.extractFingerPrint(recorder.getMp3FromFile("/Users/markus/Desktop/tail toddle.wav"));
 
         System.out.println("Extracted from Mic");
         System.out.println("MATCH: " + fp1.match(fp2));
