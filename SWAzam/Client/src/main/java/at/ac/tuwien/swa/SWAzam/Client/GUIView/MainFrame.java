@@ -3,7 +3,10 @@ package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +14,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
+
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,6 +30,9 @@ import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+
+
 
 
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
@@ -59,7 +66,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private JTable table;
 	
-	private JButton record, open_file;
+	private JButton record, open_file, send;
 	private ImageIcon record_icon, record_stop_icon;
 
     public MainFrame(User user) {
@@ -70,7 +77,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private void initComponents() {
 	    setTitle("SWAzam");
-	    setSize(600, 600);
+	    setSize(600, 700);
 	    setVisible(true);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocationRelativeTo(null);
@@ -102,46 +109,70 @@ public class MainFrame extends JFrame implements ActionListener {
         mbar.add(logout);
 
         JPanel panel_center = new JPanel();
-        panel_center.setLayout(new GridLayout(6, 1));
+        panel_center.setLayout(new GridBagLayout());
         JLabel overview = new JLabel();
-        overview.setAlignmentX(Component.CENTER_ALIGNMENT);
+        overview.setHorizontalAlignment(JLabel.CENTER);
         JLabel coins = new JLabel();
         JLabel progress = new JLabel();
         Font f = new Font(Font.SERIF, 0, 20);
         overview.setFont(f);
         coins.setFont(f);
+        coins.setHorizontalAlignment(JLabel.CENTER);
         coins.setFont(f);
         progress.setFont(f);
+        progress.setHorizontalAlignment(JLabel.CENTER);
         
         overview.setText("Request History");
-        overview.setBorder(new EmptyBorder(20, 20, 20, 20));
+        overview.setBorder(new EmptyBorder(10, 10, 10, 10));
                 
         coins.setText("Coins");
-        coins.setBorder(new EmptyBorder(20, 20, 20, 20));
+        coins.setBorder(new EmptyBorder(10, 10, 10, 10));
         
         progress.setText("Current Progress");
-        progress.setBorder(new EmptyBorder(20, 20, 20, 20));       
+        progress.setBorder(new EmptyBorder(10, 10, 10, 10));     
         
-        panel_center.add(overview);
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        
+        panel_center.add(overview, c);
         fillTablewithDummyData();
         JScrollPane tablePane = new JScrollPane(table);
-        tablePane.setSize(0, 200);
-        panel_center.add(tablePane);
-        panel_center.add(coins);
+        tablePane.setMinimumSize(new Dimension(600, 100));
+        
+        c.gridy = 1;
+        
+        c.fill = GridBagConstraints.BOTH; 
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        panel_center.add(tablePane, c);
+        
+        c.fill = GridBagConstraints.NONE; 
+        c.gridy = 2;
+        panel_center.add(coins, c);
         
         //TODO get the # coins
         JLabel coin_label = new JLabel();
         coin_label.setHorizontalAlignment(SwingConstants.CENTER); 
         coin_label.setText("You have currently " + 5 + " coins left.");
-        panel_center.add(coin_label);
         
-        panel_center.add(coin_label);
+        c.gridy = 3;
+        panel_center.add(coin_label, c);
+        c.gridy = 4;
+        panel_center.add(coin_label, c);
         
         progress_label = new JLabel();
         progress_label.setHorizontalAlignment(SwingConstants.CENTER); 
         progress_label.setText("");
-        panel_center.add(progress);
-        panel_center.add(progress_label);
+        
+        c.gridy = 5;
+        panel_center.add(progress, c);
+        c.gridy = 6;
+        panel_center.add(progress_label, c);
+        c.gridy = 7;
+        send = new JButton("Send");
+        send.setEnabled(false);
+        panel_center.add(send, c);
         
         panel_south = new JPanel(new GridLayout(1,2));
         chooseFileFrame = new JFrame();
@@ -202,15 +233,17 @@ public class MainFrame extends JFrame implements ActionListener {
 		// TODO
 		if (record.getIcon().equals(record_icon)) {
 			progress_label.setText("Recording started.");
-			record.setIcon(record_stop_icon);		
+			record.setIcon(record_stop_icon);	
+			send.setEnabled(false);
 		}
 		
 		// Stop the recording
 		// TODO
 		else {
 			// TODO - check if correct mp3, wav file??
-			progress_label.setText("Recording stopped. Sending file to Peers for fingerprint recognition...");
+			progress_label.setText("Recording finished. Do you want to send it to the MP3 Recognition Service?");
 			record.setIcon(record_icon);		
+			send.setEnabled(true);
 		}
 	}
 	
@@ -292,10 +325,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	        if (returnVal == JFileChooser.APPROVE_OPTION) {
 	            File file = fileChooser.getSelectedFile();
-	            progress_label.setText("Opened: " + file.getName() + ".");    
+	            progress_label.setText("Opened: " + file.getName() + ". Do you want to send it to the MP3 Recognition Service?");    
 	        } 
-	        
+
 	        chooseFileFrame.setVisible(false);
+	        send.setEnabled(true);
 		}
 		
 	}
