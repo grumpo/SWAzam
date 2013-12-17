@@ -102,6 +102,7 @@ public class MainFrame extends JFrame implements ActionListener {
         overview.setFont(f);
         
         overview.setText("Request History");
+        overview.setEditable(false);
         overview.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         StyledDocument doc = overview.getStyledDocument();
