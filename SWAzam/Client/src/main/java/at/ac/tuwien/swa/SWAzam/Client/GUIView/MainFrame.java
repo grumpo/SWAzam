@@ -66,7 +66,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private JTable table;
 	
-	private JButton record, open_file;
+	private JButton record, open_file, send;
 	private ImageIcon record_icon, record_stop_icon;
 
     public MainFrame(User user) {
@@ -139,6 +139,7 @@ public class MainFrame extends JFrame implements ActionListener {
         fillTablewithDummyData();
         JScrollPane tablePane = new JScrollPane(table);
         tablePane.setMinimumSize(new Dimension(600, 100));
+        
         c.gridy = 1;
         
         c.fill = GridBagConstraints.BOTH; 
@@ -168,6 +169,10 @@ public class MainFrame extends JFrame implements ActionListener {
         panel_center.add(progress, c);
         c.gridy = 6;
         panel_center.add(progress_label, c);
+        c.gridy = 7;
+        send = new JButton("Send");
+        send.setEnabled(false);
+        panel_center.add(send, c);
         
         panel_south = new JPanel(new GridLayout(1,2));
         chooseFileFrame = new JFrame();
@@ -228,15 +233,17 @@ public class MainFrame extends JFrame implements ActionListener {
 		// TODO
 		if (record.getIcon().equals(record_icon)) {
 			progress_label.setText("Recording started.");
-			record.setIcon(record_stop_icon);		
+			record.setIcon(record_stop_icon);	
+			send.setEnabled(false);
 		}
 		
 		// Stop the recording
 		// TODO
 		else {
 			// TODO - check if correct mp3, wav file??
-			progress_label.setText("Recording stopped. Sending file to Peers for fingerprint recognition...");
+			progress_label.setText("Recording finished. Do you want to send it to the MP3 Recognition Service?");
 			record.setIcon(record_icon);		
+			send.setEnabled(true);
 		}
 	}
 	
@@ -318,10 +325,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	        if (returnVal == JFileChooser.APPROVE_OPTION) {
 	            File file = fileChooser.getSelectedFile();
-	            progress_label.setText("Opened: " + file.getName() + ".");    
+	            progress_label.setText("Opened: " + file.getName() + ". Do you want to send it to the MP3 Recognition Service?");    
 	        } 
-	        
+
 	        chooseFileFrame.setVisible(false);
+	        send.setEnabled(true);
 		}
 		
 	}
