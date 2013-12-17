@@ -3,6 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Client;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
 import at.ac.tuwien.swa.SWAzam.Client.FingerprintExtractor.FingerPrintExtractor;
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.LoginFrame;
 
@@ -26,27 +27,16 @@ public class Client {
 
     private final static Logger log = Logger.getLogger(Client.class.getName());
 
-    @Inject
-    private Client2PeerConnector client2PeerConnector;
-
-    private String user = "user";
-    private String pass = "pass";
-
     public static void main(String[] argv) throws IOException {
         Injector injector = Guice.createInjector(new ClientModule());
         injector.getInstance(Client.class).run();
     }
 
     public void run() {
+    	Controller c = new Controller();
+        c.run();
     	
-    	new LoginFrame();
-    	
-    	
-        log.info("Client has been started an is running now...");
-    }
-
-    private FingerprintResult identify(Fingerprint fingerprint) {
-        return client2PeerConnector.identifyMP3Fingerprint(fingerprint, user, pass);
+        //log.info("Client has been started an is running now...");
     }
 
 }
