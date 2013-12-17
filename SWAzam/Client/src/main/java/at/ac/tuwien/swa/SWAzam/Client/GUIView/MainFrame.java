@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -78,7 +79,19 @@ public class MainFrame extends JFrame implements ActionListener {
         mbar.add(logout);
         
         add(mbar, BorderLayout.NORTH);
-               
+        
+        
+        JPanel panel_south = new JPanel(new GridLayout(1,2));
+        JButton record = new JButton();
+        record.setIcon(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/microphone.png"));
+        JButton open_file = new JButton();
+        open_file.setIcon(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/open_folder.png"));
+        JButton stop_record = new JButton();
+        
+        panel_south.add(record);
+        panel_south.add(open_file);
+        
+        add(panel_south, BorderLayout.SOUTH);
 	}
 	
 	
@@ -100,7 +113,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		infoFrame.setResizable(false);
 		aboutFrameOkBtn = new JButton("Ok");
 		aboutFrameOkBtn.addActionListener(this);
-		// panel_north.add(new JLabel(new ImageIcon("src/main/java/gui/locomotive.jpg")));
+		// panel_north.add(new JLabel(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/login.png")));
 		        		
 		text.setText("Rumpold Gernot (0728159)\n"
         		+ "Binder Johannes (0727990)\n"
