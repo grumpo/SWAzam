@@ -1,49 +1,145 @@
 package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
-import java.awt.Cursor;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
-public class MainFrame extends JFrame {
+import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
+
+
+public class MainFrame extends JFrame implements ActionListener {
 	
-	JLabel exit;
-    JMenuBar mbar;
-    JLabel label;
+	private static final long serialVersionUID = 1L;
+	private JMenuBar mbar;
+	private User user;
+	
+	private JMenuItem exitM;
+	private JMenuItem logoutM;
+	private JMenuItem faq;
+	private JMenuItem about;
+	
+	private JFrame infoFrame;
+	private JButton aboutFrameOkBtn;
 
-    public MainFrame() {
+    public MainFrame(User user) {
+    	this.user = user;
+    	
+    	System.out.println("Logged in with username: " + this.user.getUsername() + " and password: " + this.user.getPassword());
+    	initComponents();
+    	
+    }
+
+	private void initComponents() {
 	    setTitle("SWAzam");
-	    setSize(400, 400);
+	    setSize(600, 600);
 	    setVisible(true);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    setLocationRelativeTo(null);
+	    
+	    mbar = new JMenuBar();
+   
+	    JMenu file = new JMenu("File");
+	    JMenu help = new JMenu("Help");
+	    
+	    exitM = new JMenuItem("Exit");
+	    logoutM = new JMenuItem("Logout");
+        faq = new JMenuItem("F.A.Q");
+        about = new JMenuItem("About");
+        
+        file.add(logoutM);
+        file.addSeparator();
+        file.add(exitM);
+        help.add(faq);
+        help.add(about);
+        
+        exitM.addActionListener(this);
+        logoutM.addActionListener(this);
+        faq.addActionListener(this);
+        about.addActionListener(this);
+        
+        mbar.add(file);
+        mbar.add(help);
+        
+        add(mbar, BorderLayout.NORTH);
+               
+	}
 	
-	    mbar=new JMenuBar();
-	    mbar.setLayout(new FlowLayout());
 	
-	    label=new JLabel("You are logged in.");
-	    mbar.add(label);
-	    exit=new JLabel("<html><a href=''>Exit</a></html>");
-	    exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    exit.setFont(new Font("Tahoma",Font.PLAIN,13));
+	public JFrame showInfos() {     
+        infoFrame = new JFrame("About");
+        JPanel infopanel = new JPanel();
+		JPanel panel_south = new JPanel();
+		JPanel panel_center = new JPanel();
+		JPanel panel_center1 = new JPanel();
+		JPanel panel_north = new JPanel();
+		JTextPane text = new JTextPane();
+		
+		panel_center.setOpaque(false);
+		panel_center.setLayout(new GridLayout(2,1));
+		
+		infoFrame.getContentPane().add(infopanel);
+		infoFrame.getContentPane().setLayout(new BorderLayout());
+		infoFrame.setBounds(400, 200, 300, 250);
+		infoFrame.setResizable(false);
+		aboutFrameOkBtn = new JButton("Ok");
+		aboutFrameOkBtn.addActionListener(this);
+		// panel_north.add(new JLabel(new ImageIcon("src/main/java/gui/locomotive.jpg")));
+		        		
+		text.setText("Rumpold Gernot (0728159)\n"
+        		+ "Binder Johannes (0727990)\n"
+        		+ "Weilharter Manuela (0826002)\n"
+        		+ "Wolf Markus (0825595)\n"
+        		+ "El-Isa Kamil (0726881)");
+		
+		text.setEditable(false);
+		panel_center1.add(text);
+		
+		text.setOpaque(false);
+		text.setBackground(new Color(0,0,0,0));
+		
+		panel_center.add(panel_center1);
+		
+		panel_south.add(aboutFrameOkBtn);
+		infoFrame.getContentPane().add(panel_north, BorderLayout.NORTH);
+		infoFrame.getContentPane().add(panel_south, BorderLayout.SOUTH);
+		infoFrame.getContentPane().add(panel_center, BorderLayout.CENTER);
+		
+		infoFrame.setVisible(true);
+		
+		return infoFrame;
+	}
 	
-	    exit.addMouseListener(new MouseAdapter(){
-	    public void mouseClicked(MouseEvent ae)
-	    {
-	    System.exit(0);
-	    }
-	    });
 	
-	    mbar.add(exit);
-	
-	    setJMenuBar(mbar);
-	
-	    setExtendedState(MAXIMIZED_BOTH);
-    
-    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == exitM){
+			System.exit(0);
+        }
+		else if (e.getSource() == faq) {
+			//TODO - remove or implement
+		}
+		else if (e.getSource() == about) {
+			showInfos();
+		}
+		else if (e.getSource() == aboutFrameOkBtn) {
+			infoFrame.setVisible(false);
+		}
+		
+		else if (e.getSource() == logoutM) {
+			dispose();
+			new LoginFrame();
+		}
+		
+	}
 
 }

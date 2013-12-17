@@ -9,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
+
 
 
 
@@ -27,6 +31,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     private void initComponents() {
     	setTitle("SWAzam Login");
         setLayout(new GridLayout(3,2));
+        setLookAndFeel();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -59,6 +64,20 @@ public class LoginFrame extends JFrame implements ActionListener {
 
    
 
+	private void setLookAndFeel() {
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, use default L&F
+		}
+		
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == cancel){
@@ -70,7 +89,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 			 String password = new String(pass.getPassword());
 
 			 //TODO verify user + password
-		     new MainFrame();
+			 
+			 User user = new User(username, password);
+		     new MainFrame(user);
 		     
 		     setVisible(false);
 		     
