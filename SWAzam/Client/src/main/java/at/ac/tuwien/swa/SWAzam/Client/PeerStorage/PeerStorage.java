@@ -22,6 +22,10 @@ public class PeerStorage {
         this.peers.remove(p);
     }
 
+    public Set<Peer> getPeers(){
+        return this.peers;
+    }
+
     @Override
     public String toString(){
         String result = "Current enlisted peers:\n";

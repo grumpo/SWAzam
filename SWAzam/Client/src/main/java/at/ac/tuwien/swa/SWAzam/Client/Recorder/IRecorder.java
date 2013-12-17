@@ -1,4 +1,4 @@
-package at.ac.tuwien.swa.SWAzam.Client.MP3Recorder;
+package at.ac.tuwien.swa.SWAzam.Client.Recorder;
 
 import javax.sound.sampled.AudioInputStream;
 

@@ -1,10 +1,9 @@
-package at.ac.tuwien.swa.SWAzam.Client.MP3Recorder;
+package at.ac.tuwien.swa.SWAzam.Client.Recorder;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by markus on 17.12.13.

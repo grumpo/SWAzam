@@ -10,16 +10,21 @@ import java.io.IOException;
 /**
  * Created by markus on 17.12.13.
  */
-public class FingerPrintExtractor {
+public class FingerprintExtractor {
     public static Fingerprint extractFingerPrint(AudioInputStream inStream){
-        try {
-            return FingerprintSystem.fingerprint(inStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e){
-            System.out.println("Too short!");
-        } catch (NegativeArraySizeException e){
-            System.out.println("Too short: empty stream!");
+        if(inStream != null){
+            try {
+                return FingerprintSystem.fingerprint(inStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (IllegalArgumentException e){
+                System.out.println("Too short!");
+            } catch (NegativeArraySizeException e){
+                System.out.println("Too short: empty stream!");
+            }
+        }
+        else{
+            System.out.println("Empty stream!");
         }
 
         return null;
