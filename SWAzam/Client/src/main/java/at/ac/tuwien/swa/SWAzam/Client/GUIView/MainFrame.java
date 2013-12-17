@@ -38,6 +38,11 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private JFrame infoFrame;
 	private JButton aboutFrameOkBtn;
+	
+	private JPanel panel_south;
+	
+	private JButton record, open_file;
+	private ImageIcon record_icon, record_stop_icon;
 
     public MainFrame(User user) {
     	this.user = user;
@@ -81,20 +86,44 @@ public class MainFrame extends JFrame implements ActionListener {
         add(mbar, BorderLayout.NORTH);
         
         
-        JPanel panel_south = new JPanel(new GridLayout(1,2));
-        JButton record = new JButton();
-        record.setIcon(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/microphone.png"));
-        JButton open_file = new JButton();
-        open_file.setIcon(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/open_folder.png"));
-        JButton stop_record = new JButton();
+        panel_south = new JPanel(new GridLayout(1,2));
+        
+        record = new JButton();
+        open_file = new JButton();
+        
+        record_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/record.png");
+        record_stop_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/record_stop.png");
+        ImageIcon open_folder_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/open_folder.png");
+        
+        record.setIcon(record_icon);
+        open_file.setIcon(open_folder_icon);
         
         panel_south.add(record);
         panel_south.add(open_file);
+        
+        record.addActionListener(this);
         
         add(panel_south, BorderLayout.SOUTH);
 	}
 	
 	
+	private void start_stop_recording() {
+		// Start the recording
+		// TODO
+		if (record.getIcon().equals(record_icon)) {
+			log.info("Recording started.");
+			record.setIcon(record_stop_icon);		
+		}
+		
+		// Stop the recording
+		// TODO
+		else {
+			log.info("Recording stopped.");
+			record.setIcon(record_icon);		
+		}
+	}
+	
+
 	public JFrame showInfos() {     
         infoFrame = new JFrame("About");
         JPanel infopanel = new JPanel();
@@ -113,7 +142,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		infoFrame.setResizable(false);
 		aboutFrameOkBtn = new JButton("Ok");
 		aboutFrameOkBtn.addActionListener(this);
-		// panel_north.add(new JLabel(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/login.png")));
 		        		
 		text.setText("Rumpold Gernot (0728159)\n"
         		+ "Binder Johannes (0727990)\n"
@@ -145,12 +173,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		if(e.getSource() == exitM){
 			System.exit(0);
         }
+		
 		else if (e.getSource() == faq) {
 			//TODO - remove or implement
 		}
+		
 		else if (e.getSource() == about) {
 			showInfos();
 		}
+		
 		else if (e.getSource() == aboutFrameOkBtn) {
 			infoFrame.setVisible(false);
 		}
@@ -158,6 +189,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		else if (e.getSource() == logoutM) {
 			dispose();
 			new LoginFrame();
+		}
+		
+		else if (e.getSource() == record) {
+			start_stop_recording();
 		}
 		
 	}
