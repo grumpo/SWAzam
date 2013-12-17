@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +11,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
-
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,10 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+
 
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
@@ -56,7 +55,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JFrame chooseFileFrame;
 	private JFileChooser fileChooser;
 	
-	private JTextPane progress_label;
+	private JLabel progress_label;
 	
 	private JTable table;
 	
@@ -71,7 +70,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private void initComponents() {
 	    setTitle("SWAzam");
-	    setSize(800, 800);
+	    setSize(600, 600);
 	    setVisible(true);
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocationRelativeTo(null);
@@ -102,63 +101,45 @@ public class MainFrame extends JFrame implements ActionListener {
         mbar.add(Box.createHorizontalGlue());
         mbar.add(logout);
 
-        JPanel panel_center = new JPanel(new GridLayout(6,1));
-        
-        JTextPane overview = new JTextPane();
-        JTextPane coins = new JTextPane();
-        JTextPane progress = new JTextPane();
-        Font f = new Font(Font.SERIF, 0, 25);
+        JPanel panel_center = new JPanel();
+        panel_center.setLayout(new GridLayout(6, 1));
+        JLabel overview = new JLabel();
+        overview.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel coins = new JLabel();
+        JLabel progress = new JLabel();
+        Font f = new Font(Font.SERIF, 0, 20);
         overview.setFont(f);
         coins.setFont(f);
         coins.setFont(f);
         progress.setFont(f);
         
         overview.setText("Request History");
-        overview.setEditable(false);
         overview.setBorder(new EmptyBorder(20, 20, 20, 20));
-        
-        StyledDocument doc = overview.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
+                
         coins.setText("Coins");
-        coins.setEditable(false);
         coins.setBorder(new EmptyBorder(20, 20, 20, 20));
         
-        doc = coins.getStyledDocument();
-        center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
-        
         progress.setText("Current Progress");
-        progress.setEditable(false);
-        progress.setBorder(new EmptyBorder(20, 20, 20, 20));
+        progress.setBorder(new EmptyBorder(20, 20, 20, 20));       
         
-        doc = progress.getStyledDocument();
-        center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
-        
-        
-        panel_center.add(overview, BorderLayout.PAGE_START);
+        panel_center.add(overview);
         fillTablewithDummyData();
-        panel_center.add(new JScrollPane(table));
+        JScrollPane tablePane = new JScrollPane(table);
+        tablePane.setSize(0, 200);
+        panel_center.add(tablePane);
         panel_center.add(coins);
         
         //TODO get the # coins
-        JTextPane coin_label = new JTextPane();
+        JLabel coin_label = new JLabel();
+        coin_label.setHorizontalAlignment(SwingConstants.CENTER); 
         coin_label.setText("You have currently " + 5 + " coins left.");
-        coin_label.setEditable(false);
         panel_center.add(coin_label);
         
         panel_center.add(coin_label);
         
-        progress_label = new JTextPane();
+        progress_label = new JLabel();
+        progress_label.setHorizontalAlignment(SwingConstants.CENTER); 
         progress_label.setText("");
-        progress_label.setEditable(false);
         panel_center.add(progress);
         panel_center.add(progress_label);
         
@@ -214,7 +195,6 @@ public class MainFrame extends JFrame implements ActionListener {
 			};
 		
 		table = new JTable(data, columnNames);
-		
 	}
 
 	private void start_stop_recording() {
