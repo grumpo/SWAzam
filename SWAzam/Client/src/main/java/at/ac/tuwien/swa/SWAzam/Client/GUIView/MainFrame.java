@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
+
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -16,10 +18,15 @@ import javax.swing.JTextPane;
 
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
-
+/**
+ * The client GUI
+ * Created by Karatekiwi on 12/17/13.
+ */
 public class MainFrame extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
+	private final static Logger log = Logger.getLogger(MainFrame.class.getName());
+		
 	private JMenuBar mbar;
 	private User user;
 	
@@ -33,10 +40,8 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public MainFrame(User user) {
     	this.user = user;
-    	
-    	System.out.println("Logged in with username: " + this.user.getUsername() + " and password: " + this.user.getPassword());
-    	initComponents();
-    	
+    	log.info("Logged in with username: " + this.user.getUsername() + " and password: " + this.user.getPassword());
+    	initComponents();	
     }
 
 	private void initComponents() {
@@ -50,17 +55,17 @@ public class MainFrame extends JFrame implements ActionListener {
    
 	    JMenu file = new JMenu("File");
 	    JMenu help = new JMenu("Help");
+	    JMenu logout = new JMenu("Logged in as " + user.getUsername());
 	    
 	    exitM = new JMenuItem("Exit");
 	    logoutM = new JMenuItem("Logout");
         faq = new JMenuItem("F.A.Q");
         about = new JMenuItem("About");
         
-        file.add(logoutM);
-        file.addSeparator();
         file.add(exitM);
         help.add(faq);
         help.add(about);
+        logout.add(logoutM);
         
         exitM.addActionListener(this);
         logoutM.addActionListener(this);
@@ -69,6 +74,8 @@ public class MainFrame extends JFrame implements ActionListener {
         
         mbar.add(file);
         mbar.add(help);
+        mbar.add(Box.createHorizontalGlue());
+        mbar.add(logout);
         
         add(mbar, BorderLayout.NORTH);
                

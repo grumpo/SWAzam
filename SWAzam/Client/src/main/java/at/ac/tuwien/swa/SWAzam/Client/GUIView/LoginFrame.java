@@ -7,12 +7,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -23,15 +25,20 @@ import javax.swing.border.EmptyBorder;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
 
-
-
+/**
+ * The client GUI
+ * Created by Karatekiwi on 12/17/13.
+ */
 public class LoginFrame extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	private final static Logger log = Logger.getLogger(LoginFrame.class.getName());
+	
 	private JButton login, cancel;
 	private JTextField uname;
 	private JPasswordField pass;
 	private JLabel uLabel, pLabel;
+	private JCheckBox rememberPw;
     
     public LoginFrame() {
     	initComponents();
@@ -67,7 +74,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         center_left.add(new JLabel());
         center_left.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JCheckBox rememberPw = new JCheckBox("Remember Password");
+        rememberPw = new JCheckBox("Remember Password");
         center_middle.add(uname);
         center_middle.add(pass);
         center_middle.add(rememberPw);
@@ -121,11 +128,19 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 			 //TODO verify user + password
 			 
-			 User user = new User(username, password);
-		     new MainFrame(user);
-		     
-		     setVisible(false);
-		     
+			 if (username.equals("") || password.equals(""))
+				 JOptionPane.showMessageDialog(this, "Please provider username and password.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+			 else {	 
+				 User user = new User(username, password);
+				 
+				 if (rememberPw.isSelected())
+				 	log.info("Remember PW is selected.");
+				 else
+					log.info("Remember PW is not selected.");
+			     new MainFrame(user);
+			     
+			     setVisible(false);
+			 }
 		}
 	}
 
