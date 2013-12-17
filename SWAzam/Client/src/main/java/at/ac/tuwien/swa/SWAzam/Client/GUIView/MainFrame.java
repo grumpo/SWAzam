@@ -2,20 +2,30 @@ package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
@@ -40,6 +50,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JButton aboutFrameOkBtn;
 	
 	private JPanel panel_south;
+	
+	private JTable table;
 	
 	private JButton record, open_file;
 	private ImageIcon record_icon, record_stop_icon;
@@ -82,9 +94,24 @@ public class MainFrame extends JFrame implements ActionListener {
         mbar.add(help);
         mbar.add(Box.createHorizontalGlue());
         mbar.add(logout);
+
+        JPanel panel_center = new JPanel(new BorderLayout());
         
-        add(mbar, BorderLayout.NORTH);
+        JTextPane overview = new JTextPane();
+        Font f = new Font(Font.SERIF, 0, 25);
+        overview.setFont(f);
         
+        overview.setText("Request History");
+        overview.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        StyledDocument doc = overview.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        panel_center.add(overview, BorderLayout.PAGE_START);
+        fillTablewithDummyData();
+        panel_center.add(new JScrollPane(table));
         
         panel_south = new JPanel(new GridLayout(1,2));
         
@@ -103,10 +130,38 @@ public class MainFrame extends JFrame implements ActionListener {
         
         record.addActionListener(this);
         
+        add(mbar, BorderLayout.NORTH);
+        add(panel_center, BorderLayout.CENTER);
         add(panel_south, BorderLayout.SOUTH);
 	}
 	
 	
+	private void fillTablewithDummyData() {
+		String[] columnNames = {"Date",
+                "Time",
+                "Success",
+                "Artist",
+                "Song Name"};
+		
+		
+		long millis = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+
+        Date resultdate = new Date(millis);
+		
+		Object[][] data = {
+			    {sdf.format(resultdate), sdf2.format(resultdate), "yes", "Justin Bieber", "Justin Bieber Song"},
+			    {sdf.format(resultdate), sdf2.format(resultdate), "yes", "Madonna", "Hung Up"},
+			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"},
+			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"},
+			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"}
+			};
+		
+		table = new JTable(data, columnNames);
+		
+	}
+
 	private void start_stop_recording() {
 		// Start the recording
 		// TODO
