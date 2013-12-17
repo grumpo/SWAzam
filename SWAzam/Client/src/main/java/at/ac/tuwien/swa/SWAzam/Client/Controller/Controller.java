@@ -25,7 +25,7 @@ public class Controller {
 
     public Controller(){
         retriever = new MetaDataRetriever();
-        //mframe = new MainFrame(this);
+        mframe = new MainFrame(this);
     }
 
     public void loadMp3(File audioFile){
@@ -51,7 +51,7 @@ public class Controller {
         FingerprintResult fpr;
 
         if(fp != null){
-            //fpr = retriever.getFingerprintResult(fp, mframe.getUser());
+            fpr = retriever.getFingerprintResult(fp, mframe.getUser());
         }
         else{
             log.log(Level.WARNING, "Fingerprint is null and cannot be processed!");

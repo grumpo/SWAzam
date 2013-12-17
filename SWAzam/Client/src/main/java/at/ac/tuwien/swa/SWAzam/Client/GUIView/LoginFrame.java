@@ -41,7 +41,11 @@ public class LoginFrame extends JFrame implements ActionListener, KeyListener {
 	private JPasswordField pass;
 	private JLabel uLabel, pLabel;
 	private JCheckBox rememberPw;
-    
+
+    public LoginFrame(MainFrame caller){
+        initComponents();
+    }
+
     public LoginFrame() {
     	initComponents();
     }

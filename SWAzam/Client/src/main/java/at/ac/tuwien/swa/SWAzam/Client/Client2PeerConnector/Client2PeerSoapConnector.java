@@ -52,7 +52,6 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
             SOAPPart sp = msg.getSOAPPart();
 
             SOAPEnvelope env = sp.getEnvelope();
-            //env.addNamespaceDeclaration()
 
             SOAPBody sb = env.getBody();
             SOAPElement sfp = sb.addChildElement("Fingerprint");
@@ -66,6 +65,8 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
             msg.saveChanges();
 
             msg.writeTo(System.out);
+
+            return msg;
         } catch (SOAPException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -32,9 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 
-
-
-
+import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
 /**
@@ -45,7 +43,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private final static Logger log = Logger.getLogger(MainFrame.class.getName());
-		
+
+    private Controller controller;
+
 	private JMenuBar mbar;
 	private User user;
 	
@@ -73,6 +73,16 @@ public class MainFrame extends JFrame implements ActionListener {
     	this.user = user;
     	log.info("Logged in with username: " + this.user.getUsername() + " and password: " + this.user.getPassword());
     	initComponents();	
+    }
+
+    //New Constructor that is called from the controller: should load mainframe, show loginframe and then work as before
+    public MainFrame(Controller c){
+        this.controller = c;
+        LoginFrame lframe = new LoginFrame(this);
+    }
+
+    public User getUser(){
+        return user;
     }
 
 	private void initComponents() {

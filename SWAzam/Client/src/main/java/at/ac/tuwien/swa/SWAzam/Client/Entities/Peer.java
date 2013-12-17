@@ -4,24 +4,28 @@ package at.ac.tuwien.swa.SWAzam.Client.Entities;
  * Created by markus on 17.12.13.
  */
 public class Peer {
-    String ip;
-    int port;
+    String url;
+    int failure;
 
-    public Peer(String ip, int port){
-        this.ip = ip;
-        this.port = port;
+    public Peer(String url){
+        this.url = url;
+        this.failure = 0;
     }
 
-    public String getIp(){
-        return this.ip;
+    public String getUrl(){
+        return this.url;
     }
 
-    public int getPort(){
-        return this.port;
+    public int getFailure(){
+        return this.failure;
+    }
+
+    public void failure(){
+        this.failure--;
     }
 
     @Override
     public String toString(){
-        return "Peer at " + this.ip + ":" + this.port;
+        return "Peer with address " + this.url + ": " + this.failure + " remaining failures before deletion!";
     }
 }
