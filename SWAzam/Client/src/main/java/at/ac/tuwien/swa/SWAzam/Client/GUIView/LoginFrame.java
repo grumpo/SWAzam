@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -29,7 +31,7 @@ import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
  * The client GUI
  * Created by Karatekiwi on 12/17/13.
  */
-public class LoginFrame extends JFrame implements ActionListener {
+public class LoginFrame extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private final static Logger log = Logger.getLogger(LoginFrame.class.getName());
@@ -57,7 +59,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         pLabel = new JLabel("Password");
 
         uname = new JTextField(20);
+        uname.addKeyListener(this);
         pass = new JPasswordField(20);
+        pass.addKeyListener(this);
 
         login = new JButton("Login");
         cancel = new JButton("Cancel"); 
@@ -123,25 +127,49 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
 		
 		else if (e.getSource() == login) {
-			 String username = uname.getText();
-			 String password = new String(pass.getPassword());
-
-			 //TODO verify user + password
-			 
-			 if (username.equals("") || password.equals(""))
-				 JOptionPane.showMessageDialog(this, "Please provider username and password.", "Missing Information", JOptionPane.ERROR_MESSAGE);
-			 else {	 
-				 User user = new User(username, password);
-				 
-				 if (rememberPw.isSelected())
-				 	log.info("Remember PW is selected.");
-				 else
-					log.info("Remember PW is not selected.");
-			     new MainFrame(user);
-			     
-			     setVisible(false);
-			 }
+			 userLogin();
 		}
+		
+		if (e.getSource() == "enter"){
+            System.out.println("Hello");
+        }
+		
+		
+	}
+	
+	private void userLogin() {
+		String username = uname.getText();
+		String password = new String(pass.getPassword());
+
+		if (username.equals("") || password.equals(""))
+			 JOptionPane.showMessageDialog(this, "Please provider username and password.", "Missing Information", JOptionPane.ERROR_MESSAGE);
+		else {	 
+			User user = new User(username, password);
+			 
+			if (rememberPw.isSelected())
+			 	log.info("Remember PW is selected.");
+			else
+				log.info("Remember PW is not selected.");
+			
+		    new MainFrame(user);
+		     
+		    setVisible(false);
+		 }
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			userLogin();
+        }
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {		
 	}
 
 }
