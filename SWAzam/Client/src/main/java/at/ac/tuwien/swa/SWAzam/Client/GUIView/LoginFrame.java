@@ -18,6 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.EmptyBorder;
 
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
@@ -40,6 +41,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     	setTitle("SWAzam Login");
     	setLayout(new BorderLayout());
         setLookAndFeel();
+        setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -55,16 +57,24 @@ public class LoginFrame extends JFrame implements ActionListener {
         cancel.setPreferredSize(new Dimension(100, 25));
         login.setPreferredSize(new Dimension(100, 25));
         
-        JPanel center = new JPanel(new GridLayout(3, 2));
-        center.add(uLabel);
-        center.add(uname);
-
-        center.add(pLabel);
-        center.add(pass);
+        JPanel center = new JPanel(new BorderLayout());
         
-        center.add(new JPanel());
+        JPanel center_left = new JPanel(new GridLayout(3,1));
+        JPanel center_middle = new JPanel(new GridLayout(3,1));
+        
+        center_left.add(uLabel);
+        center_left.add(pLabel);
+        center_left.add(new JLabel());
+        center_left.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         JCheckBox rememberPw = new JCheckBox("Remember Password");
-        center.add(rememberPw);
+        center_middle.add(uname);
+        center_middle.add(pass);
+        center_middle.add(rememberPw);
+        center_middle.setBorder(new EmptyBorder(10, 10, 10, 10));
+        
+        center.add(center_left, BorderLayout.LINE_START);
+        center.add(center_middle, BorderLayout.CENTER);
 
         JPanel south = new JPanel(new GridBagLayout());
         south.add(cancel);
