@@ -1,16 +1,24 @@
 package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
 
@@ -30,7 +38,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     	
     private void initComponents() {
     	setTitle("SWAzam Login");
-        setLayout(new GridLayout(3,2));
+    	setLayout(new BorderLayout());
         setLookAndFeel();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -39,21 +47,34 @@ public class LoginFrame extends JFrame implements ActionListener {
         uLabel = new JLabel("Username");
         pLabel = new JLabel("Password");
 
-        uname=new JTextField(20);
-        pass=new JPasswordField(20);
+        uname = new JTextField(20);
+        pass = new JPasswordField(20);
 
-        login=new JButton("Login");
-        cancel=new JButton("Cancel");
+        login = new JButton("Login");
+        cancel = new JButton("Cancel"); 
+        cancel.setPreferredSize(new Dimension(100, 25));
+        login.setPreferredSize(new Dimension(100, 25));
+        
+        JPanel center = new JPanel(new GridLayout(3, 2));
+        center.add(uLabel);
+        center.add(uname);
 
-        add(uLabel);
-        add(uname);
+        center.add(pLabel);
+        center.add(pass);
+        
+        center.add(new JPanel());
+        JCheckBox rememberPw = new JCheckBox("Remember Password");
+        center.add(rememberPw);
 
-        add(pLabel);
-        add(pass);
-
-        add(cancel);
-        add(login);
+        JPanel south = new JPanel(new GridBagLayout());
+        south.add(cancel);
+        south.add(login);
        
+        //TODO - working on mac, linux?
+        add(new JLabel(new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/login.png")), BorderLayout.PAGE_START);
+        add(center, BorderLayout.CENTER);
+        add(south, BorderLayout.PAGE_END);
+        
         uname.requestFocus();
         
         cancel.addActionListener(this);
