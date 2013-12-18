@@ -6,6 +6,8 @@ import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerSoapConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebService;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebServiceSoap;
+import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
+import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandlerImpl;
 import com.google.inject.AbstractModule;
 
 public class PeerModule extends AbstractModule {
@@ -14,5 +16,6 @@ public class PeerModule extends AbstractModule {
         bind(ClientWebService.class).to(ClientWebServiceSoap.class);
         bind(PeerWebService.class).to(PeerWebServiceSoap.class);
         bind(Peer2PeerConnector.class).to(Peer2PeerSoapConnector.class);
+        bind(RequestHandler.class).to(RequestHandlerImpl.class);
     }
 }

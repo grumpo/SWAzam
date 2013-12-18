@@ -1,4 +1,4 @@
-package at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector;
+package at.ac.tuwien.swa.SWAzam.Peer.Common;
 
 import java.util.List;
 
