@@ -2,6 +2,8 @@ package at.ac.tuwien.swa.SWAzam.Peer;
 
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebServiceSoap;
+import at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage.FingerprintStorage;
+import at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage.FingerprintStorageInMemory;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3Identifier;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnector;
@@ -23,5 +25,6 @@ public class PeerModule extends AbstractModule {
         bind(RequestHandler.class).to(RequestHandlerImpl.class);
         bind(MP3Identifier.class).to(MP3IdentifierImpl.class);
         bind(RequestForwarder.class).to(RequestForwarderImpl.class);
+        bind(FingerprintStorage.class).to(FingerprintStorageInMemory.class);
     }
 }
