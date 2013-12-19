@@ -40,7 +40,7 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
     }
     	
     private void initComponents() {
-        this.setContentPane(new ImagePanel("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/background.png"));
+        this.setContentPane(new ImagePanel(this.getClass().getResource("/Images/background.png").getFile()));
         this.setTitle("SWAzam Login");
     	this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);

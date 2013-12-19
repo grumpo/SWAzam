@@ -30,9 +30,10 @@ public class MetaDataRetriever {
         ps.addPeer(new Peer("http://ws.cdyne.com/"));
         user = new User("Markus", "Test");
 
+        //TODO: PeerManagement
         for(Peer p : ps.getPeers()){
             log.info("Connecting to peer");
-            connector.identifyMP3Fingerprint(p.getUrl(), fp, user);
+            //connector.identifyMP3Fingerprint(p.getUrl(), fp, user);
         }
 
         return null;

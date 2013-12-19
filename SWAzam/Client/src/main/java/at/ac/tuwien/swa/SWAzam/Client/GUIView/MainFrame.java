@@ -52,7 +52,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private void initComponents(){
         this.setTitle("SWAzam - P2P Music Recognition");
 
-        mainPanel = new ImagePanel("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/background.png");
+        mainPanel = new ImagePanel(this.getClass().getResource("/Images/background.png").getFile());
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setForeground(Color.lightGray);
 
@@ -60,9 +60,9 @@ public class MainFrame extends JFrame implements ActionListener {
         loginInfoMenu = new JMenu("Logged in as Z");
         JMenu helpMenu = new JMenu("Help");
 
-        fileMenuExit = new JMenuItem("Exit", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/exit.png"));
-        loginInfoMenuLogout = new JMenuItem("Logout", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/logout.png"));
-        helpMenuAbout = new JMenuItem("About", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/about.png"));
+        fileMenuExit = new JMenuItem("Exit", new ImageIcon(this.getClass().getResource("/Images/exit.png").getFile()));
+        loginInfoMenuLogout = new JMenuItem("Logout", new ImageIcon(this.getClass().getResource("/Images/logout.png").getFile()));
+        helpMenuAbout = new JMenuItem("About", new ImageIcon(this.getClass().getResource("/Images/about.png").getFile()));
 
         loginInfoMenu.add(loginInfoMenuLogout);
         loginInfoMenu.add(fileMenuExit);
@@ -101,11 +101,11 @@ public class MainFrame extends JFrame implements ActionListener {
                 "[50!][140!][60!][30!]",
                 "[20!][20!][140!]"));
 
-        recordIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/microphone.png");
-        stopIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/stop.png");
-        ImageIcon recordIconDisabled = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/microphone_disabled.png");
-        ImageIcon fileIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/folder.png");
-        ImageIcon fileIconDisabled = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/folder_disabled.png");
+        recordIcon = new ImageIcon(this.getClass().getResource("/Images/microphone.png").getFile());
+        stopIcon = new ImageIcon(this.getClass().getResource("/Images/stop.png").getFile());
+        ImageIcon recordIconDisabled = new ImageIcon(this.getClass().getResource("/Images/microphone_disabled.png").getFile());
+        ImageIcon fileIcon = new ImageIcon(this.getClass().getResource("/Images/folder.png").getFile());
+        ImageIcon fileIconDisabled = new ImageIcon(this.getClass().getResource("/Images/folder_disabled.png").getFile());
 
         BackgroundPanel recordButtonPanel = new BackgroundPanel(180, 180);
         BackgroundPanel fileButtonPanel = new BackgroundPanel(80, 80);
