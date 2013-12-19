@@ -1,347 +1,263 @@
 package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
+import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
+import at.ac.tuwien.swa.SWAzam.Client.ImageButton;
+import at.ac.tuwien.swa.SWAzam.Client.Util.MusicFileFilter;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Logger;
-
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-
-import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
-import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 
 /**
- * The client GUI
- * Created by Karatekiwi on 12/17/13.
+ * Created by markus on 17.12.13.
  */
 public class MainFrame extends JFrame implements ActionListener {
-	
-	private static final long serialVersionUID = 1L;
-	private final static Logger log = Logger.getLogger(MainFrame.class.getName());
+    JPanel mainPanel;
+    JPanel infoPanel;
+    JPanel buttonPanel;
+    JPanel historyPanel;
 
-    private Controller controller;
+    JMenu loginInfoMenu;
 
-	private JMenuBar mbar;
-	private User user;
-	
-	private JMenuItem exitM;
-	private JMenuItem logoutM;
-	private JMenuItem faq;
-	private JMenuItem about;
-	
-	private JFrame infoFrame;
-	private JButton aboutFrameOkBtn;
-	
-	private JPanel panel_south;
-	
-	private JFrame chooseFileFrame;
-	private JFileChooser fileChooser;
-	
-	private JLabel progress_label;
-	
-	private JTable table;
-	
-	private JButton record, open_file, send;
-	private ImageIcon record_icon, record_stop_icon;
+    JMenuItem fileMenuExit;
+    JMenuItem loginInfoMenuLogout;
+    JMenuItem helpMenuAbout;
 
-    public MainFrame(User user) {
-    	this.user = user;
-    	log.info("Logged in with username: " + this.user.getUsername() + " and password: " + this.user.getPassword());
-    	initComponents();	
-    }
+    JLabel availableCoins;
+    JLabel registeredPeers;
 
-    //New Constructor that is called from the controller: should load mainframe, show loginframe and then work as before
+    Icon recordIcon;
+    Icon stopIcon;
+
+    ImageButton recordButton;
+    ImageButton fileButton;
+
+    JTable historyTable;
+
+    JFileChooser fileChooser;
+
+    boolean recording;
+
+    Controller c;
+
     public MainFrame(Controller c){
-        this.controller = c;
-        LoginFrame lframe = new LoginFrame(this);
+        this.c = c;
+        initComponents();
     }
 
-    public User getUser(){
-        return user;
-    }
+    private void initComponents(){
+        this.setTitle("SWAzam - P2P Music Recognition");
 
-	private void initComponents() {
-	    setTitle("SWAzam");
-	    setSize(600, 700);
-	    setVisible(true);
-	    setDefaultCloseOperation(EXIT_ON_CLOSE);
-	    setLocationRelativeTo(null);
-	    
-	    mbar = new JMenuBar();
-   
-	    JMenu file = new JMenu("File");
-	    JMenu help = new JMenu("Help");
-	    JMenu logout = new JMenu("Logged in as " + user.getUsername());
-	    
-	    exitM = new JMenuItem("Exit");
-	    logoutM = new JMenuItem("Logout");
-        faq = new JMenuItem("F.A.Q");
-        about = new JMenuItem("About");
-        
-        file.add(exitM);
-        help.add(faq);
-        help.add(about);
-        logout.add(logoutM);
-        
-        exitM.addActionListener(this);
-        logoutM.addActionListener(this);
-        faq.addActionListener(this);
-        about.addActionListener(this);
-        
-        mbar.add(file);
-        mbar.add(help);
-        mbar.add(Box.createHorizontalGlue());
-        mbar.add(logout);
+        mainPanel = new ImagePanel("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/background.png");
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setForeground(Color.lightGray);
 
-        JPanel panel_center = new JPanel();
-        panel_center.setLayout(new GridBagLayout());
-        JLabel overview = new JLabel();
-        overview.setHorizontalAlignment(JLabel.CENTER);
-        JLabel coins = new JLabel();
-        JLabel progress = new JLabel();
-        Font f = new Font(Font.SERIF, 0, 20);
-        overview.setFont(f);
-        coins.setFont(f);
-        coins.setHorizontalAlignment(JLabel.CENTER);
-        coins.setFont(f);
-        progress.setFont(f);
-        progress.setHorizontalAlignment(JLabel.CENTER);
-        
-        overview.setText("Request History");
-        overview.setBorder(new EmptyBorder(10, 10, 10, 10));
-                
-        coins.setText("Coins");
-        coins.setBorder(new EmptyBorder(10, 10, 10, 10));
-        
-        progress.setText("Current Progress");
-        progress.setBorder(new EmptyBorder(10, 10, 10, 10));     
-        
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        
-        panel_center.add(overview, c);
-        fillTablewithDummyData();
-        JScrollPane tablePane = new JScrollPane(table);
-        tablePane.setMinimumSize(new Dimension(600, 100));
-        
-        c.gridy = 1;
-        
-        c.fill = GridBagConstraints.BOTH; 
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        panel_center.add(tablePane, c);
-        
-        c.fill = GridBagConstraints.NONE; 
-        c.gridy = 2;
-        panel_center.add(coins, c);
-        
-        //TODO get the # coins
-        JLabel coin_label = new JLabel();
-        coin_label.setHorizontalAlignment(SwingConstants.CENTER); 
-        coin_label.setText("You have currently " + 5 + " coins left.");
-        
-        c.gridy = 3;
-        panel_center.add(coin_label, c);
-        c.gridy = 4;
-        panel_center.add(coin_label, c);
-        
-        progress_label = new JLabel();
-        progress_label.setHorizontalAlignment(SwingConstants.CENTER); 
-        progress_label.setText("");
-        
-        c.gridy = 5;
-        panel_center.add(progress, c);
-        c.gridy = 6;
-        panel_center.add(progress_label, c);
-        c.gridy = 7;
-        send = new JButton("Send");
-        send.setEnabled(false);
-        panel_center.add(send, c);
-        
-        panel_south = new JPanel(new GridLayout(1,2));
-        chooseFileFrame = new JFrame();
+        JMenuBar menu = new JMenuBar();
+        loginInfoMenu = new JMenu("Logged in as Z");
+        JMenu helpMenu = new JMenu("Help");
+
+        fileMenuExit = new JMenuItem("Exit", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/exit.png"));
+        loginInfoMenuLogout = new JMenuItem("Logout", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/logout.png"));
+        helpMenuAbout = new JMenuItem("About", new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/about.png"));
+
+        loginInfoMenu.add(loginInfoMenuLogout);
+        loginInfoMenu.add(fileMenuExit);
+        helpMenu.add(helpMenuAbout);
+
+        fileMenuExit.addActionListener(this);
+        loginInfoMenuLogout.addActionListener(this);
+        helpMenuAbout.addActionListener(this);
+
+        menu.add(loginInfoMenu);
+        menu.add(Box.createHorizontalGlue());
+        menu.add(helpMenu);
+
+        this.setJMenuBar(menu);
+
+        // Infopanel
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new MigLayout(
+                "",
+                "[300!]",
+                ""
+        ));
+
+        availableCoins = new JLabel("Available Coins: X", JLabel.CENTER);
+        availableCoins.setForeground(Color.lightGray);
+        registeredPeers = new JLabel("Registered Peers: Y", JLabel.CENTER);
+        registeredPeers.setForeground(Color.lightGray);
+
+        infoPanel.add(availableCoins, "wrap, growx");
+        infoPanel.add(registeredPeers, "growx");
+
+        // Buttonpanel
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new MigLayout(
+                "",
+                "[50!][140!][60!][30!]",
+                "[20!][20!][140!]"));
+
+        recordIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/microphone.png");
+        stopIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/stop.png");
+        ImageIcon recordIconDisabled = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/microphone_disabled.png");
+        ImageIcon fileIcon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/folder.png");
+        ImageIcon fileIconDisabled = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/IMG/folder_disabled.png");
+
+        BackgroundPanel recordButtonPanel = new BackgroundPanel(180, 180);
+        BackgroundPanel fileButtonPanel = new BackgroundPanel(80, 80);
+
+        recordButtonPanel.setLayout(new MigLayout("","59![]","31![]"));
+        fileButtonPanel.setLayout(new BorderLayout());
+
+        recordButton = new ImageButton(recordIcon, recordIconDisabled, 61, 118);
+        fileButton = new ImageButton(fileIcon, fileIconDisabled, 32, 26);
+
+        recordButton.addActionListener(this);
+        fileButton.addActionListener(this);
+        fileButtonPanel.add(fileButton);
+        recordButtonPanel.add(recordButton, BorderLayout.CENTER);
+
+        buttonPanel.add(recordButtonPanel, "cell 1 1 2 1");
+        buttonPanel.add(fileButtonPanel, "cell 2 0 1 2");
+
+        // Historypanel
+        historyPanel = new JPanel();
+        historyPanel.setLayout(new MigLayout(
+                "",
+                "[300!]",
+                "[][120!]"
+        ));
+
+        historyTable = new JTable(15, 3);
+        historyTable.setBackground(Color.lightGray);
+        historyTable.setOpaque(false);
+        JScrollPane tableScroll = new JScrollPane(historyTable);
+
+        JLabel historyLabel = new JLabel("<html><body><strong>SWAzam History</strong></body></html>");
+        historyLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        historyLabel.setForeground(Color.lightGray);
+
+        historyPanel.add(historyLabel, "grow, wrap");
+        historyPanel.add(tableScroll, "grow");
+
+        infoPanel.setOpaque(false);
+        buttonPanel.setOpaque(false);
+        historyPanel.setOpaque(false);
+
+        mainPanel.add(infoPanel, BorderLayout.NORTH);
+        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+        mainPanel.add(historyPanel, BorderLayout.SOUTH);
+
+        this.add(mainPanel);
+        this.setResizable(false);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         fileChooser = new JFileChooser();
-        chooseFileFrame.add(fileChooser);
-        chooseFileFrame.setSize(600, 600);
-        chooseFileFrame.setLocationRelativeTo(null);
-        
-        record = new JButton();
-        open_file = new JButton();
-        
-        record_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/record.png");
-        record_stop_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/record_stop.png");
-        ImageIcon open_folder_icon = new ImageIcon("src/main/java/at/ac/tuwien/swa/SWAzam/Client/GUIView/img/icons/open_folder.png");
-        
-        record.setIcon(record_icon);
-        open_file.setIcon(open_folder_icon);
-        
-        panel_south.add(record);
-        panel_south.add(open_file);
-        
-        record.addActionListener(this);
-        open_file.addActionListener(this);
-        
-        add(mbar, BorderLayout.NORTH);
-        add(panel_center, BorderLayout.CENTER);
-        add(panel_south, BorderLayout.SOUTH);
-	}
-	
-	
-	private void fillTablewithDummyData() {
-		String[] columnNames = {"Date",
-                "Time",
-                "Success",
-                "Artist",
-                "Song Name"};
-		
-		
-		long millis = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+        fileChooser.setFileFilter(new MusicFileFilter());
+    }
 
-        Date resultdate = new Date(millis);
-		
-		Object[][] data = {
-			    {sdf.format(resultdate), sdf2.format(resultdate), "yes", "Justin Bieber", "Justin Bieber Song"},
-			    {sdf.format(resultdate), sdf2.format(resultdate), "yes", "Madonna", "Hung Up"},
-			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"},
-			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"},
-			    {sdf.format(resultdate), sdf2.format(resultdate), "no", "-", "-"}
-			};
-		
-		table = new JTable(data, columnNames);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == recordButton){
+            if(!recording){
+                recording = true;
+                recordButton.setIconActive(stopIcon);
+                fileButton.setEnabled(false);
 
-	private void start_stop_recording() {
-		// Start the recording
-		// TODO
-		if (record.getIcon().equals(record_icon)) {
-			progress_label.setText("Recording started.");
-			record.setIcon(record_stop_icon);	
-			send.setEnabled(false);
-		}
-		
-		// Stop the recording
-		// TODO
-		else {
-			// TODO - check if correct mp3, wav file??
-			progress_label.setText("Recording finished. Do you want to send it to the MP3 Recognition Service?");
-			record.setIcon(record_icon);		
-			send.setEnabled(true);
-		}
-	}
-	
+                c.startRecordingFromMic();
+            }
+            else{
+                recording = false;
+                recordButton.setIconActive(recordIcon);
+                fileButton.setEnabled(true);
 
-	public JFrame showInfos() {     
-        infoFrame = new JFrame("About");
-        JPanel infopanel = new JPanel();
-		JPanel panel_south = new JPanel();
-		JPanel panel_center = new JPanel();
-		JPanel panel_center1 = new JPanel();
-		JPanel panel_north = new JPanel();
-		JTextPane text = new JTextPane();
-		
-		panel_center.setOpaque(false);
-		panel_center.setLayout(new GridLayout(2,1));
-		
-		infoFrame.getContentPane().add(infopanel);
-		infoFrame.getContentPane().setLayout(new BorderLayout());
-		infoFrame.setBounds(400, 200, 300, 250);
-		infoFrame.setResizable(false);
-		aboutFrameOkBtn = new JButton("Ok");
-		aboutFrameOkBtn.addActionListener(this);
-		        		
-		text.setText("Rumpold Gernot (0728159)\n"
-        		+ "Binder Johannes (0727990)\n"
-        		+ "Weilharter Manuela (0826002)\n"
-        		+ "Wolf Markus (0825595)\n"
-        		+ "El-Isa Kamil (0726881)");
-		
-		text.setEditable(false);
-		panel_center1.add(text);
-		
-		text.setOpaque(false);
-		text.setBackground(new Color(0,0,0,0));
-		
-		panel_center.add(panel_center1);
-		
-		panel_south.add(aboutFrameOkBtn);
-		infoFrame.getContentPane().add(panel_north, BorderLayout.NORTH);
-		infoFrame.getContentPane().add(panel_south, BorderLayout.SOUTH);
-		infoFrame.getContentPane().add(panel_center, BorderLayout.CENTER);
-		
-		infoFrame.setVisible(true);
-		
-		return infoFrame;
-	}
-	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == exitM){
-			System.exit(0);
+                c.stopRecordingFromMic();
+            }
         }
-		
-		else if (e.getSource() == faq) {
-			//TODO - remove or implement
-		}
-		
-		else if (e.getSource() == about) {
-			showInfos();
-		}
-		
-		else if (e.getSource() == aboutFrameOkBtn) {
-			infoFrame.setVisible(false);
-		}
-		
-		else if (e.getSource() == logoutM) {
-			dispose();
-			new LoginFrame();
-		}
-		
-		else if (e.getSource() == record) {
-			start_stop_recording();
-		}
-		
-		else if (e.getSource() == open_file) {
-			chooseFileFrame.setVisible(true);
-			int returnVal = fileChooser.showOpenDialog(this);
+        else if(e.getSource() == fileButton){
+            int result = fileChooser.showOpenDialog(this);
+            File file;
 
-	        if (returnVal == JFileChooser.APPROVE_OPTION) {
-	            File file = fileChooser.getSelectedFile();
-	            progress_label.setText("Opened: " + file.getName() + ". Do you want to send it to the MP3 Recognition Service?");    
-	        } 
+            if(result == JFileChooser.APPROVE_OPTION){
+                file = fileChooser.getSelectedFile();
 
-	        chooseFileFrame.setVisible(false);
-	        send.setEnabled(true);
-		}
-		
-	}
+                c.loadMp3(file);
+            }
+        }
+        else if(e.getSource() == fileMenuExit){
+            System.exit(0);
+        }
+        else if(e.getSource() == loginInfoMenuLogout){
+            c.showLoginFrame();
+        }
+        else if(e.getSource() == helpMenuAbout){
+            showInfo();
+        }
+    }
 
+    public void showInfo() {
+        final JFrame infoFrame = new JFrame("About SWAzam");
+        JPanel panel_center = new JPanel();
+        JLabel text = new JLabel();
+
+        panel_center.setOpaque(false);
+        infoFrame.getContentPane().setLayout(new MigLayout());
+        infoFrame.setBounds(400, 200, 300, 250);
+        infoFrame.setResizable(false);
+        JButton aboutFrameOkBtn = new JButton("Ok");
+        aboutFrameOkBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                infoFrame.setVisible(false);
+            }
+        });
+
+        text.setText("<html><body align='center'><h2>About SWAzam</h2>SWAzam was developed as an exercise for the<br/>" +
+                "course Software Architecture (184.159-2013W)<br/>" +
+                "at the Vienna University of Technology by<br/><br/>" +
+                " <strong>Rumpold Gernot</strong> (0728159)<br/>" +
+                "<strong>Binder Johannes</strong> (0727990)<br/>" +
+                "<strong>Weilharter Manuela</strong> (0826002)<br/>" +
+                "<strong>Wolf Markus</strong> (0825595)<br/>" +
+                "<strong>El-Isa Kamil</strong> (0726881)</body></html>");
+
+        panel_center.add(text);
+        text.setHorizontalAlignment(SwingConstants.CENTER);
+        text.setVerticalAlignment(SwingConstants.CENTER);
+
+        infoFrame.getContentPane().add(text, "gapleft 10, gapright 10, gaptop 1, gapbottom 1, wrap");
+        infoFrame.getContentPane().add(aboutFrameOkBtn, "center");
+
+        infoFrame.pack();
+        infoFrame.setLocationRelativeTo(null);
+        infoFrame.setVisible(true);
+    }
+
+    public void updateUI(User user, int registeredPeersAmount) {
+        if(user != null){
+            availableCoins.setText("Available Coins: " + user.getCoins());
+            registeredPeers.setText("Registered Peers: " + registeredPeersAmount);
+
+            loginInfoMenuLogout.setText("Logout");
+            loginInfoMenu.setText("Logged in as " + user.getUsername());
+        }
+        else{
+            availableCoins.setText("Available Coins: ");
+            registeredPeers.setText("Registered Peers: ");
+
+            loginInfoMenuLogout.setText("Login");
+            loginInfoMenu.setText("Not logged in");
+        }
+
+        mainPanel.setEnabled(user != null);
+        recordButton.setEnabled(user != null);
+        fileButton.setEnabled(user != null);
+    }
 }

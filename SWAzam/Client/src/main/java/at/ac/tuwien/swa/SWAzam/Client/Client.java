@@ -5,7 +5,6 @@ import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -24,10 +23,6 @@ public class Client {
 
     public void run() {
     	Controller c = new Controller();
-
-        c.loadMp3(new File("/Users/markus/Desktop/test.mp3"));
-    	
-        //log.info("Client has been started an is running now...");
     }
 
 }

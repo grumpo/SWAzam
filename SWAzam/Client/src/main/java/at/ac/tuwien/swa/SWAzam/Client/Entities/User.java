@@ -6,10 +6,16 @@ package at.ac.tuwien.swa.SWAzam.Client.Entities;
 public class User {
     String username;
     String password;
+    int coins;
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, int coins){
+        this(username, password);
+        this.coins = coins;
     }
 
     public String getUsername(){
@@ -20,8 +26,16 @@ public class User {
         return this.password;
     }
 
+    public int getCoins(){
+        return this.coins;
+    }
+
+    public void setCoins(int coins){
+        this.coins = coins;
+    }
+
     @Override
     public String toString(){
-        return username + ": " + password;
+        return username + ": " + password + " (" + coins + ")";
     }
 }

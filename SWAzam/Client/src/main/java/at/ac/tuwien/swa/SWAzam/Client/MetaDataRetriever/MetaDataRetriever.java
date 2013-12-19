@@ -37,4 +37,8 @@ public class MetaDataRetriever {
 
         return null;
     }
+
+    public int getRegisteredPeersAmount(){
+        return ps.getPeers().size();
+    }
 }
