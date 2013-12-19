@@ -3,7 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Peer;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
-import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebService;
 import com.google.inject.Guice;
