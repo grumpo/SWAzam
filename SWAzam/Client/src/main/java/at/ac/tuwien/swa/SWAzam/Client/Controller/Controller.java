@@ -49,7 +49,6 @@ public class Controller implements PropertyChangeListener {
         user = null;
 
         this.setLookAndFeel();
-        this.showComponents();
     }
 
     public void showComponents() {
@@ -124,34 +123,33 @@ public class Controller implements PropertyChangeListener {
 
     public void setUser(User u, boolean rememberLogin){
         Statement stmt;
-        //TODO: VerifyUser
-        // user = verifyUser(u);
 
-        user = u;
+        if(u != null){
+            user = verifyUser(u);
 
-        mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
-
-        if(u != null && user == null){
-            //User tried to login but was not accepted by swazam
-        }
-        else if(u != null && user != null){
-            //User tried to login and was accepted by swazam
-
-            if(rememberLogin){
-                try {
-                    stmt = con.createStatement();
-                    stmt.execute("DELETE FROM LoggedIn");
-                    PreparedStatement pstmt = con.prepareStatement("INSERT INTO LoggedIn (Username, Password) VALUES (?, ?)");
-                    pstmt.setString(1, user.getUsername());
-                    pstmt.setString(2, user.getPassword());
-
-                    pstmt.execute();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            if(user == null){
+                //User tried to login but was not accepted by swazam
             }
+            else if(user != null){
+                //User tried to login and was accepted by swazam
 
-            this.updateResultTable();
+                if(rememberLogin){
+                    try {
+                        stmt = con.createStatement();
+                        stmt.execute("DELETE FROM LoggedIn");
+                        PreparedStatement pstmt = con.prepareStatement("INSERT INTO LoggedIn (Username, Password) VALUES (?, ?)");
+                        pstmt.setString(1, user.getUsername());
+                        pstmt.setString(2, user.getPassword());
+
+                        pstmt.execute();
+                    } catch (SQLException e) {
+                        //TODO: Remove StackTrace
+                        e.printStackTrace();
+                    }
+                }
+
+                this.updateResultTable();
+            }
         }
         else{
             //User logged out
@@ -159,9 +157,12 @@ public class Controller implements PropertyChangeListener {
                 stmt = con.createStatement();
                 stmt.execute("DELETE FROM LoggedIn");
             } catch (SQLException e) {
+                //TODO: Remove StackTrace
                 e.printStackTrace();
             }
         }
+
+        mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
     }
 
     private User verifyUser(User u){

@@ -63,7 +63,9 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
         pass.setForeground(Color.darkGray);
 
         login = new JButton("Login");
-        cancel = new JButton("Cancel"); 
+        login.addKeyListener(this);
+        cancel = new JButton("Cancel");
+        cancel.addKeyListener(this);
         cancel.setPreferredSize(new Dimension(100, 25));
         login.setPreferredSize(new Dimension(100, 25));
         
@@ -83,6 +85,7 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
 
         rememberPw = new JCheckBox("Remember Login");
         rememberPw.setForeground(Color.lightGray);
+        rememberPw.addKeyListener(this);
         center_middle.add(uname);
         center_middle.add(pass);
         center_middle.add(rememberPw);
@@ -113,6 +116,8 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
         login.addActionListener(this);
 
         pack();
+
+        this.setLocationRelativeTo(null);
 	}
 
 	@Override
@@ -190,5 +195,4 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
 	@Override
 	public void keyTyped(KeyEvent e) {		
 	}
-
 }
