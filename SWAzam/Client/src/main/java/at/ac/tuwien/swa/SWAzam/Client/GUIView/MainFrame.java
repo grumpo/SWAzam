@@ -64,6 +64,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
         menu = new JMenuBar();
         loginInfoMenu = new JMenu("Logged in as Z");
+        loginInfoMenu.setPreferredSize(new Dimension(280, 20));
         JMenu helpMenu = new JMenu("Help");
 
         fileMenuExit = new JMenuItem("Exit", new ImageIcon(this.getClass().getResource("/Images/exit.png").getFile()));
