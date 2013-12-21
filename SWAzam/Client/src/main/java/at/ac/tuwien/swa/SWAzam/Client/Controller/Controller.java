@@ -1,9 +1,9 @@
 package at.ac.tuwien.swa.SWAzam.Client.Controller;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
-import at.ac.tuwien.swa.SWAzam.Client.Entities.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
-import at.ac.tuwien.swa.SWAzam.Client.FingerprintExtractor.FingerprintExtractor;
+import at.ac.tuwien.swa.SWAzam.Client.FingerprintExtractor.FingerprintExtractorTask;
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.LoginDialog;
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.MainFrame;
 import at.ac.tuwien.swa.SWAzam.Client.MetaDataRetriever.MetaDataRetriever;
@@ -11,16 +11,18 @@ import at.ac.tuwien.swa.SWAzam.Client.Recorder.FileRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.IRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.MicRecorder;
 
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.sql.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by markus on 17.12.13.
  */
-public class Controller {
+public class Controller implements PropertyChangeListener {
     private final static Logger log = Logger.getLogger(Controller.class.getName());
 
     MainFrame mFrame;
@@ -31,11 +33,14 @@ public class Controller {
 
     Connection con;
 
+    FingerprintExtractorTask fpet;
+    ProcessingTask pt;
+
     public Controller(){
         try {
             con = DriverManager.getConnection("jdbc:hsqldb:file:database/localdb", "SA", "");
             log.info("Successfully connected to database!");
-            retriever = new MetaDataRetriever();
+            retriever = new MetaDataRetriever(con);
             mFrame = new MainFrame(this);
             lFrame = new LoginDialog(this, mFrame);
             user = null;
@@ -73,8 +78,7 @@ public class Controller {
 
     public void loadMp3(File audioFile){
         recorder = new FileRecorder(audioFile);
-
-        processFingerprint(FingerprintExtractor.extractFingerPrint(recorder.getStream()));
+        processInputStream(recorder.getStream());
     }
 
     public void startRecordingFromMic(){
@@ -85,19 +89,14 @@ public class Controller {
     public void stopRecordingFromMic(){
         if(recorder != null){
             ((MicRecorder)recorder).stopRecording();
-            processFingerprint(FingerprintExtractor.extractFingerPrint(recorder.getStream()));
+            processInputStream(recorder.getStream());
         }
     }
 
-    private void processFingerprint(Fingerprint fp){
-        FingerprintResult fpr;
-
-        if(fp != null){
-            fpr = retriever.getFingerprintResult(fp, user);
-        }
-        else{
-            log.log(Level.WARNING, "Fingerprint is null and cannot be processed!");
-        }
+    private void processInputStream(AudioInputStream stream){
+        fpet = new FingerprintExtractorTask(stream);
+        fpet.addPropertyChangeListener(this);
+        fpet.execute();
     }
 
     public void showLoginFrame(){
@@ -117,11 +116,9 @@ public class Controller {
             //User tried to login but was not accepted by swazam
         }
         else if(u != null && user != null){
-            //User tired to login and was accepted by swazam
+            //User tried to login and was accepted by swazam
 
             if(rememberLogin){
-                //TODO: REMEMBER LOGIN
-
                 try {
                     stmt = con.createStatement();
                     stmt.execute("DELETE FROM LoggedIn");
@@ -153,6 +150,9 @@ public class Controller {
     }
 
     private void setLookAndFeel() {
+//        UIManager.put("ProgressBar.repaintInterval", new Integer(50));
+//        UIManager.put("ProgressBar.cycleTime", new Integer(50));
+
         if(!System.getProperty("os.name").toLowerCase().contains("mac")){
             try {
                 for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -165,5 +165,40 @@ public class Controller {
                 //Default LAF is used
             }
         }
+    }
+
+    public void updateProgress(int progress, boolean indeterminate) {
+        mFrame.updateProgressBar(progress, indeterminate);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getSource() == fpet){
+            if(!fpet.isDone())
+                updateProgress(fpet.getProgress(), true);
+            else{
+                updateProgress(50, false);
+                processFingerprint(fpet.getResult());
+            }
+        }
+        else if(evt.getSource() == pt){
+            if(!pt.isDone())
+                updateProgress(50 + pt.getProgress()/2, true);
+            else{
+                updateProgress(100, false);
+                storeFingerprintResult(pt.getResult());
+            }
+        }
+    }
+
+    private void storeFingerprintResult(FingerprintResult result) {
+        //TODO: Show new FingerprintResult and store it to the database
+    }
+
+    private void processFingerprint(Fingerprint fp) {
+        log.info("Processing Fingerprint!");
+        pt = new ProcessingTask(retriever, fp, user);
+        pt.addPropertyChangeListener(this);
+        pt.execute();
     }
 }

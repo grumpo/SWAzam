@@ -7,9 +7,9 @@ public class Peer {
     String url;
     int failure;
 
-    public Peer(String url){
+    public Peer(String url, int failure){
         this.url = url;
-        this.failure = 0;
+        this.failure = failure;
     }
 
     public String getUrl(){

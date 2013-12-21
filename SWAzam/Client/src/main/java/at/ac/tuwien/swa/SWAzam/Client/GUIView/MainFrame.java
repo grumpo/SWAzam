@@ -21,6 +21,7 @@ public class MainFrame extends JFrame implements ActionListener {
     JPanel buttonPanel;
     JPanel historyPanel;
 
+    JMenuBar menu;
     JMenu loginInfoMenu;
 
     JMenuItem fileMenuExit;
@@ -40,6 +41,8 @@ public class MainFrame extends JFrame implements ActionListener {
 
     JFileChooser fileChooser;
 
+    JProgressBar progressBar;
+
     boolean recording;
 
     Controller c;
@@ -56,7 +59,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setForeground(Color.lightGray);
 
-        JMenuBar menu = new JMenuBar();
+        menu = new JMenuBar();
         loginInfoMenu = new JMenu("Logged in as Z");
         JMenu helpMenu = new JMenu("Help");
 
@@ -129,13 +132,17 @@ public class MainFrame extends JFrame implements ActionListener {
         historyPanel.setLayout(new MigLayout(
                 "",
                 "[300!]",
-                "[][120!]"
+                "[][][120!]"
         ));
 
         historyTable = new JTable(15, 3);
         historyTable.setBackground(Color.lightGray);
         historyTable.setOpaque(false);
         JScrollPane tableScroll = new JScrollPane(historyTable);
+
+        progressBar = new JProgressBar(0, 100);
+        //progressBar.setIndeterminate(true);
+        historyPanel.add(progressBar, "grow, wrap");
 
         JLabel historyLabel = new JLabel("<html><body><strong>SWAzam History</strong></body></html>");
         historyLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -259,5 +266,28 @@ public class MainFrame extends JFrame implements ActionListener {
         mainPanel.setEnabled(user != null);
         recordButton.setEnabled(user != null);
         fileButton.setEnabled(user != null);
+    }
+
+    public void updateProgressBar(int progress, boolean indeterminate){
+        progressBar.setStringPainted(true);
+
+        if(progress == 0){
+            progressBar.setString("Extracting Fingerprint");
+            loginInfoMenuLogout.setEnabled(false);
+            recordButton.setEnabled(false);
+            fileButton.setEnabled(false);
+        }
+        else if(progress == 50){
+            progressBar.setString("Retrieving Information");
+        }
+        else if(progress == 100){
+            progressBar.setString("Finished Processing");
+            loginInfoMenuLogout.setEnabled(true);
+            recordButton.setEnabled(true);
+            fileButton.setEnabled(true);
+        }
+
+        progressBar.setIndeterminate(indeterminate);
+        progressBar.setValue(progress);
     }
 }

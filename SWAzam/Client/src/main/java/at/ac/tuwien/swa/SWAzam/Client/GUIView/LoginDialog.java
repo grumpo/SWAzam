@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.util.logging.Logger;
 
 import javax.swing.*;
@@ -130,8 +134,7 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
 		if (username.equals("") || password.equals(""))
 			 JOptionPane.showMessageDialog(this, "Please provide username and password.", "Missing Information", JOptionPane.ERROR_MESSAGE);
 		else {
-            //TODO: Hash Password
-			User user = new User(username, password);
+			User user = new User(username, createPasswordHash(password));
 
             uname.requestFocus();
             uname.setText("");
@@ -148,7 +151,32 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
 		 }
 	}
 
-	@Override
+    private String createPasswordHash(String password) {
+        String generatedPassword = null;
+        MessageDigest md;
+        byte[] bytes;
+        StringBuilder sb;
+
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes());
+            bytes = md.digest();
+            sb = new StringBuilder();
+
+            for(int i = 0; i < bytes.length; i++){
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            //TODO: Remove StackTrace
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			userLogin();
