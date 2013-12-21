@@ -4,6 +4,7 @@ import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerSoapConnector;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.Peer;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 import at.ac.tuwien.swa.SWAzam.Client.PeerStorage.PeerStorage;
@@ -34,7 +35,7 @@ public class MetaDataRetriever {
             //connector.identifyMP3Fingerprint(p.getUrl(), fp, user);
 
             //Connect to first Peer, if no response before timeout -> failure, try next peer
-            //if response: add new peers to database or update failure
+            //if response: add new peers to Database or update failure
 
             //FingerprintResult fpr = connector.identifyMP3Fingerprint(fp, user.getUsername(), user.getPassword());
 
@@ -48,5 +49,16 @@ public class MetaDataRetriever {
 
     public int getRegisteredPeersAmount(){
         return ps.getPeers().size();
+    }
+
+    public User verifyUser(User u) {
+        User result = null;
+        UserInformation ui = connector.getUserInformation(u.getUsername(), u.getPassword());
+
+        if(ui != null){
+            result = new User(u.getUsername(), u.getPassword(), ui.getCredits());
+        }
+
+        return result;
     }
 }

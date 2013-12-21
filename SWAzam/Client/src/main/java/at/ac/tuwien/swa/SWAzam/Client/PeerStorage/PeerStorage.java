@@ -33,7 +33,7 @@ public class PeerStorage {
         peers.clear();
 
         try{
-            log.info("Fetching stored peers from database!");
+            log.info("Fetching stored peers from Database!");
             pstmt = con.prepareStatement("SELECT URL, FAILURE FROM PEERS WHERE FAILURE < ?");
             pstmt.setInt(1, MAX_FAILURE);
 
@@ -75,7 +75,7 @@ public class PeerStorage {
                 pstmt.setString(i + 1, peerList.get(i).toLowerCase());
             }
 
-            log.info("Remove all used peers from database!");
+            log.info("Remove all used peers from Database!");
             pstmt.execute();
 
             for(String s : peerList){
@@ -86,7 +86,7 @@ public class PeerStorage {
                 pstmt.addBatch();
             }
 
-            log.info("Insert all used peers into database with failure 0!");
+            log.info("Insert all used peers into Database with failure 0!");
             pstmt.executeBatch();
 
             readPeersFromDatabase();

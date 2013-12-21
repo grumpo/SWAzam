@@ -28,8 +28,9 @@ public class Client {
 
     public void run() {
     	Controller c = new Controller();
+        c.showComponents();
         // TODO: test request
-        UserInformation userInformation = connector.getUserInformation("user1", "passwd");
+        //UserInformation userInformation = connector.getUserInformation("user1", "passwd");
     }
 
 }

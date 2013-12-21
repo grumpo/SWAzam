@@ -41,22 +41,34 @@ public class Controller implements PropertyChangeListener {
     ProcessingTask pt;
 
     public Controller(){
+        this.initializeDatabase();
+        
+        retriever = new MetaDataRetriever(con);
+        mFrame = new MainFrame(this);
+        lFrame = new LoginDialog(this, mFrame);
+        user = null;
+
+        this.setLookAndFeel();
+        this.showComponents();
+    }
+
+    public void showComponents() {
+        if(!restoreLogin())
+            this.showLoginFrame();
+        else
+            mFrame.setVisible(true);
+    }
+
+    private void initializeDatabase() {
         try {
-            con = DriverManager.getConnection("jdbc:hsqldb:file:database/localdb", "SA", "");
-            log.info("Successfully connected to database!");
-            retriever = new MetaDataRetriever(con);
-            mFrame = new MainFrame(this);
-            lFrame = new LoginDialog(this, mFrame);
-            user = null;
+            System.out.println(this.getClass().getResource("/Database").getFile());
 
-            this.setLookAndFeel();
-
-            if(!restoreLogin())
-                this.showLoginFrame();
-            else
-                mFrame.setVisible(true);
+            con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
+            log.info("Successfully connected to Database!");
         } catch (SQLException e) {
-            System.err.println("Error while connecting to database!");
+            System.err.println("Error while connecting to Database!");
+            
+            System.exit(1);
         }
     }
 
@@ -112,7 +124,10 @@ public class Controller implements PropertyChangeListener {
 
     public void setUser(User u, boolean rememberLogin){
         Statement stmt;
-        user = verifyUser(u);
+        //TODO: VerifyUser
+        // user = verifyUser(u);
+
+        user = u;
 
         mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
 
@@ -150,9 +165,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private User verifyUser(User u){
-        //TODO: Get User Information From Server and Verify Validity of Account
-
-        return u;
+        return retriever.verifyUser(u);
     }
 
     private void setLookAndFeel() {
@@ -198,7 +211,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void storeFingerprintResult(FingerprintResult result) {
-        //TODO: Show new FingerprintResult and store it to the database
+        //TODO: Show new FingerprintResult and store it to the Database
     }
 
     private void processFingerprint(Fingerprint fp) {
