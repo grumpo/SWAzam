@@ -45,4 +45,22 @@ public interface ClientWebServiceSoap {
         @WebParam(name = "arg2", targetNamespace = "")
         String arg2);
 
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.UserInformation
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUserInformation", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.GetUserInformation")
+    @ResponseWrapper(localName = "getUserInformationResponse", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.GetUserInformationResponse")
+    @Action(input = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/getUserInformationRequest", output = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/getUserInformationResponse")
+    public UserInformation getUserInformation(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
+
 }

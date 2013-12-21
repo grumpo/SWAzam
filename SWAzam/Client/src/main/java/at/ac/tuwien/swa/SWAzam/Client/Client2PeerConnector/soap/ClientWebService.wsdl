@@ -10,15 +10,34 @@
 <message name="identifyMP3FingerprintResponse">
 <part name="parameters" element="tns:identifyMP3FingerprintResponse"/>
 </message>
+<message name="getUserInformation">
+<part name="parameters" element="tns:getUserInformation"/>
+</message>
+<message name="getUserInformationResponse">
+<part name="parameters" element="tns:getUserInformationResponse"/>
+</message>
 <portType name="ClientWebServiceSoap">
 <operation name="identifyMP3Fingerprint">
 <input wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintRequest" message="tns:identifyMP3Fingerprint"/>
 <output wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintResponse" message="tns:identifyMP3FingerprintResponse"/>
 </operation>
+<operation name="getUserInformation">
+<input wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/getUserInformationRequest" message="tns:getUserInformation"/>
+<output wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/getUserInformationResponse" message="tns:getUserInformationResponse"/>
+</operation>
 </portType>
 <binding name="ClientWebServiceSoapPortBinding" type="tns:ClientWebServiceSoap">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="identifyMP3Fingerprint">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getUserInformation">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

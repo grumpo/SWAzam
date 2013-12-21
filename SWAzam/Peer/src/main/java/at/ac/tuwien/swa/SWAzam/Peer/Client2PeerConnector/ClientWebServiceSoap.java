@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
@@ -30,6 +31,13 @@ public class ClientWebServiceSoap implements ClientWebService {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         return requestHandler.identifyMP3Fingerprint(fingerprint, user, new ArrayList<String>());
+    }
+
+    @WebMethod
+    @SuppressWarnings("unused")
+    public UserInformation getUserInformation(String user, String password) {
+        log.info("Handling user information request from: " + user);
+        return requestHandler.getUserInformation(user, password);
     }
 
     @Override

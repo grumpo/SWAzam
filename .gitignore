@@ -9,3 +9,6 @@ target
 # IDE
 .idea
 *.iml
+
+# db
+SWAzam/database/

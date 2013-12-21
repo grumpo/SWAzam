@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Peer.RequestHandler;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3Identifier;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarder;
 import com.google.inject.Inject;
@@ -29,5 +30,11 @@ public class RequestHandlerImpl implements RequestHandler {
         result.setResult(mp3Identifier.identify(fingerprint));
         result.setHops(new ArrayList<String>());
         return result;
+    }
+
+    @Override
+    public UserInformation getUserInformation(String user, String password) {
+        // TODO: call server webservice
+        return new UserInformation(user, 23);
     }
 }

@@ -3,11 +3,8 @@ package at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebServiceSoap;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.ClientWebServiceSoapService;
-import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 import com.google.gson.Gson;
 
-import javax.xml.soap.*;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Client2PeerSoapConnector implements Client2PeerConnector {
@@ -25,6 +22,15 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
         fingerprintResult.setResult(result.getResult());
         fingerprintResult.setHops(result.getHops());
         return fingerprintResult;
+    }
+
+    @Override
+    public UserInformation getUserInformation(String user, String password) {
+        log.info("Checking user: " + user);
+        at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.UserInformation userInformation =
+                getClientWebService().getUserInformation(user, password);
+        if (userInformation == null) return null;
+        return new UserInformation(userInformation.getUsername(), userInformation.getCredits());
     }
 
     private String serialize(Fingerprint fingerprint) {
