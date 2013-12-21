@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Client.Controller;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.FingerprintResult;
+import at.ac.tuwien.swa.SWAzam.Client.Entities.StoredFingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 import at.ac.tuwien.swa.SWAzam.Client.FingerprintExtractor.FingerprintExtractorTask;
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.LoginDialog;
@@ -10,6 +11,9 @@ import at.ac.tuwien.swa.SWAzam.Client.MetaDataRetriever.MetaDataRetriever;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.FileRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.IRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.MicRecorder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
@@ -131,6 +135,8 @@ public class Controller implements PropertyChangeListener {
                     e.printStackTrace();
                 }
             }
+
+            this.updateResultTable();
         }
         else{
             //User logged out
@@ -200,5 +206,28 @@ public class Controller implements PropertyChangeListener {
         pt = new ProcessingTask(retriever, fp, user);
         pt.addPropertyChangeListener(this);
         pt.execute();
+    }
+
+    private void updateResultTable(){
+        List<StoredFingerprint> fingerprints = new ArrayList<StoredFingerprint>();
+        PreparedStatement pstmt;
+        ResultSet rs;
+
+        try{
+            pstmt = con.prepareStatement("SELECT Timestamp, Artist, Songtitle FROM Fingerprints WHERE LOWER(Username) = ? ORDER BY Timestamp DESC");
+            pstmt.setString(1, user.getUsername().toLowerCase());
+
+            rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                fingerprints.add(new StoredFingerprint(rs.getString("Artist"), rs.getString("Songtitle"), rs.getTimestamp("Timestamp")));
+            }
+
+            mFrame.updateResultTable(fingerprints);
+        }
+        catch(SQLException e){
+            //TODO: Remove StackTrace
+            e.printStackTrace();
+        }
     }
 }

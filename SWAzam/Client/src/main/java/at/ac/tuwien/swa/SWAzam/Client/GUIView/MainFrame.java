@@ -1,16 +1,19 @@
 package at.ac.tuwien.swa.SWAzam.Client.GUIView;
 
 import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
+import at.ac.tuwien.swa.SWAzam.Client.Entities.StoredFingerprint;
 import at.ac.tuwien.swa.SWAzam.Client.Entities.User;
 import at.ac.tuwien.swa.SWAzam.Client.ImageButton;
 import at.ac.tuwien.swa.SWAzam.Client.Util.MusicFileFilter;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by markus on 17.12.13.
@@ -135,13 +138,15 @@ public class MainFrame extends JFrame implements ActionListener {
                 "[][][120!]"
         ));
 
-        historyTable = new JTable(15, 3);
+        historyTable = new JTable(new DefaultTableModel(new Object[] {"Artist", "Songtitle", "Time"}, 0));
+        historyTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+
         historyTable.setBackground(Color.lightGray);
+        historyTable.setForeground(Color.darkGray);
         historyTable.setOpaque(false);
         JScrollPane tableScroll = new JScrollPane(historyTable);
 
         progressBar = new JProgressBar(0, 100);
-        //progressBar.setIndeterminate(true);
         historyPanel.add(progressBar, "grow, wrap");
 
         JLabel historyLabel = new JLabel("<html><body><strong>SWAzam History</strong></body></html>");
@@ -289,5 +294,14 @@ public class MainFrame extends JFrame implements ActionListener {
 
         progressBar.setIndeterminate(indeterminate);
         progressBar.setValue(progress);
+    }
+
+    public void updateResultTable(List<StoredFingerprint> fingerprints) {
+        DefaultTableModel model = (DefaultTableModel) historyTable.getModel();
+        model.setRowCount(0);
+
+        for(StoredFingerprint sfp : fingerprints){
+            model.addRow(new Object[]{sfp.getArtist(), sfp.getSongtitle(), sfp.getTimestamp()});
+        }
     }
 }
