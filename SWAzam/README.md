@@ -16,5 +16,5 @@ Requirements
 Run
 ---
 
-Execute mvn exec:java in the according component.
+Execute "mvn compile exec:java" in the according component.
 
