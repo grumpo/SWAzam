@@ -40,7 +40,7 @@ public class Peer {
         Fingerprint fingerprint = generateTestFingerprint();
         FingerprintResult fingerprintResult = null;
         try {
-            fingerprintResult = peer2PeerConnectorFactory.create("http://localhost:9002/PeerWebService?wsdl").
+            fingerprintResult = peer2PeerConnectorFactory.create("http://localhost:9000/PeerWebService?wsdl").
                     identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {
                     });
         } catch (UnableToConnectToPeer e) {

@@ -8,12 +8,11 @@ import at.ac.tuwien.swa.SWAzam.Client.FingerprintExtractor.FingerprintExtractorT
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.LoginDialog;
 import at.ac.tuwien.swa.SWAzam.Client.GUIView.MainFrame;
 import at.ac.tuwien.swa.SWAzam.Client.MetaDataRetriever.MetaDataRetriever;
+import at.ac.tuwien.swa.SWAzam.Client.MetaDataRetriever.MetaDataRetrieverFactory;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.FileRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.IRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.MicRecorder;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.inject.Inject;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
@@ -21,6 +20,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -40,10 +41,11 @@ public class Controller implements PropertyChangeListener {
     FingerprintExtractorTask fpet;
     ProcessingTask pt;
 
-    public Controller(){
+    @Inject
+    public Controller(MetaDataRetrieverFactory retrieverFactory){
         this.initializeDatabase();
-        
-        retriever = new MetaDataRetriever(con);
+
+        retriever = retrieverFactory.create(con);
         mFrame = new MainFrame(this);
         lFrame = new LoginDialog(this, mFrame);
         user = null;

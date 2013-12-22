@@ -1,7 +1,5 @@
 package at.ac.tuwien.swa.SWAzam.Client;
 
-import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.Client2PeerConnector;
-import at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -19,7 +17,7 @@ public class Client {
     private final static Logger log = Logger.getLogger(Client.class.getName());
 
     @Inject
-    private Client2PeerConnector connector;
+    private Controller controller;
 
     public static void main(String[] argv) throws IOException {
         Injector injector = Guice.createInjector(new ClientModule());
@@ -27,10 +25,7 @@ public class Client {
     }
 
     public void run() {
-    	Controller c = new Controller();
-        c.showComponents();
-        // TODO: test request
-        //UserInformation userInformation = connector.getUserInformation("user1", "passwd");
+    	controller.showComponents();
     }
 
 }
