@@ -4,8 +4,9 @@ import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
-import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnector;
+import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnectorFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebService;
+import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.UnableToConnectToPeer;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -23,7 +24,7 @@ public class Peer {
     @Inject
     private PeerWebService peerWebService;
     @Inject
-    private Peer2PeerConnector peer2PeerConnector;
+    private Peer2PeerConnectorFactory peer2PeerConnectorFactory;
 
     public static void main(String[] argv) {
         Injector injector = Guice.createInjector(new PeerModule());
@@ -37,7 +38,15 @@ public class Peer {
 
         // test request on self
         Fingerprint fingerprint = generateTestFingerprint();
-        FingerprintResult fingerprintResult = peer2PeerConnector.identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {});
+        FingerprintResult fingerprintResult = null;
+        try {
+            fingerprintResult = peer2PeerConnectorFactory.create("http://localhost:9002/PeerWebService?wsdl").
+                    identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {
+                    });
+        } catch (UnableToConnectToPeer e) {
+            log.info("Peer is down: " + e.getMessage());
+            // TODO: try next
+        }
 
         log.info("Fingerprint was identified to be: " + fingerprintResult.getResult());
     }
