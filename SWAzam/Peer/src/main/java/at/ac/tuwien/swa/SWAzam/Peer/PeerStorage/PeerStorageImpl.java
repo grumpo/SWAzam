@@ -3,10 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Peer.PeerStorage;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,10 +19,14 @@ public class PeerStorageImpl implements PeerStorage {
     Set<Peer> peers;
     Connection con;
 
-    @Inject
-    public PeerStorageImpl(@Assisted Connection con){
+    public PeerStorageImpl(){
         this.peers = new HashSet<Peer>();
-        this.con = con;
+        //TODO: this should be injected
+        try {
+            this.con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
+        } catch (SQLException e) {
+            log.warning("PeerStorage could not connect to database. Forwarding of requests will not be done.");
+        }
 
         readPeersFromDatabase();
     }

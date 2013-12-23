@@ -9,6 +9,8 @@ import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3Identifier;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.*;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorage;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorageImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarder;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarderImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
@@ -23,6 +25,7 @@ public class PeerModule extends AbstractModule {
         bind(ClientWebService.class).to(ClientWebServiceSoap.class);
         bind(PeerWebService.class).to(PeerWebServiceSoap.class);
         bind(RequestForwarder.class).to(RequestForwarderImpl.class);
+        bind(PeerStorage.class).to(PeerStorageImpl.class);
         install(new FactoryModuleBuilder()
                 .implement(Peer2PeerConnector.class, Peer2PeerSoapConnector.class)
                 .build(Peer2PeerConnectorFactory.class));
