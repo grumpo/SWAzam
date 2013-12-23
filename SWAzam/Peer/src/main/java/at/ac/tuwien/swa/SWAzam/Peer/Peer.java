@@ -39,23 +39,37 @@ public class Peer {
 
     public static void main(String[] argv) {
         Injector injector = Guice.createInjector(new PeerModule());
-        if (argv.length < 1) {
-            log.log(Level.SEVERE, "Please pass the storagePath that contains the MP3 files as argument.");
+        String msg = "Please pass the storagePath that contains the MP3 files and the port for the web services as argument.";
+
+        if (argv.length < 2) {
+            log.log(Level.SEVERE, msg);
             return;
         }
-        injector.getInstance(Peer.class).run(argv[0]);
+        String storagePath = argv[0];
+        if (storagePath.isEmpty()) {
+            log.log(Level.SEVERE, "Storage path is missing! " + msg);
+            return;
+        }
+        Integer port;
+        try {
+            port = Integer.valueOf(argv[1]);
+        } catch (NumberFormatException e) {
+            log.log(Level.SEVERE, "Port is missing or malformed! " + msg);
+            return;
+        }
+        injector.getInstance(Peer.class).run(storagePath, port);
     }
 
-    public void run(String storagePath) {
+    public void run(String storagePath, Integer port) {
         log.info("Peer has been started an is running now...");
 
-        startServices(createRequestHandler(storagePath));
+        startServices(port, createRequestHandler(storagePath));
 
         // test request on self
         Fingerprint fingerprint = generateTestFingerprint();
         FingerprintResult fingerprintResult = null;
         try {
-            fingerprintResult = peer2PeerConnectorFactory.create("http://localhost:9000/PeerWebService?wsdl").
+            fingerprintResult = peer2PeerConnectorFactory.create(String.format("http://localhost:%d/PeerWebService?wsdl", port)).
                     identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {
                     });
         } catch (UnableToConnectToPeer e) {
@@ -73,9 +87,9 @@ public class Peer {
         return fingerprintSystem.fingerprint(fakeMp3);
     }
 
-    private void startServices(RequestHandler requestHandler) {
-        clientWebService.run(9000, requestHandler);
-        peerWebService.run(9000, requestHandler);
+    private void startServices(Integer port, RequestHandler requestHandler) {
+        clientWebService.run(port, requestHandler);
+        peerWebService.run(port, requestHandler);
     }
 
     private RequestHandler createRequestHandler(String storagePath) {
