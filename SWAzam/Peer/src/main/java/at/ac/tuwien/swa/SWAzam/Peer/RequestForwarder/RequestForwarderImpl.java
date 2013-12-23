@@ -32,7 +32,7 @@ public class RequestForwarderImpl implements RequestForwarder {
             try {
                 String peerUrl = peer.getUrl();
                 //TODO: use the read peerUrl here
-                return peer2PeerConnectorFactory.create("http://localhost:9020/PeerWebService?wsdl").identifyMP3Fingerprint(fingerprint, user, hops);
+                return peer2PeerConnectorFactory.create("http://localhost:9000/PeerWebService?wsdl").identifyMP3Fingerprint(fingerprint, user, hops);
             } catch (UnableToConnectToPeer e) {
                 log.info("Peer seems down: " + e.getMessage());
             }
