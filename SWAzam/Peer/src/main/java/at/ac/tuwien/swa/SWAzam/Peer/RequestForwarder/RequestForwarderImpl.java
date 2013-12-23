@@ -21,7 +21,7 @@ public class RequestForwarderImpl implements RequestForwarder {
     @Override
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
         try {
-            return peer2PeerConnectorFactory.create("http://localhost:9020/PeerWebService?wsdl").identifyMP3Fingerprint(fingerprint, user, hops);
+            return peer2PeerConnectorFactory.create("http://localhost:9000/PeerWebService?wsdl").identifyMP3Fingerprint(fingerprint, user, hops);
         } catch (UnableToConnectToPeer e) {
             log.info("Peer seems down: " + e.getMessage());
             // TODO: try next

@@ -2,6 +2,8 @@ package at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,7 +18,8 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
 
     private File storage = null;
 
-    public FingerprintStorageDirectory(String direcoryPath) {
+    @Inject
+    public FingerprintStorageDirectory(@Assisted String direcoryPath) {
         File storage = new File(direcoryPath);
         if(!storage.exists() || !storage.isDirectory())
             throw new IllegalArgumentException("The specified directory does not exist.");
@@ -25,7 +28,7 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
     }
 
     @Override
-    public boolean contains(Fingerprint fingerprint) {
+    public Boolean contains(Fingerprint fingerprint) {
         try{
             for (File file : storage.listFiles()) {
                 AudioInputStream stream = getAudioStream(file);

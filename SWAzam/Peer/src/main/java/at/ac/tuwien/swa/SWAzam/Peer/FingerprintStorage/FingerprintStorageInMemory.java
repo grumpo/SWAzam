@@ -9,7 +9,7 @@ public class FingerprintStorageInMemory implements FingerprintStorage {
     private Map<Fingerprint, String> fingerprints = new HashMap<>();
 
     @Override
-    public boolean contains(Fingerprint fingerprint) {
+    public Boolean contains(Fingerprint fingerprint) {
         // TODO: return fingerprints.containsKey(fingerprint);
         return true;
     }

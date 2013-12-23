@@ -18,3 +18,4 @@ Run
 
 Execute "mvn compile exec:java" in the according component.
 
+* Peer: mvn exec:java -Dexec.args="/tmp/mp3Storage"

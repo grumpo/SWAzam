@@ -6,6 +6,7 @@ import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3Identifier;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarder;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,15 @@ public class RequestHandlerImpl implements RequestHandler {
 
     private final static Logger log = Logger.getLogger(RequestHandlerImpl.class.getName());
 
-    @Inject
     private MP3Identifier mp3Identifier;
+
     @Inject
     private RequestForwarder requestForwarder;
+
+    @Inject
+    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier) {
+        this.mp3Identifier = mp3Identifier;
+    }
 
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
         if (!mp3Identifier.contains(fingerprint)) {
