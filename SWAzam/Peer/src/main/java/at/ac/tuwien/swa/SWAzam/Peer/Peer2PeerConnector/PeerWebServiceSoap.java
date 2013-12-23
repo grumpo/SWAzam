@@ -4,7 +4,6 @@ import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import com.google.gson.Gson;
-import com.google.inject.Inject;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -18,7 +17,6 @@ public class PeerWebServiceSoap implements PeerWebService {
 
     private final static Logger log = Logger.getLogger(PeerWebServiceSoap.class.getName());
 
-    @Inject
     private RequestHandler requestHandler;
 
     @WebMethod
@@ -29,7 +27,8 @@ public class PeerWebServiceSoap implements PeerWebService {
     }
 
     @WebMethod(exclude=true)
-    public void run(int port) {
+    public void run(int port, RequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
         String address = String.format("http://localhost:%d/PeerWebService", port);
         Endpoint.publish(address, this);
         log.info("PeerWebService listens on: " + address);

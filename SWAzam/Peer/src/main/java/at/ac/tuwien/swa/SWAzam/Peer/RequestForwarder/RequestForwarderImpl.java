@@ -22,6 +22,7 @@ public class RequestForwarderImpl implements RequestForwarder {
     @Inject
     private Peer2PeerConnectorFactory peer2PeerConnectorFactory;
 
+
     @Override
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
         Set<Peer> peers = peerStorage.getPeers();

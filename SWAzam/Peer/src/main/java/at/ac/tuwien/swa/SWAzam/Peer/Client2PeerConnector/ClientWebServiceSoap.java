@@ -5,7 +5,6 @@ import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import com.google.gson.Gson;
-import com.google.inject.Inject;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -22,7 +21,6 @@ public class ClientWebServiceSoap implements ClientWebService {
 
     private final static Logger log = Logger.getLogger(ClientWebServiceSoap.class.getName());
 
-    @Inject
     private RequestHandler requestHandler;
 
     @WebMethod
@@ -42,7 +40,8 @@ public class ClientWebServiceSoap implements ClientWebService {
 
     @Override
     @WebMethod(exclude=true)
-    public void run(int port) {
+    public void run(int port, RequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
         String address = String.format("http://localhost:%d/ClientWebService", port);
         Endpoint.publish(address, this);
         log.info("ClientWebService listens on: " + address);
