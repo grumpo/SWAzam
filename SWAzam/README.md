@@ -22,5 +22,5 @@ Execute "mvn compile exec:java" in the according component.
 
 
 * Server: 	mvn compile exec:java
-			Port provided=9003, if you'd like to chooose another provide -Dexec.args
+			Port provided=9003, if you'd like to choose another provide -Dexec.args
 * Server: 	mvn compile exec:java -Dexec.args="9005"
