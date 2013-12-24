@@ -27,8 +27,14 @@ public class RequestForwarderImpl implements RequestForwarder {
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
         Set<Peer> peers = peerStorage.getPeers();
 
+        // TODO: needs some TTL
+
         for(Peer peer : peers)
         {
+            if (hops.contains(peer.getUrl())) {
+                log.info("Skipping peer, already tried: " + peer.getUrl());
+                continue;
+            }
             try {
                 String peerUrl = peer.getUrl();
                 //TODO: use the read peerUrl here

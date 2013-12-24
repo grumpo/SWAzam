@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -22,13 +22,14 @@ public class ClientWebServiceSoap implements ClientWebService {
     private final static Logger log = Logger.getLogger(ClientWebServiceSoap.class.getName());
 
     private RequestHandler requestHandler;
+    private String peerUrl;
 
     @WebMethod
     @SuppressWarnings("unused")
     public FingerprintResult identifyMP3Fingerprint(String fingerprintJson, String user, String password) {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
-        return requestHandler.identifyMP3Fingerprint(fingerprint, user, new ArrayList<String>());
+        return requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl));
     }
 
     @WebMethod
@@ -42,7 +43,8 @@ public class ClientWebServiceSoap implements ClientWebService {
     @WebMethod(exclude=true)
     public void run(int port, RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
-        String address = String.format("http://localhost:%d/ClientWebService", port);
+        peerUrl = String.format("http://localhost:%d", port);
+        String address = peerUrl + "/ClientWebService";
         Endpoint.publish(address, this);
         log.info("ClientWebService listens on: " + address);
     }
