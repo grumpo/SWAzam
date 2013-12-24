@@ -19,3 +19,8 @@ Run
 Execute "mvn compile exec:java" in the according component.
 
 * Peer: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000"
+
+
+* Server: 	mvn compile exec:java
+			Port provided=9003, if you'd like to chooose another provide -Dexec.args
+* Server: 	mvn compile exec:java -Dexec.args="9005"
