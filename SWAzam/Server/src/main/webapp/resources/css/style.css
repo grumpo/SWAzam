@@ -28,10 +28,17 @@ h1 {
 /* TabMenu */
 
 #tabmenu {
-	padding-top: 50px;
+	padding-top: 60px;
 	margin-right: 100px;
 	margin-left: 80px;
 }
+
+.ui-widget {
+    font-size: 90%;
+ }
+.ui-widget .ui-widget {
+    font-size: 100%;
+ }
 
 #scrollpane {
 	margin-right: 100px;

@@ -14,7 +14,7 @@ import at.ac.tuwien.swa.SWAzam.Server.Service.LoginServiceImpl;
 
 @ManagedBean(name="loginBean")
 @SessionScoped
-public class LoginBean implements Serializable {  
+public class LoginController implements Serializable {  
   
 	private static final long serialVersionUID = 1L;
 	private String username;  
@@ -25,7 +25,7 @@ public class LoginBean implements Serializable {
     
     private LoginModel loginModel;
     
-    public LoginBean() {
+    public LoginController() {
     	loginService = new LoginServiceImpl();
     	loggedIn = false;
     }  

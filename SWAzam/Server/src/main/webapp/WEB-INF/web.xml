@@ -31,7 +31,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>afterwork</param-value>
+		<param-value>cupertino</param-value>
 	</context-param>
 
 	
