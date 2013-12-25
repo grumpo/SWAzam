@@ -10,13 +10,9 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.springframework.stereotype.Repository;
-
 import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 
 
-@Repository("uds")
 public class UserDataStorageImpl implements UserDataStorage {
 
 	private final static Logger log = Logger.getLogger(UserDataStorageImpl.class.getName());

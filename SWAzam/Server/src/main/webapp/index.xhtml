@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<h:outputStylesheet library="css" name="style.css" />
+		<link rel="shortcut icon" href="/resources/images/favicon.ico" type="image/x-icon" />
+		
+		<title>SWAzam Administration</title>
+	</h:head>
+	
+	
+	<h:body>
+	    <section class="container">
+		    <div class="login">
+		    	<h1 id="header1">SWAzam Login</h1>
+		     	<h:form>
+				        <p><p:inputText value="#{loginBean.username}" placeholder="Username"/></p>
+				        <p><p:password value="#{loginBean.password}" placeholder="Password"/></p>
+				        
+				        <p class="remember_me">
+				          <label>
+					            <input type="checkbox" name="remember_me" id="remember_me"/>
+					            Remember me on this computer
+				          </label>
+				        </p>
+				        <p class="submit"><h:commandButton class="loginbtn" value="Login" action="#{loginBean.validateLogin}"/></p>
+						<h:messages styleClass="errorMessage" />
+				</h:form>
+		    </div>
+		
+		    <div class="login-help">
+		      <p>You don't have an account yet? Click <a href="index.html">here</a> to create one.</p>
+		    </div>
+		</section>
+	</h:body>
+</html>
+
+
+
+
+

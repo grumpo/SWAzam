@@ -3,9 +3,19 @@ package at.ac.tuwien.swa.SWAzam.Server.Model;
 public class LoginModel {
 	 
     private String userName;
-     private String password;
+    private String password;
+     
+    public LoginModel() {
+    	
+    }
  
-    public void setPassword(String password) {
+    public LoginModel(String username, String password) {
+		this.userName = username;
+		this.password = password;
+	}
+    
+    
+	public void setPassword(String password) {
         this.password = password;
     }
     public String getPassword() {
