@@ -18,7 +18,7 @@ Run
 
 Execute "mvn compile exec:java" in the according component.
 
-* Peer: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000"
+* Peer: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000 http://localhost:9003"
 
 
 * Server: 	mvn compile exec:java

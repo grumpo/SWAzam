@@ -4,6 +4,8 @@ import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3Identifier;
+import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnector;
+import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.UnableToConnectToServerException;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarder;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -16,14 +18,16 @@ public class RequestHandlerImpl implements RequestHandler {
 
     private final static Logger log = Logger.getLogger(RequestHandlerImpl.class.getName());
 
-    private MP3Identifier mp3Identifier;
+    private final MP3Identifier mp3Identifier;
+    private final Peer2ServerConnector peer2ServerConnector;
 
     @Inject
     private RequestForwarder requestForwarder;
 
     @Inject
-    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier) {
+    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier, @Assisted Peer2ServerConnector peer2ServerConnector) {
         this.mp3Identifier = mp3Identifier;
+        this.peer2ServerConnector = peer2ServerConnector;
     }
 
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
@@ -40,7 +44,12 @@ public class RequestHandlerImpl implements RequestHandler {
 
     @Override
     public UserInformation getUserInformation(String user, String password) {
-        // TODO: call server webservice
-        return new UserInformation(user, 23);
+        try {
+            return peer2ServerConnector.validateUser(user, password);
+        } catch (UnableToConnectToServerException e) {
+            log.severe("Unable to contact server: " + e.getMessage());
+            // not nice, but requested by peer
+            return null;
+        }
     }
 }
