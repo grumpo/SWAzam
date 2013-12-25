@@ -1,5 +1,7 @@
 package at.ac.tuwien.swa.SWAzam.Server.UserDataStorage;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,8 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.springframework.stereotype.Repository;
+
+import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 
 
+@Repository("uds")
 public class UserDataStorageImpl implements UserDataStorage {
 
 	private final static Logger log = Logger.getLogger(UserDataStorageImpl.class.getName());
@@ -29,10 +35,7 @@ public class UserDataStorageImpl implements UserDataStorage {
             e.printStackTrace();
         }
     }
-    
-    
-	
-	
+    	
 	
 	public boolean addUser(User user) {
 		PreparedStatement pstmt;
@@ -79,18 +82,13 @@ public class UserDataStorageImpl implements UserDataStorage {
 
         try{
             log.info("Fetching stored users from Database!");
-            pstmt = con.prepareStatement("SELECT * FROM USER");
+            pstmt = con.prepareStatement("SELECT * FROM user");
 
             rs = pstmt.executeQuery();
 
             while(rs.next()){
                 users.add(new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getInt("COINS")));
             }
-            
-            /*
-            for (User user : users) {
-            	System.out.println(user.toString());
-            }*/
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -122,6 +120,30 @@ public class UserDataStorageImpl implements UserDataStorage {
         return null;
 	}
 	
+	
+	public boolean validate(LoginModel loginModel) {
+    	PreparedStatement pstmt;
+        ResultSet rs;
+
+        try{
+            log.info("Validating user!");
+            pstmt = con.prepareStatement("SELECT * FROM user WHERE username=? AND password=?");
+            pstmt.setString(1, loginModel.getUserName());
+            pstmt.setString(2, createPasswordHash(loginModel.getPassword()));
+
+            rs = pstmt.executeQuery();
+            
+            if(rs.next())
+                return true;
+ 
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return false;   	        
+    }
+	
 	public boolean addCoins(User user) {
 		PreparedStatement pstmt;
 		ResultSet rs;
@@ -129,7 +151,7 @@ public class UserDataStorageImpl implements UserDataStorage {
         try{
         	int currentCoins = -1;
             log.info("Adding coin to user!");
-            pstmt = con.prepareStatement("SELECT * FROM USER WHERE USERNAME=?");
+            pstmt = con.prepareStatement("SELECT * FROM user WHERE username=?");
             pstmt.setString(1, user.getUsername());
             
             rs = pstmt.executeQuery();
@@ -159,8 +181,8 @@ public class UserDataStorageImpl implements UserDataStorage {
 
         try{
         	int currentCoins = -1;
-            log.info("Adding coin to user!");
-            pstmt = con.prepareStatement("SELECT * FROM USER WHERE USERNAME=?");
+            log.info("Reduced one coin from user!");
+            pstmt = con.prepareStatement("SELECT * FROM user WHERE username=?");
             pstmt.setString(1, user.getUsername());
             
             rs = pstmt.executeQuery();
@@ -183,6 +205,30 @@ public class UserDataStorageImpl implements UserDataStorage {
         		
 		return false;
 		
-		}
+	}
+	
+	private String createPasswordHash(String password) {
+		String generatedPassword = null;
+        MessageDigest md;
+        byte[] bytes;
+        StringBuilder sb;
+
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes());
+            bytes = md.digest();
+            sb = new StringBuilder();
+
+            for(int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return generatedPassword;
+	}
 
 }

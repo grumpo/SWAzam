@@ -8,6 +8,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    
+    <properties>
+		<spring.version>4.0.0.RELEASE</spring.version>
+		<tomcat.version>7.0.34</tomcat.version>
+	</properties>
 
     <artifactId>Server</artifactId>
 
@@ -54,15 +59,78 @@
 			<artifactId>gmbal-api-only</artifactId>
 			<version>3.2.0-b003</version>
 		</dependency>
-		            
+		                      
             
-            
-            
+        <!-- Spring 3 dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency> 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+     
+        <!-- Tomcat -->   
+        <dependency>
+	        <groupId>org.apache.tomcat.embed</groupId>
+	        <artifactId>tomcat-embed-core</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.tomcat.embed</groupId>
+	        <artifactId>tomcat-embed-logging-juli</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.tomcat.embed</groupId>
+	        <artifactId>tomcat-embed-jasper</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.tomcat</groupId>
+	        <artifactId>tomcat-jasper</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.tomcat</groupId>
+	        <artifactId>tomcat-jasper-el</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.apache.tomcat</groupId>
+	        <artifactId>tomcat-jsp-api</artifactId>
+	        <version>${tomcat.version}</version>
+	    </dependency>
+    
+		<dependency>
+			<groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-validation</artifactId>
+			<version>0.8</version>
+		</dependency>
+    
         <dependency>
             <groupId>org.sonatype.sisu.inject</groupId>
             <artifactId>guice-assistedinject</artifactId>
             <version>3.1.8</version>
         </dependency>    
+            
+            
+        <dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+                
+            
+            
             
 	</dependencies>
 	
@@ -95,7 +163,7 @@
                         <argument>9003</argument>
                     </arguments>
                 </configuration>
-            </plugin>
+            </plugin>    
         </plugins>
     </build>
 	
