@@ -9,7 +9,7 @@ sleep $timeout
 echo "starting peers..."
 mkdir $storagePath
 cd ../Peer
-mvn clean compile exec:java -Dexec.args="$storagePath 9000 http://localhost:9003"
+mvn clean compile exec:java -Dexec.args="$storagePath 9000 http://localhost:9003" &
 # mvn clean compile exec:java -Dexec.args="$storagePath 9001 http://localhost:9003"
 sleep $timeout
 

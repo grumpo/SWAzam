@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class RequestForwarderImpl implements RequestForwarder {
 
     private final static Logger log = Logger.getLogger(RequestForwarderImpl.class.getName());
+    public static final String PEER_WEB_SERVICE_WSDL_LOCATION = "/PeerWebService?wsdl";
 
     @Inject
     private PeerStorage peerStorage;
@@ -27,7 +28,11 @@ public class RequestForwarderImpl implements RequestForwarder {
     public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) {
         Set<Peer> peers = peerStorage.getPeers();
 
-        // TODO: needs some TTL
+        if (hops.size() > 3) { // TODO: do not hardcode this
+            // TODO: throw exception?
+            log.info("Tried too many hops, giving up...");
+            return null;
+        }
 
         for(Peer peer : peers)
         {
@@ -37,13 +42,14 @@ public class RequestForwarderImpl implements RequestForwarder {
             }
             try {
                 String peerUrl = peer.getUrl();
-                //TODO: use the read peerUrl here
-                return peer2PeerConnectorFactory.create("http://localhost:9000/PeerWebService?wsdl").identifyMP3Fingerprint(fingerprint, user, hops);
+                return peer2PeerConnectorFactory.create(peerUrl + PEER_WEB_SERVICE_WSDL_LOCATION).identifyMP3Fingerprint(fingerprint, user, hops);
             } catch (UnableToConnectToPeer e) {
                 log.info("Peer seems down: " + e.getMessage());
+                peer.failure();
             }
         }
         //TODO: really return null or throw an exception to handle the error?
+        log.info("Tried all known Peers, none could resolve the fingerprint...");
         return null;
     }
 

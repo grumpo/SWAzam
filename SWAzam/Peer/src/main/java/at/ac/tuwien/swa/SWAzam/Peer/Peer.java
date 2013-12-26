@@ -19,6 +19,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -57,6 +58,10 @@ public class Peer {
             log.log(Level.SEVERE, "Storage path is missing! " + msg);
             return;
         }
+        if (!new File(storagePath).exists()) {
+            log.log(Level.SEVERE, "Storage path does not exist! " + storagePath + "\n" + msg);
+            return;
+        }
         Integer port;
         try {
             port = Integer.valueOf(argv[1]);
@@ -91,7 +96,11 @@ public class Peer {
             log.info("Peer is down: " + e.getMessage());
             // TODO: try next
         }
-        log.info("Fingerprint was identified to be: " + fingerprintResult.getResult());
+        if (fingerprintResult != null) {
+            log.info("Fingerprint was identified to be: " + fingerprintResult.getResult());
+        } else {
+            log.info("Fingerprint could not be identified.");
+        }
     }
 
     private void testRequestToServerUserValidation(String serverAddress) {

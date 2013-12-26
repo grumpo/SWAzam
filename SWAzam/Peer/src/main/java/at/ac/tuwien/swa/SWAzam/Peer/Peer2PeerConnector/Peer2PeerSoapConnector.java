@@ -31,6 +31,8 @@ public class Peer2PeerSoapConnector implements Peer2PeerConnector {
         at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult result =
                 getFingerprintResult(fingerprint, user, hops);
 
+        if (result == null) return null;
+
         FingerprintResult fingerprintResult = new FingerprintResult();
         fingerprintResult.setResult(result.getResult());
         fingerprintResult.setHops(result.getHops());
