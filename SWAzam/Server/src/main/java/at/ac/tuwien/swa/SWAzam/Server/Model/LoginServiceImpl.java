@@ -1,7 +1,6 @@
-package at.ac.tuwien.swa.SWAzam.Server.Service;
+package at.ac.tuwien.swa.SWAzam.Server.Model;
 
 
-import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorageImpl;
 

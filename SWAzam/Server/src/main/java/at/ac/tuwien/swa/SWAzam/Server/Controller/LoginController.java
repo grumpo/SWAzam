@@ -8,8 +8,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
-import at.ac.tuwien.swa.SWAzam.Server.Service.LoginService;
-import at.ac.tuwien.swa.SWAzam.Server.Service.LoginServiceImpl;
+import at.ac.tuwien.swa.SWAzam.Server.Model.LoginService;
+import at.ac.tuwien.swa.SWAzam.Server.Model.LoginServiceImpl;
 
 
 @ManagedBean(name="loginBean")
