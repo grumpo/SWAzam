@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<h:outputStylesheet library="css" name="style.css" />
+		<link rel="shortcut icon" href="/resources/images/favicon.ico" type="image/x-icon" />
+		
+		<title>SWAzam Registration</title>
+	</h:head>
+
+
+	<h:body id="app">
+		<div>
+			<ui:insert name="header" >
+			  <ui:include src="/resources/templates/mainHeader.xhtml" />
+			</ui:insert>
+	    </div>
+	    
+	    <div id="tabmenu">
+			<h:form>
+				<p:tabMenu> 
+					<p:menuitem value="Registration"> 
+				    </p:menuitem> 						
+				</p:tabMenu>  
+			</h:form>
+		</div>
+	    
+	    <div>
+	    	<p:panel id="scrollpane"> 
+	    		<h:form>
+					<p:panel id="registration_panel" header="Data Input">
+						<h:panelGrid columns="2" cellpadding="5">  
+				            <h:outputText value="Username: *" />  
+				            <p:inputText value="#{registrationBean.username}"/>  
+				              
+				            <h:outputLabel value="Password: *" />  
+				            <p:password value="#{registrationBean.password}" label="Password" feedback="true"/>  
+				  
+				            <h:outputLabel value="Password confirm: *" />  
+				            <p:password value="#{registrationBean.password2}" label="Password confirm"/>   
+				          
+				            <p:commandButton value="Back" action="index.xhtml"/>  
+				            <p:commandButton value="Submit" action="#{registrationBean.register}"/>  
+				  
+				        </h:panelGrid>  
+				        
+				        <p:messages id="messages" autoUpdate="true"/>  
+					</p:panel>
+				</h:form>
+	    	</p:panel>
+	    </div>
+	</h:body>
+
+
+
+</html>

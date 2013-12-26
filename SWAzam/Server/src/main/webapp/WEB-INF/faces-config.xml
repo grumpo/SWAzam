@@ -15,5 +15,11 @@
 	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.TabController</managed-bean-class>
 	  <managed-bean-scope>session</managed-bean-scope>
      </managed-bean>
+     
+     <managed-bean>
+	  <managed-bean-name>registrationBean</managed-bean-name>
+	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.RegistrationController</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
 	
 </faces-config>

@@ -33,23 +33,21 @@ public class UserDataStorageImpl implements UserDataStorage {
     }
     	
 	
-	public boolean addUser(User user) {
+	public String addUser(User user) {
 		PreparedStatement pstmt;
 		
 		try {
 			pstmt = con.prepareStatement("INSERT INTO user VALUES(?,?,?)");
 			pstmt.setString(1, user.getUsername());
-			pstmt.setString(2, user.getPassword());
+			pstmt.setString(2, createPasswordHash(user.getPassword()));
 			pstmt.setInt(3, user.getCoins());
 			
 			pstmt.execute();
 			
-			return true;
+			return "Registration was successful!";
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return "Username already exists. Please choose another one!";
 		}
-		
-		return false;
 	}
 
 	public boolean removeUser(User user) {
