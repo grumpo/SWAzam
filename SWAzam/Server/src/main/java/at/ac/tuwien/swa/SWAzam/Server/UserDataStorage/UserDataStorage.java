@@ -7,7 +7,7 @@ import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 
 public interface UserDataStorage {
 	
-	public boolean addUser(User user);
+	public String addUser(User user);
     public boolean removeUser(User user);
     public boolean reduceCoins(User user);
     public boolean addCoins(User user);
