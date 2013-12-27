@@ -52,12 +52,12 @@ public class RegistrationController {
 		FacesContext facesContext = FacesContext.getCurrentInstance();	
     	
     	if (username.equals("")) {
-    		facesContext.addMessage("registrationBean", new FacesMessage("Username can not be empty!"));
+    		facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username can not be empty!", ""));
     		return "";
     	}	
     	
     	if (password.equals("")) {
-    		facesContext.addMessage("registrationBean", new FacesMessage("Password can not be empty!"));
+    		facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password can not be empty!", ""));
     		return "";
     	}
     	
@@ -71,7 +71,8 @@ public class RegistrationController {
 			password2 = "";
 		}
 		else
-			facesContext.addMessage("registrationBean", new FacesMessage("Passwords don't match!"));
+			facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords don't match!", ""));
+		
 		return "";
 	}
 

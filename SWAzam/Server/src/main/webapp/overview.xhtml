@@ -28,17 +28,51 @@
 	    </div>
 	    
 	    <div>
-	    	<p:panel id="scrollpane"> 
-				<label>Overview</label>
-			    <br /><br />
+	    	<p:scrollPanel id="scrollpane"> 
+				Current coins for user: #{userBean.user.coins}
+			    <br /><br /><br /><br />
 			    // TODO's
 			    <br />
 			    <ul>
 		            <li>Users can see the coins they currently have on their account, together with a history how they earned and spent coins</li>
 		            <li>Users can see a history of all recognition requests, their current status, and the result</li>
 			    </ul>
-	    	</p:panel>
+			    
+			    <h3>Recognition Request History</h3>
+			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.success eq true ? 'green' : 'red'}">  
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Date  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.formattedDate}" />  
+			        </p:column>  
+			  
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Time  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.formattedTime}" />  
+			        </p:column>  
+			  
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Song  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.song.formatted}" />  
+			        </p:column>  
+			  
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Success  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.success}" />  
+			        </p:column>  
+			    </p:dataTable>
+			    
+			    <br/>
+	    	</p:scrollPanel>
 	    </div>
+	    
 	</h:body>
 
 

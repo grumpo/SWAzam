@@ -24,9 +24,9 @@
 	    <div>
 	     	<h:form>
 	     		<p:panel header="Login" styleClass="loginCenter">
-			        <p><p:inputText id="username" value="#{loginBean.username}" placeholder="Username"/></p>
+			        <p><p:inputText id="username" value="#{userBean.username}" placeholder="Username"/></p>
 			        <p:watermark for="username" value="Username"/>
-			        <p><p:password id="password" value="#{loginBean.password}" placeholder="Password"/></p>
+			        <p><p:password id="password" value="#{userBean.password}" placeholder="Password"/></p>
 			        <p:watermark for="password" value="Password"/>
 			        
 			        <p class="remember_me">
@@ -35,14 +35,14 @@
 				            Remember me on this computer
 			          </label>
 			        </p>
-			        <p class="submit"><p:commandButton value="Login" action="#{loginBean.validateLogin}"/></p>
-					<h:messages styleClass="errorMessage" />
+			        <p class="submit"><p:commandButton value="Login" action="#{userBean.validateLogin}"/></p>
+					<p:messages id="messages" autoUpdate="true"/> 
 				</p:panel>
 			</h:form>
 	    </div>
 		
 	    <div class="login-help">
-	      <p>You don't have an account yet? Click <a href="register.xhtml">here</a> to create one.</p>
+	      <label>You don't have an account yet? Click <a href="register.xhtml">here</a> to create one.</label>
 	    </div>
 	</h:body>
 </html>

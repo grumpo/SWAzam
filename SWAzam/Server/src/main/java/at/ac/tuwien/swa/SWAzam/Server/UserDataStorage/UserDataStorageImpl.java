@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 
 
 public class UserDataStorageImpl implements UserDataStorage {
@@ -115,27 +114,27 @@ public class UserDataStorageImpl implements UserDataStorage {
 	}
 	
 	
-	public boolean validate(LoginModel loginModel) {
+	public User validate(String username, String password) {
     	PreparedStatement pstmt;
         ResultSet rs;
 
         try{
             log.info("Validating user!");
             pstmt = con.prepareStatement("SELECT * FROM user WHERE username=? AND password=?");
-            pstmt.setString(1, loginModel.getUserName());
-            pstmt.setString(2, createPasswordHash(loginModel.getPassword()));
+            pstmt.setString(1, username);
+            pstmt.setString(2, createPasswordHash(password));
 
             rs = pstmt.executeQuery();
             
             if(rs.next())
-                return true;
+            	return new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getInt("COINS"));
  
         }
         catch(SQLException e){
             e.printStackTrace();
         }
         
-        return false;   	        
+        return null;   	        
     }
 	
 	public boolean addCoins(User user) {

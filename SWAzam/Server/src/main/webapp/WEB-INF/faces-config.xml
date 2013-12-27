@@ -5,8 +5,8 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
 	<managed-bean>
-	  <managed-bean-name>loginBean</managed-bean-name>
-	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.LoginController</managed-bean-class>
+	  <managed-bean-name>userBean</managed-bean-name>
+	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.UserController</managed-bean-class>
 	  <managed-bean-scope>session</managed-bean-scope>
      </managed-bean>
      
@@ -19,6 +19,12 @@
      <managed-bean>
 	  <managed-bean-name>registrationBean</managed-bean-name>
 	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.RegistrationController</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+     
+     <managed-bean>
+	  <managed-bean-name>tableBean</managed-bean-name>
+	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.TableController</managed-bean-class>
 	  <managed-bean-scope>session</managed-bean-scope>
      </managed-bean>
 	

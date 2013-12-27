@@ -11,7 +11,6 @@ import javax.faces.bean.SessionScoped;
 public class TabController{
 
 	private Integer activeTabIndex = 0;
-	
 
 	public TabController() {
 		
