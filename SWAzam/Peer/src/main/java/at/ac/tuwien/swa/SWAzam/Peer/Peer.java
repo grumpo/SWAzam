@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -70,11 +71,35 @@ public class Peer {
             return;
         }
         String serverAddress = argv[2];
-        injector.getInstance(Peer.class).run(storagePath, port, serverAddress);
+        final Peer peer = injector.getInstance(Peer.class);
+        peer.run(storagePath, port, serverAddress);
+        log.info("Peer is up, press <enter> to quit.");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    //noinspection ResultOfMethodCallIgnored
+                    System.in.read();
+                    log.info("Stopping peer...");
+                    peer.stop();
+                } catch (IOException e) {
+                    log.severe("Unable to read key:" + e.getMessage());
+                }
+            }
+        }.run();
+    }
+
+    public void stop() {
+        stopServices();
+    }
+
+    private void stopServices() {
+        clientWebService.stop();
+        peerWebService.stop();
     }
 
     public void run(String storagePath, Integer port, String serverAddress) {
-        log.info("Peer has been started an is running now...");
+        log.info("Starting peer...");
 
         startServices(port, createRequestHandler(storagePath, serverAddress));
 

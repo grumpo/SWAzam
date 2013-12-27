@@ -23,6 +23,7 @@ public class ClientWebServiceSoap implements ClientWebService {
 
     private RequestHandler requestHandler;
     private String peerUrl;
+    private Endpoint endpoint;
 
     @WebMethod
     @SuppressWarnings("unused")
@@ -45,7 +46,14 @@ public class ClientWebServiceSoap implements ClientWebService {
         this.requestHandler = requestHandler;
         peerUrl = String.format("http://localhost:%d", port);
         String address = peerUrl + "/ClientWebService";
-        Endpoint.publish(address, this);
+        endpoint = Endpoint.publish(address, this);
         log.info("ClientWebService listens on: " + address);
+
+    }
+
+    @Override
+    public void stop() {
+        log.info("Stopping service...");
+        endpoint.stop();
     }
 }

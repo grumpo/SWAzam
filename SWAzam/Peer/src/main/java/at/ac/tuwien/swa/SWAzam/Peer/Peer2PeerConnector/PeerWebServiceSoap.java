@@ -18,6 +18,7 @@ public class PeerWebServiceSoap implements PeerWebService {
 
     private RequestHandler requestHandler;
     private String peerUrl;
+    private Endpoint endpoint;
 
     @WebMethod
     public FingerprintResult IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops) {
@@ -32,7 +33,13 @@ public class PeerWebServiceSoap implements PeerWebService {
         this.requestHandler = requestHandler;
         peerUrl = String.format("http://localhost:%d", port);
         String address = peerUrl + "/PeerWebService";
-        Endpoint.publish(address, this);
+        endpoint = Endpoint.publish(address, this);
         log.info("PeerWebService listens on: " + address);
+    }
+
+    @Override
+    public void stop() {
+        log.info("Stopping service...");
+        endpoint.stop();
     }
 }
