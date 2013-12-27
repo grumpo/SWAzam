@@ -72,10 +72,20 @@ h1 {
 	background: white;
 }
 
-#registration_panel {
-	width: 200px;
+.registration_panel {
+	width: 40%;
+	position:left;
+	float:left;
+	margin-top: 5%;
+	
 }
 
+.registration_text_panel {
+	float: right;
+	width: 50%;
+	position:right;
+	text-align: center;
+}
 
 /* Body */
 #mainHeader{

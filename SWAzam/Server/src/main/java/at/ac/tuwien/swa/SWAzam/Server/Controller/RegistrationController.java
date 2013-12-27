@@ -62,8 +62,14 @@ public class RegistrationController {
     	}
     	
 		//TODO check if username already exists
-		if (password.equals(password2))
-			facesContext.addMessage("registrationBean", new FacesMessage(registrationService.register(new User(username, password, 0))));	
+		if (password.equals(password2)) {
+			facesContext.addMessage("registrationBean", new FacesMessage(registrationService.register(new User(username, password, 0))));
+			
+			// reset fields
+			username = "";
+			password = "";
+			password2 = "";
+		}
 		else
 			facesContext.addMessage("registrationBean", new FacesMessage("Passwords don't match!"));
 		return "";
