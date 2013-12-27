@@ -13,9 +13,31 @@ h1 {
 	padding-top: 0px;
 }
 
+.loginCenter{
+	margin: 0 auto;
+	position:relative;
+	width: 350px;
+}
+
 #header_right { 
 	position:absolute;
+	margin: 0 auto;
 	right:10px;
+}
+
+#logout {
+	position:absolute;
+	margin: 0 auto;
+	right:110px;
+	top: 60px;
+}
+
+#header_login { 
+	position:relative;
+	width:300px;
+	margin: 0 auto;
+	padding-top: 12%;
+	left:17%;
 }
 
 #header_left { 
@@ -28,7 +50,7 @@ h1 {
 /* TabMenu */
 
 #tabmenu {
-	padding-top: 60px;
+	padding-top: 100px;
 	margin-right: 100px;
 	margin-left: 80px;
 }
