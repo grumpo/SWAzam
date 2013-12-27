@@ -150,8 +150,14 @@ body {
     color:#000000 !important;
 }
 
+.orange {
+    background-color:#F5F6CE !important;
+    background-image:none !important;
+    color:#000000 !important;
+}
+
 .red {
-    background-color:#F8E0E0 !important;
+	background-color:#F8E0E0 !important;
     background-image:none !important;
     color:#000000 !important;
 }

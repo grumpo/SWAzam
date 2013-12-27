@@ -30,7 +30,7 @@
 	    <div>
 	    	<p:scrollPanel id="scrollpane"> 
 				Current coins for user: #{userBean.user.coins}
-			    <br /><br /><br /><br />
+			    <br /><br />
 			    // TODO's
 			    <br />
 			    <ul>
@@ -39,7 +39,9 @@
 			    </ul>
 			    
 			    <h3>Recognition Request History</h3>
-			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.success eq true ? 'green' : 'red'}">  
+			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.rowColor eq 'green' ? 'green' : 
+			    																											recrequest.rowColor eq 'red' ? 'red' :
+			    																											recrequest.rowColor eq 'orange' ? 'orange' : null}">  
 			        <p:column>  
 			            <f:facet name="header">  
 			                    Date  
@@ -60,16 +62,24 @@
 			            </f:facet>  
 			            <h:outputText value="#{recrequest.song.formatted}" />  
 			        </p:column>  
+			        
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Status  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.searchFinished}" />  
+			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
 			                    Success  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.success}" />  
+			            <h:outputText value="#{recrequest.foundSong}" />  
 			        </p:column>  
 			    </p:dataTable>
-			    
 			    <br/>
+			    <h3>Coin History</h3>
+			    
 	    	</p:scrollPanel>
 	    </div>
 	    

@@ -47,6 +47,9 @@ public class Song {
 
 
 	public String getFormatted() {
+		if (artist == null)
+			return "";
+		
 		if (!artist.equals(""))
 			return artist + " - " + title + " (" + albumname + " - " + year + ")";
 		

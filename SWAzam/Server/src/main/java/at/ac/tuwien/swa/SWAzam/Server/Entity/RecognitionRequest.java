@@ -9,24 +9,23 @@ public class RecognitionRequest {
 	private Date date;
 	private Song song;
 	private String peerURL;
+	private boolean finished;
 	private boolean success;
 	
 	public RecognitionRequest () {
 		
 	}
 	
-	
 
-	public RecognitionRequest(int id, Date date, Song song, String peerURL, boolean success) {
+	public RecognitionRequest(int id, Date date, Song song, String peerURL, boolean finished, boolean success) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.song = song;
 		this.peerURL = peerURL;
+		this.finished = finished;
 		this.success = success;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -68,6 +67,41 @@ public class RecognitionRequest {
 		this.success = success;
 	}
 	
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+	
+	public String getSearchFinished() {
+		if (!finished)
+			return "open";
+		
+		return "done";
+	}
+	
+	public String getFoundSong() {
+		if (success && finished)
+			return "Song was identified.";
+		else if (!success && finished)
+			return "Song could not be identified.";
+		
+		return "";
+	}
+	
+	public String getRowColor() {
+	    if(success && finished)
+	    	return "green";
+	    if(!success && finished) 
+	    	return "red";
+	    if(!finished) 
+	    	return "orange";
+	    
+	    return "";
+	}
+
 	public String getFormattedDate() {
         return new SimpleDateFormat("MM.dd.yyyy").format(date);
     }
