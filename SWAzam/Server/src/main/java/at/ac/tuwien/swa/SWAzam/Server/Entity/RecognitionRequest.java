@@ -84,7 +84,7 @@ public class RecognitionRequest {
 	
 	public String getFoundSong() {
 		if (success && finished)
-			return "Song was identified.";
+			return "Song successfully identified.";
 		else if (!success && finished)
 			return "Song could not be identified.";
 		
