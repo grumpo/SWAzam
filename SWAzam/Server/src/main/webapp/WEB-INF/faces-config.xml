@@ -27,5 +27,11 @@
 	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.TableController</managed-bean-class>
 	  <managed-bean-scope>session</managed-bean-scope>
      </managed-bean>
+     
+     <managed-bean>
+	  <managed-bean-name>chartBean</managed-bean-name>
+	  <managed-bean-class>at.ac.tuwien.swa.SWAzam.Server.Controller.ChartController</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
 	
 </faces-config>
