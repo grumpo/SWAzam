@@ -52,20 +52,27 @@ public class RegistrationController {
 		FacesContext facesContext = FacesContext.getCurrentInstance();	
     	
     	if (username.equals("")) {
-    		facesContext.addMessage("registrationBean", new FacesMessage("Username can not be empty!"));
+    		facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username can not be empty!", ""));
     		return "";
     	}	
     	
     	if (password.equals("")) {
-    		facesContext.addMessage("registrationBean", new FacesMessage("Password can not be empty!"));
+    		facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password can not be empty!", ""));
     		return "";
     	}
     	
 		//TODO check if username already exists
-		if (password.equals(password2))
-			facesContext.addMessage("registrationBean", new FacesMessage(registrationService.register(new User(username, password, 0))));	
+		if (password.equals(password2)) {
+			facesContext.addMessage("registrationBean", new FacesMessage(registrationService.register(new User(username, password, 0))));
+			
+			// reset fields
+			username = "";
+			password = "";
+			password2 = "";
+		}
 		else
-			facesContext.addMessage("registrationBean", new FacesMessage("Passwords don't match!"));
+			facesContext.addMessage("registrationBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords don't match!", ""));
+		
 		return "";
 	}
 

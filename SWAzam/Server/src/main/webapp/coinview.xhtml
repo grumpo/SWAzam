@@ -29,54 +29,49 @@
 	    
 	    <div>
 	    	<p:scrollPanel id="scrollpane"> 
-				Current coins for user: #{userBean.user.coins}
-			    <br /><br />
 			    // TODO's
 			    <br />
 			    <ul>
-		            <li>Users can see a history of all recognition requests, their current status, and the result</li>
+		            <li>Users can see the coins they currently have on their account, together with a history how they earned and spent coins</li>
 			    </ul>
 			    
-			    <h3>Recognition Request History</h3>
-			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.rowColor eq 'green' ? 'green' : 
-			    																											recrequest.rowColor eq 'red' ? 'red' :
-			    																											recrequest.rowColor eq 'orange' ? 'orange' : null}">  
+			    <h3>Coin History</h3>
+			    
+			    <p:dataTable var="" value="" rowStyleClass="">  
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Date  
+			                    X  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.formattedDate}" />  
+			            <h:outputText value="" />  
 			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Time  
+			                    Y  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.formattedTime}" />  
+			            <h:outputText value="" />  
 			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Song  
+			                    Z  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.song.formatted}" />  
+			            <h:outputText value="" />  
 			        </p:column>  
 			        
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Status  
+			                    XYZ  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.searchFinished}" />  
-			        </p:column>  
-			  
-			        <p:column>  
-			            <f:facet name="header">  
-			                    Result  
-			            </f:facet>  
-			            <h:outputText value="#{recrequest.foundSong}" />  
+			            <h:outputText value="" />  
 			        </p:column>  
 			    </p:dataTable>
-			    <br/>
+		
+				<br />
+			    <h3>Visual Coin History</h3>
+			    
+			    <p:lineChart value="#{chartBean.linearModel}" legendPosition="e" zoom="true" animate="true"  
+                title="Last 7 Days" style="width:400px;" xaxisLabel="Days" yaxisLabel="# Coins" minX="0" maxX="6"/>  
 			    
 	    	</p:scrollPanel>
 	    </div>

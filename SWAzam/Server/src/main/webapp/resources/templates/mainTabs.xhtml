@@ -14,9 +14,12 @@
 					<p:tabMenu activeIndex="#{tabBean.activeTabIndex}"> 
 						<p:menuitem value="Overview" action="#{tabBean.changeTabs}"> 
 					    	<f:setPropertyActionListener target="#{tabBean.activeTabIndex}" value="0" />
-					    </p:menuitem> 						
-					    <p:menuitem value="Account" action="#{tabBean.changeTabs}"> 
+					    </p:menuitem> 		
+					    <p:menuitem value="Coin History" action="#{tabBean.changeTabs}"> 
 					    	<f:setPropertyActionListener target="#{tabBean.activeTabIndex}" value="1" />
+					    </p:menuitem> 					
+					    <p:menuitem value="Account" action="#{tabBean.changeTabs}"> 
+					    	<f:setPropertyActionListener target="#{tabBean.activeTabIndex}" value="2" />
 					    </p:menuitem>
 					</p:tabMenu>  
 				</h:form>

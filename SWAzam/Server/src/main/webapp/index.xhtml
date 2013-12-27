@@ -15,28 +15,35 @@
 	
 	
 	<h:body>
-	    <section class="container">
-		    <div class="login">
-		    	<h1 id="header1">SWAzam Login</h1>
-		     	<h:form>
-				        <p><p:inputText value="#{loginBean.username}" placeholder="Username"/></p>
-				        <p><p:password value="#{loginBean.password}" placeholder="Password"/></p>
-				        
-				        <p class="remember_me">
-				          <label>
-					            <input type="checkbox" name="remember_me" id="remember_me"/>
-					            Remember me on this computer
-				          </label>
-				        </p>
-				        <p class="submit"><h:commandButton class="loginbtn" value="Login" action="#{loginBean.validateLogin}"/></p>
-						<h:messages styleClass="errorMessage" />
-				</h:form>
-		    </div>
+		<div id="header">		
+			<div id="header_login">
+				<h1>SWAzam</h1>
+				<h:graphicImage id="logo" url="/resources/images/swazam_temp.jpg" alt="SWAzam Logo" height="80" width="80"/>
+			</div>
+		</div>
+	    <div>
+	     	<h:form>
+	     		<p:panel header="Login" styleClass="loginCenter">
+			        <p><p:inputText id="username" value="#{userBean.username}" placeholder="Username"/></p>
+			        <p:watermark for="username" value="Username"/>
+			        <p><p:password id="password" value="#{userBean.password}" placeholder="Password"/></p>
+			        <p:watermark for="password" value="Password"/>
+			        
+			        <p class="remember_me">
+			          <label>
+				            <input type="checkbox" name="remember_me" id="remember_me"/>
+				            Remember me on this computer
+			          </label>
+			        </p>
+			        <p class="submit"><p:commandButton value="Login" action="#{userBean.validateLogin}"/></p>
+					<p:messages id="messages" autoUpdate="true"/> 
+				</p:panel>
+			</h:form>
+	    </div>
 		
-		    <div class="login-help">
-		      <p>You don't have an account yet? Click <a href="register.xhtml">here</a> to create one.</p>
-		    </div>
-		</section>
+	    <div class="login-help">
+	      <label>You don't have an account yet? Click <a href="register.xhtml">here</a> to create one.</label>
+	    </div>
 	</h:body>
 </html>
 

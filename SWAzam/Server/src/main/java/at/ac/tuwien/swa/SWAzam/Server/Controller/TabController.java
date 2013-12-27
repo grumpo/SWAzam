@@ -11,7 +11,6 @@ import javax.faces.bean.SessionScoped;
 public class TabController{
 
 	private Integer activeTabIndex = 0;
-	
 
 	public TabController() {
 		
@@ -31,7 +30,10 @@ public class TabController{
 		if (activeTabIndex == 0) 
 		    return "overview.xhtml?faces-redirect=true";
 		else if (activeTabIndex == 1) 
-		    return "accountview.xhtml?faces-redirect=true";		
+		    return "coinview.xhtml?faces-redirect=true";	
+		if (activeTabIndex == 2) 
+		    return "accountview.xhtml?faces-redirect=true";
+		
 		return "";
 	}
 }

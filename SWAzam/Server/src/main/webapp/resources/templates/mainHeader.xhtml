@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
 	  xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <body>
 	    <ui:composition>
  
@@ -14,6 +15,10 @@
 				<div id="header_right">
 					<h1>SWAzam</h1>
 					<h:graphicImage id="logo" url="/resources/images/swazam_temp.jpg" alt="SWAzam Logo" height="80" width="80"/>
+				</div>
+				
+				<div id="logout">
+					Logged in as <p:outputPanel>#{userBean.user.username}</p:outputPanel>. <a href="index.xhtml">Logout...</a>
 				</div>
 			</div>
  

@@ -15,12 +15,11 @@
 
 
 	<h:body id="app">
-		<div>
-			<ui:insert name="header" >
-			  <ui:include src="/resources/templates/mainHeader.xhtml" />
-			</ui:insert>
-	    </div>
-	    
+		<div id="header_right">
+			<h1>SWAzam</h1>
+			<h:graphicImage id="logo" url="/resources/images/swazam_temp.jpg" alt="SWAzam Logo" height="80" width="80"/>
+		</div>
+
 	    <div id="tabmenu">
 			<h:form>
 				<p:tabMenu> 
@@ -33,7 +32,7 @@
 	    <div>
 	    	<p:panel id="scrollpane"> 
 	    		<h:form>
-					<p:panel id="registration_panel" header="Data Input">
+					<p:panel id="registration_panel" styleClass="registration_panel" header="Data Input">
 						<h:panelGrid columns="2" cellpadding="5">  
 				            <h:outputText value="Username: *" />  
 				            <p:inputText value="#{registrationBean.username}"/>  
@@ -44,12 +43,26 @@
 				            <h:outputLabel value="Password confirm: *" />  
 				            <p:password value="#{registrationBean.password2}" label="Password confirm"/>   
 				          
+				          	<h:outputLabel /><h:outputLabel />
 				            <p:commandButton value="Back" action="index.xhtml"/>  
-				            <p:commandButton value="Submit" action="#{registrationBean.register}"/>  
+				            <p:commandButton value="Submit" action="#{registrationBean.register}" update="registration_panel"/>  
 				  
 				        </h:panelGrid>  
 				        
 				        <p:messages id="messages" autoUpdate="true"/>  
+					</p:panel>
+					
+					<p:panel styleClass="registration_text_panel">
+						SWAzam
+						<br /> <br />
+						
+						Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+						 sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est 
+						 Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore 
+						 et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. <br />  <br /> Stet clita kasd gubergren, no sea 
+						 takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
+						 ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+						 no sea takimata sanctus est Lorem ipsum dolor sit amet.   
 					</p:panel>
 				</h:form>
 	    	</p:panel>
