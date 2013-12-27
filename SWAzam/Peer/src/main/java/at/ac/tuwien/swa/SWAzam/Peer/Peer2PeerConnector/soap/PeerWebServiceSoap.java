@@ -2,14 +2,13 @@
 package at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap;
 
 import java.util.List;
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
 import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
 
 
 /**
@@ -30,20 +29,29 @@ public interface PeerWebServiceSoap {
      * @param arg2
      * @param arg1
      * @param arg0
-     * @return
-     *     returns at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult
      */
     @WebMethod(operationName = "IdentifyMP3Fingerprint")
-    @WebResult(targetNamespace = "")
+    @Oneway
     @RequestWrapper(localName = "IdentifyMP3Fingerprint", targetNamespace = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.IdentifyMP3Fingerprint")
-    @ResponseWrapper(localName = "IdentifyMP3FingerprintResponse", targetNamespace = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.IdentifyMP3FingerprintResponse")
-    @Action(input = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3FingerprintRequest", output = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3FingerprintResponse")
-    public FingerprintResult identifyMP3Fingerprint(
+    @Action(input = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3Fingerprint")
+    public void identifyMP3Fingerprint(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1,
         @WebParam(name = "arg2", targetNamespace = "")
         List<String> arg2);
+
+    /**
+     * 
+     * @param arg0
+     */
+    @WebMethod
+    @Oneway
+    @RequestWrapper(localName = "identificationResult", targetNamespace = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.IdentificationResult")
+    @Action(input = "http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/identificationResult")
+    public void identificationResult(
+        @WebParam(name = "arg0", targetNamespace = "")
+        FingerprintResult arg0);
 
 }

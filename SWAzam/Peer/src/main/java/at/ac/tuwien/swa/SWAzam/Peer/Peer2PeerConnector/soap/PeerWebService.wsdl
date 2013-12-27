@@ -7,13 +7,15 @@
 <message name="IdentifyMP3Fingerprint">
 <part name="parameters" element="tns:IdentifyMP3Fingerprint"/>
 </message>
-<message name="IdentifyMP3FingerprintResponse">
-<part name="parameters" element="tns:IdentifyMP3FingerprintResponse"/>
+<message name="identificationResult">
+<part name="parameters" element="tns:identificationResult"/>
 </message>
 <portType name="PeerWebServiceSoap">
 <operation name="IdentifyMP3Fingerprint">
-<input wsam:Action="http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3FingerprintRequest" message="tns:IdentifyMP3Fingerprint"/>
-<output wsam:Action="http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3FingerprintResponse" message="tns:IdentifyMP3FingerprintResponse"/>
+<input wsam:Action="http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/IdentifyMP3Fingerprint" message="tns:IdentifyMP3Fingerprint"/>
+</operation>
+<operation name="identificationResult">
+<input wsam:Action="http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/identificationResult" message="tns:identificationResult"/>
 </operation>
 </portType>
 <binding name="PeerWebServiceSoapPortBinding" type="tns:PeerWebServiceSoap">
@@ -23,9 +25,12 @@
 <input>
 <soap:body use="literal"/>
 </input>
-<output>
+</operation>
+<operation name="identificationResult">
+<soap:operation soapAction=""/>
+<input>
 <soap:body use="literal"/>
-</output>
+</input>
 </operation>
 </binding>
 <service name="PeerWebServiceSoapService">
