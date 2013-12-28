@@ -26,15 +26,11 @@ public class TableController {
 	
 	private TableService tableService;
 	
-	@ManagedProperty(value="userBean")
 	private UserController userBean;
 	
 	public TableController() {
 		recognitionRequests = new ArrayList<RecognitionRequest>();
 		tableService = new TableServiceImpl();
-		
-		//TODO - not in constructor!!
-		fillWithTestData();
 	}
 	
 	
@@ -73,12 +69,15 @@ public class TableController {
 	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
 	}
 
-	private void fillWithTestData() {
+	public void updateCoinLog() {
 		userBean = this.<UserController> findBean("userBean");
+		coinLog = tableService.getCoinLogforUser(new User(userBean.getUser().getUsername(), "", 0));
+	}
+	
+	public void updateRequestLog() {
+		recognitionRequests.clear();
 		
 		//TODO - move to DB
-		coinLog = tableService.getCoinLogforUser(new User(userBean.getUser().getUsername(), "", 0));
-		
 		recognitionRequests.add(new RecognitionRequest(0, new Date(System.currentTimeMillis()), 
 				new Song(), "peer url", false, false));
 		
@@ -96,6 +95,5 @@ public class TableController {
 		
 		recognitionRequests.add(new RecognitionRequest(5, new Date(System.currentTimeMillis()), 
 				new Song("", "", "", 0), "peer url", true, false));
-		
 	}
 }

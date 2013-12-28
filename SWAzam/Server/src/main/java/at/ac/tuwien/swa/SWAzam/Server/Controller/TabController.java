@@ -3,6 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Server.Controller;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 
 
@@ -11,6 +12,8 @@ import javax.faces.bean.SessionScoped;
 public class TabController{
 
 	private Integer activeTabIndex = 0;
+	
+	private TableController tableBean;
 
 	public TabController() {
 		
@@ -24,15 +27,31 @@ public class TabController{
 	public void setActiveTabIndex(Integer activeTabIndex) {
 		this.activeTabIndex = activeTabIndex;
 	}
+	
+	/**
+	 * Helper
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T findBean(String beanName) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
+	}
 
 
 	public String changeTabs() {
-		if (activeTabIndex == 0) 
+		tableBean = this.<TableController> findBean("tableBean");
+		
+		if (activeTabIndex == 0) {
+			tableBean.updateRequestLog();
 		    return "overview.xhtml?faces-redirect=true";
-		else if (activeTabIndex == 1) 
+		}
+		else if (activeTabIndex == 1) {
+			tableBean.updateCoinLog();
 		    return "coinview.xhtml?faces-redirect=true";	
-		if (activeTabIndex == 2) 
+		}
+		if (activeTabIndex == 2) {
 		    return "accountview.xhtml?faces-redirect=true";
+		}
 		
 		return "";
 	}
