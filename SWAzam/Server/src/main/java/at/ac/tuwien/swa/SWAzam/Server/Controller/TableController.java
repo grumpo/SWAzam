@@ -23,15 +23,13 @@ public class TableController {
 	List<CoinLog> coinLog;
 	
 	private TableService tableService;
+	private ChartController chartBean;
 	private User user;
 	
 	public TableController() {
 		recognitionRequests = new ArrayList<RecognitionRequest>();
 		tableService = new TableServiceImpl();
 	}
-	
-	
-	
 	
 	public List<RecognitionRequest> getRecognitionRequests() {
 		return recognitionRequests;
@@ -50,38 +48,32 @@ public class TableController {
 	}
 
 	public void updateCoinLog() {
+		chartBean = this.<ChartController> findBean("chartBean");
 		coinLog = tableService.getCoinLogforUser(user);
+		
+		chartBean.setValues(coinLog, user);
+		chartBean.createLinearModel();
 	}
 	
 	public void updateRequestLog() {
 		recognitionRequests.clear();
 		recognitionRequests = tableService.getRequestHistory(user);
-		
-		//TODO - move to DB
-		/*
-		recognitionRequests.add(new RecognitionRequest(0, new Date(System.currentTimeMillis()), 
-				new Song(), "peer url", false, false));
-		
-		recognitionRequests.add(new RecognitionRequest(1, new Date(System.currentTimeMillis()), 
-					new Song("Volbeat", "Still Counting", "", 2008), "peer url", true, true));
-		
-		recognitionRequests.add(new RecognitionRequest(2, new Date(System.currentTimeMillis()), 
-					new Song("Volbeat", "Cape of our Hero", "", 2012), "peer url", true, true));
-		
-		recognitionRequests.add(new RecognitionRequest(3, new Date(System.currentTimeMillis()), 
-				new Song("", "", "", 0), "peer url", true, false));
-		
-		recognitionRequests.add(new RecognitionRequest(4, new Date(System.currentTimeMillis()), 
-				new Song("Rise Against", "Saviour", "Appeal to Reason", 2008), "peer url", true, true));
-		
-		recognitionRequests.add(new RecognitionRequest(5, new Date(System.currentTimeMillis()), 
-				new Song("", "", "", 0), "peer url", true, false));*/
 	}
 
 
+	
 
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	/**
+	 * Helper
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T findBean(String beanName) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
 	}
 }
