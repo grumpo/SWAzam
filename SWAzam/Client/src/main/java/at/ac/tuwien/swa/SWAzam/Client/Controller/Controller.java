@@ -131,6 +131,7 @@ public class Controller implements PropertyChangeListener {
 
             if(user == null){
                 //User tried to login but was not accepted by swazam
+                mFrame.showLoginError();
             }
             else if(user != null){
                 //User tried to login and was accepted by swazam

@@ -34,8 +34,8 @@ public class PeerStorage {
 
         try{
             log.info("Fetching stored peers from Database!");
-            pstmt = con.prepareStatement("SELECT URL, FAILURE FROM PEERS WHERE FAILURE < ?");
-            pstmt.setInt(1, MAX_FAILURE);
+            pstmt = con.prepareStatement("SELECT URL, FAILURE FROM PEERS WHERE FAILURE > ?");
+            pstmt.setInt(1, 0);
 
             rs = pstmt.executeQuery();
 
@@ -48,6 +48,22 @@ public class PeerStorage {
         catch(SQLException e){
             //TODO: Remove StackTrace
             e.printStackTrace();
+        }
+    }
+
+    public void failurePeer(Peer p){
+        PreparedStatement pstmt;
+
+        p.failure();
+
+        try {
+            pstmt = con.prepareStatement("UPDATE PEERS SET FAILURE = ? WHERE URL = ?");
+            pstmt.setInt(1, p.getFailure());
+            pstmt.setString(2, p.getUrl());
+
+            pstmt.execute();
+        } catch (SQLException e) {
+            log.info("SQL Error while failure update!");
         }
     }
 
@@ -81,12 +97,12 @@ public class PeerStorage {
             for(String s : peerList){
                 pstmt = con.prepareStatement("INSERT INTO PEERS (URL, FAILURE) VALUES (?, ?)");
                 pstmt.setString(1, s);
-                pstmt.setInt(2, 0);
+                pstmt.setInt(2, MAX_FAILURE);
 
                 pstmt.addBatch();
             }
 
-            log.info("Insert all used peers into Database with failure 0!");
+            log.info("Insert all used peers into Database with failure MAX_FAILURE!");
             pstmt.executeBatch();
 
             readPeersFromDatabase();

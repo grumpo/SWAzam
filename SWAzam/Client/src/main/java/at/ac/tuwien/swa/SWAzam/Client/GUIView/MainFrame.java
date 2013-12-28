@@ -305,4 +305,8 @@ public class MainFrame extends JFrame implements ActionListener {
             model.addRow(new Object[]{sfp.getArtist(), sfp.getSongtitle(), sfp.getTimestamp()});
         }
     }
+
+    public void showLoginError() {
+        JOptionPane.showMessageDialog(this, "User couldn't be verified!", "Login Failure", JOptionPane.ERROR_MESSAGE);
+    }
 }

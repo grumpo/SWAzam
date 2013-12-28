@@ -22,7 +22,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
     }
 
     @Override
-    public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, String password) throws UnableToConnectToPeer {
+    public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, String password) throws PeerUnreachableException {
         log.info("Checking fingerprint: " + fingerprint.getShiftDuration());
         ClientWebServiceSoap peerWebServicePort = getClientWebService();
         String fingerprintJson = serialize(fingerprint);
@@ -35,7 +35,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
     }
 
     @Override
-    public UserInformation getUserInformation(String user, String password) throws UnableToConnectToPeer {
+    public UserInformation getUserInformation(String user, String password) throws PeerUnreachableException {
         log.info("Checking user: " + user);
         at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.UserInformation userInformation =
                 getClientWebService().getUserInformation(user, password);
@@ -47,15 +47,15 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
         return new Gson().toJson(fingerprint);
     }
 
-    private ClientWebServiceSoap getClientWebService() throws UnableToConnectToPeer {
+    private ClientWebServiceSoap getClientWebService() throws PeerUnreachableException {
         return new ClientWebServiceSoapService(toUrl(peerWSDLLocation)).getClientWebServiceSoapPort();
     }
 
-    private URL toUrl(String url) throws UnableToConnectToPeer {
+    private URL toUrl(String url) throws PeerUnreachableException {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            throw new UnableToConnectToPeer(e.getMessage());
+            throw new PeerUnreachableException(e.getMessage());
         }
     }
 }
