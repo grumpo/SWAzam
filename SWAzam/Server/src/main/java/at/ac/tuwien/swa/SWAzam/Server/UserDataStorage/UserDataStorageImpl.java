@@ -55,7 +55,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setNull(3, java.sql.Types.INTEGER);
 			pstmt.setInt(4, 0);
 			pstmt.setInt(5, 0);
-			pstmt.setBoolean(6, false);
+			pstmt.setString(6, "New User Account Created!");
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
@@ -169,7 +169,32 @@ public class UserDataStorageImpl implements UserDataStorage {
             rs = pstmt.executeQuery();
             
         	while (rs.next()){
-        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getInt("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getBoolean("increased"), rs.getDate("date")));
+        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getInt("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
+        	}
+            	
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+		
+		return log;
+	}
+	
+	public List<CoinLog> getLogForUser(User user) {
+		List<CoinLog> log = new ArrayList<CoinLog>();
+		
+		PreparedStatement pstmt;
+        ResultSet rs;
+        
+        try{
+            pstmt = con.prepareStatement("SELECT * FROM coinlog where user_username=?");
+            pstmt.setString(1, user.getUsername());
+            
+            rs = pstmt.executeQuery();
+            
+        	while (rs.next()){
+        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getInt("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
         	}
             	
         }
@@ -247,7 +272,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setNull(3, java.sql.Types.INTEGER);
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins+1);
-			pstmt.setBoolean(6, true);
+			pstmt.setString(6, "Successful Music Recognition -> +1 Coin!");
 			pstmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
 			
 			pstmt.execute();
@@ -289,7 +314,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setNull(3, java.sql.Types.INTEGER);
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins+numCoins);
-			pstmt.setBoolean(6, true);
+			pstmt.setString(6, "Bought " + numCoins + " Coins!");
 			pstmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
 			
 			pstmt.execute();
@@ -329,7 +354,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setNull(3, java.sql.Types.INTEGER);
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins-1);
-			pstmt.setBoolean(6, false);
+			pstmt.setString(6, "Successful Music Request -> -1 Coin!");
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();

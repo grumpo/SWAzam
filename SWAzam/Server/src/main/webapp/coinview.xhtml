@@ -37,33 +37,47 @@
 			    
 			    <h3>Coin History</h3>
 			    
-			    <p:dataTable var="" value="" rowStyleClass="">  
-			        <p:column>  
+			    <p:dataTable var="coinlog" value="#{tableBean.coinLog}" rowStyleClass="">
+			     	 <p:column>  
 			            <f:facet name="header">  
-			                    X  
+			                    Date  
 			            </f:facet>  
-			            <h:outputText value="" />  
+			            <h:outputText value="#{coinlog.formattedDate}" />  
 			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Y  
+			                    Time  
 			            </f:facet>  
-			            <h:outputText value="" />  
+			            <h:outputText value="#{coinlog.formattedTime}" />  
 			        </p:column>  
-			  
+			          
 			        <p:column>  
 			            <f:facet name="header">  
-			                    Z  
+			                    Request ID
 			            </f:facet>  
-			            <h:outputText value="" />  
+			            <h:outputText value="#{coinlog.request_id}" />  
 			        </p:column>  
 			        
 			        <p:column>  
 			            <f:facet name="header">  
-			                    XYZ  
+			                    Coins old
 			            </f:facet>  
-			            <h:outputText value="" />  
+			            <h:outputText value="#{coinlog.coins_old}" />  
+			        </p:column>  
+			        
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Coins new
+			            </f:facet>  
+			            <h:outputText value="#{coinlog.coins_new}" />  
+			        </p:column>  
+			  
+			        <p:column>  
+			            <f:facet name="header">  
+			                   Action 
+			            </f:facet>  
+			            <h:outputText value="#{coinlog.action}" />  
 			        </p:column>  
 			    </p:dataTable>
 		

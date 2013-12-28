@@ -3,10 +3,18 @@ package at.ac.tuwien.swa.SWAzam.Server.Controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.Song;
+import at.ac.tuwien.swa.SWAzam.Server.Model.TableService;
+import at.ac.tuwien.swa.SWAzam.Server.Model.TableServiceImpl;
+import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
 
 
 @ManagedBean(name="tableBean") 
@@ -14,11 +22,21 @@ import at.ac.tuwien.swa.SWAzam.Server.Entity.Song;
 public class TableController {
 
 	List<RecognitionRequest> recognitionRequests;
+	List<CoinLog> coinLog;
+	
+	private TableService tableService;
+	
+	@ManagedProperty(value="userBean")
+	private UserController userBean;
 	
 	public TableController() {
 		recognitionRequests = new ArrayList<RecognitionRequest>();
+		tableService = new TableServiceImpl();
+		
+		//TODO - not in constructor!!
 		fillWithTestData();
 	}
+	
 	
 	
 	
@@ -30,8 +48,36 @@ public class TableController {
 		this.recognitionRequests = recognitionRequests;
 	}
 
-	//TODO: remove
+	public List<CoinLog> getCoinLog() {
+		return coinLog;
+	}
+
+	public void setCoinLog(List<CoinLog> coinLog) {
+		this.coinLog = coinLog;
+	}
+
+	public UserController getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserController userBean) {
+		this.userBean = userBean;
+	}
+	
+	/**
+	 * Helper
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T findBean(String beanName) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
+	}
+
 	private void fillWithTestData() {
+		userBean = this.<UserController> findBean("userBean");
+		
+		//TODO - move to DB
+		coinLog = tableService.getCoinLogforUser(new User(userBean.getUser().getUsername(), "", 0));
 		
 		recognitionRequests.add(new RecognitionRequest(0, new Date(System.currentTimeMillis()), 
 				new Song(), "peer url", false, false));

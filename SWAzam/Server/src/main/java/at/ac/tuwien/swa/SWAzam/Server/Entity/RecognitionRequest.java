@@ -103,7 +103,7 @@ public class RecognitionRequest {
 	}
 
 	public String getFormattedDate() {
-        return new SimpleDateFormat("MM.dd.yyyy").format(date);
+        return new SimpleDateFormat("dd.MM.yyyy").format(date);
     }
 	
 	public String getFormattedTime() {

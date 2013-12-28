@@ -21,5 +21,6 @@ public interface UserDataStorage {
 	
 	// validates from pw to hashed pw
 	public User validate(String user, String password);
+	public List<CoinLog> getLogForUser(User user);
 	
 }

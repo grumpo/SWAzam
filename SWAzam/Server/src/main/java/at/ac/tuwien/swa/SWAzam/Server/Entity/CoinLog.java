@@ -1,5 +1,6 @@
 package at.ac.tuwien.swa.SWAzam.Server.Entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CoinLog {
@@ -9,7 +10,7 @@ public class CoinLog {
 	private int request_id;
 	private int coins_old;
 	private int coins_new;
-	private boolean increased;
+	private String action;
 	private Date date;
 	
 	public CoinLog() {
@@ -17,14 +18,14 @@ public class CoinLog {
 	}
 	
 	public CoinLog(int id, String username, int request_id, int coins_old,
-			int coins_new, boolean increased, Date date) {
+			int coins_new, String action, Date date) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.request_id = request_id;
 		this.coins_old = coins_old;
 		this.coins_new = coins_new;
-		this.increased = increased;
+		this.action = action;
 		this.date = date;
 	}
 	
@@ -58,11 +59,11 @@ public class CoinLog {
 	public void setCoins_new(int coins_new) {
 		this.coins_new = coins_new;
 	}
-	public boolean isIncreased() {
-		return increased;
+	public String getAction() {
+		return action;
 	}
-	public void setIncreased(boolean increased) {
-		this.increased = increased;
+	public void setAction(String action) {
+		this.action = action;
 	}
 	public Date getDate() {
 		return date;
@@ -71,11 +72,19 @@ public class CoinLog {
 		this.date = date;
 	}
 	
+	public String getFormattedDate() {
+        return new SimpleDateFormat("dd.MM.yyyy").format(date);
+    }
+	
+	public String getFormattedTime() {
+        return new SimpleDateFormat("HH:mm:ss").format(date);
+    }
+	
 	@Override
 	public String toString() {
 		return "CoinLog [id=" + id + ", username=" + username + ", request_id="
 				+ request_id + ", coins_old=" + coins_old + ", coins_new="
-				+ coins_new + ", increased=" + increased + ", date=" + date
+				+ coins_new + ", action=" + action + ", date=" + date
 				+ "]";
 	}
 

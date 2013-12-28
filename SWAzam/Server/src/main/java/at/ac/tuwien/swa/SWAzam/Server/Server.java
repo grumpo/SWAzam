@@ -17,6 +17,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import at.ac.tuwien.swa.SWAzam.Server.DebitManager.DebitManagerFactory;
+import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Peer2ServerConnector.PeerWebService;
 import at.ac.tuwien.swa.SWAzam.Server.PermissionValidator.PermissionValidatorFactory;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
@@ -92,7 +93,15 @@ public class Server {
     	for (User user : uds.getUsers()) {
     		System.out.println(user.toString());
     	}
-    	*/
+    	
+        UserDataStorage uds = new UserDataStorageImpl();
+        
+        uds.addCoins(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0));
+    	uds.addCoins(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0));
+        
+        for (CoinLog cl : uds.getLog()) {
+    		System.out.println(cl.toString());
+    	}*/
         
         injector.getInstance(Server.class).run(port);
         startTomcatEmbedded();	
