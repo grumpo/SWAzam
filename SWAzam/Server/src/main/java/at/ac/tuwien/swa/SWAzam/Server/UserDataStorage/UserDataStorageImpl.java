@@ -426,5 +426,33 @@ public class UserDataStorageImpl implements UserDataStorage {
 		
 		return requests;
 	}
+	
+	// untested!
+	@Override
+	public boolean addRequestEntry(RecognitionRequest request) {
+		PreparedStatement pstmt;
+        
+        try{
+            pstmt = con.prepareStatement("INSERT INTO request VALUES(?,?,?,?,?,?,?)");
+            pstmt.setNull(1, java.sql.Types.INTEGER);
+            pstmt.setString(2, request.getUsername());
+            pstmt.setDate(3, new Date(System.currentTimeMillis()));
+            pstmt.setString(4, request.getSong());
+            pstmt.setString(5, request.getPeerURL());
+            pstmt.setBoolean(6, request.isFinished());
+            pstmt.setBoolean(7, request.isSuccess());
+            
+            pstmt.executeQuery();
+            
+            return true;
+            
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+		return false;
+	}
+	
 
 }

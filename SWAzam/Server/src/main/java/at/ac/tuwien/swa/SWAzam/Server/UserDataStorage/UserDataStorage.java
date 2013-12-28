@@ -24,5 +24,6 @@ public interface UserDataStorage {
 	public User validate(String user, String password);
 	public List<CoinLog> getLogForUser(User user);
 	public List<RecognitionRequest> getRequestHistory(User user);
+	public boolean addRequestEntry(RecognitionRequest request);
 	
 }

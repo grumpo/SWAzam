@@ -29,13 +29,9 @@
 	    
 	    <div>
 	    	<p:scrollPanel id="scrollpane"> 
+	    	    // TODO - format this nicely <br />
 				Current coins for user: #{userBean.user.coins}
 			    <br /><br />
-			    // TODO's
-			    <br />
-			    <ul>
-		            <li>Users can see a history of all recognition requests, their current status, and the result</li>
-			    </ul>
 			    
 			    <h3>Recognition Request History</h3>
 			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.rowColor eq 'green' ? 'green' : 
