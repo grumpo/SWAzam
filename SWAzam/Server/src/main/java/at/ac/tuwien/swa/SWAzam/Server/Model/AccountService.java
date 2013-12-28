@@ -8,4 +8,6 @@ public interface AccountService {
 
 	public String buyCoins(User user, int numCoins);
 
+	public void deleteAccount(User user);
+
 }

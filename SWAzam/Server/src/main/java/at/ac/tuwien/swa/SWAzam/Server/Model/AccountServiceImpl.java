@@ -27,4 +27,9 @@ public class AccountServiceImpl implements AccountService {
 		return "Error";	
 	}
 
+	@Override
+	public void deleteAccount(User user) {
+		uds.removeUser(user);
+	}
+
 }

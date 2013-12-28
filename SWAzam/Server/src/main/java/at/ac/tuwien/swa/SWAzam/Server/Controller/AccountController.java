@@ -61,17 +61,15 @@ public class AccountController {
 		this.numCoins = numCoins;
 	}
 
-	public String changePassword() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();	
-		
+	public String changePassword() {		
 		if (passwordOld.equals("") || passwordNew1.equals("") || passwordNew2.equals("")) {
-    		facesContext.addMessage("accountBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill out all fields!", ""));
+			FacesContext.getCurrentInstance().addMessage("accountBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill out all fields!", ""));
     		return "";
     	}	
     	
 		//TODO check if username already exists
 		if (passwordNew1.equals(passwordNew2)) {
-			facesContext.addMessage("accountBean", new FacesMessage(accountService.changePassword(user, passwordOld, passwordNew1)));
+			FacesContext.getCurrentInstance().addMessage("accountBean", new FacesMessage(accountService.changePassword(user, passwordOld, passwordNew1)));
 			
 			// reset fields
 			passwordOld = "";
@@ -79,16 +77,20 @@ public class AccountController {
 			passwordNew2 = "";
 		}
 		else
-			facesContext.addMessage("accountBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "New password entries don't match!", ""));
+			FacesContext.getCurrentInstance().addMessage("accountBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "New password entries don't match!", ""));
 		
 		return "";
 	}
 	
 	public String buyCoins(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();	
-		facesContext.addMessage("accountBean", new FacesMessage(accountService.buyCoins(user, numCoins)));
+		FacesContext.getCurrentInstance().addMessage("accountBean", new FacesMessage(accountService.buyCoins(user, numCoins)));
 		
 		return "";
+	}
+	
+	public String deleteAccount() {
+		accountService.deleteAccount(user);
+		return "index.xhtml?faces-redirect=true";
 	}
 
 }

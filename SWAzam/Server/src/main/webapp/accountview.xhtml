@@ -32,8 +32,8 @@
 			    // TODO's
 			    <br />
 			    <ul>
-		            <li>buy coins</li>
 		            <li>delete Account</li>
+		            <li>move error message output to the right side of the panels?</li>
 			    </ul>
 			    <h:form>
 				    <p:panel id="account_panel" styleClass="account_panel" header="Change Password">
@@ -51,8 +51,6 @@
 				            <p:commandButton value="Submit" action="#{accountBean.changePassword}" update="account_panel"/>  
 				  
 				        </h:panelGrid>  
-				        
-				        <p:messages id="messages" autoUpdate="true"/>  
 					</p:panel>
 					
 					 <p:panel id="buyCoin_panel" styleClass="buyCoin_panel" header="Buy Coins">
@@ -64,9 +62,24 @@
 				            <p:commandButton value="Buy" action="#{accountBean.buyCoins}" update="buyCoin_panel"/>  
 				  
 				        </h:panelGrid>  
-				        
-				        <p:messages id="messages2" autoUpdate="true"/>  
+		
 					</p:panel>
+					
+					<p:messages id="messages" autoUpdate="true" redisplay="false"/> 
+					
+					<p:growl id="messages3" showDetail="true" />  
+  
+				    <p:commandButton id="deleteAccount_btn" value="Delete Account" action="#{accountBean.deleteAccount}" update="messages3">  
+				        <p:confirm header="Confirmation" message="Are you sure you want to delete your account?" icon="ui-icon-alert" />  
+				    </p:commandButton>  
+				  
+				    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+				        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+				        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+				    </p:confirmDialog>  
+				    
+				    
+					
 			    </h:form>
 			    
 	    	</p:panel>

@@ -30,6 +30,8 @@ h1 {
 	margin: 0 auto;
 	right:110px;
 	top: 60px;
+	color: grey;
+	font-weight:bold;
 }
 
 #header_login { 
@@ -94,10 +96,9 @@ h1 {
 .buyCoin_panel {
 	width: 350px;
 	position:left;
-	margin-top:30px;
+	margin-top:20px;
+	margin-bottom:20px;
 }
-
-
 
 .registration_text_panel {
 	float: right;

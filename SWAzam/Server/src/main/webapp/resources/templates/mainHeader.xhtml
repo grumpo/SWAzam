@@ -17,9 +17,9 @@
 					<h:graphicImage id="logo" url="/resources/images/swazam_temp.jpg" alt="SWAzam Logo" height="80" width="80"/>
 				</div>
 				
-				<div id="logout">
-					Logged in as <p:outputPanel>#{userBean.user.username}</p:outputPanel>. <a href="index.xhtml">Logout...</a>
-				</div>
+				
+				<h:outputLabel id="logout"> Logged in as #{userBean.user.username}. <a href="index.xhtml">Logout...</a> </h:outputLabel>
+				
 			</div>
  
 	    </ui:composition>
