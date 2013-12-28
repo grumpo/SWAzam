@@ -84,7 +84,11 @@ h1 {
 	position:left;
 	float:left;
 	margin-top: 5%;
-	
+}
+
+.account_panel {
+	width: 40%;
+	position:left;
 }
 
 .registration_text_panel {

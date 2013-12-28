@@ -453,6 +453,39 @@ public class UserDataStorageImpl implements UserDataStorage {
 
 		return false;
 	}
+
+
+	@Override
+	public String changePassword(User user, String passwordOld, String passwordNew) {
+		PreparedStatement pstmt;
+        ResultSet rs;
+
+        try{
+            log.info("Validating user!");
+            pstmt = con.prepareStatement("SELECT password FROM USER WHERE USERNAME=?");
+            pstmt.setString(1, user.getUsername());
+
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+            	if (!rs.getString("password").equals(createPasswordHash(passwordOld)))
+            		return "Sorry, the current password was wrong!";
+
+                pstmt = con.prepareStatement("UPDATE user set password=? where username=?");
+                pstmt.setString(1, createPasswordHash(passwordNew));
+            	pstmt.setString(2, user.getUsername());
+            	
+            	pstmt.execute();
+            	            	
+            	return "Updated password successfully!";
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return e.getLocalizedMessage();
+        }
+        return "";
+	}
 	
 
 }

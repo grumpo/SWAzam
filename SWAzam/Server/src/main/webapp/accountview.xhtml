@@ -29,12 +29,33 @@
 	    
 	    <div>
 	    	<p:panel id="scrollpane"> 
-			    // TODO's from TUWEL:
+			    // TODO's
 			    <br />
 			    <ul>
-		            <li>Modify Account(change password, buy coins?)</li>
-		            <li>Delete Account</li>
+		            <li>buy coins</li>
+		            <li>delete Account</li>
 			    </ul>
+			    <h:form>
+				    <p:panel id="account_panel" styleClass="account_panel" header="Change Password">
+						<h:panelGrid columns="2" cellpadding="5">  
+				            <h:outputText value="Old Password: *" />  
+				            <p:password value="#{accountBean.passwordOld}"/>  
+				              
+				            <h:outputLabel value="New Password: *" />  
+				            <p:password value="#{accountBean.passwordNew1}" label="Password" feedback="true"/>  
+				  
+				            <h:outputLabel value="New Password confirm: *" />  
+				            <p:password value="#{accountBean.passwordNew2}" label="Password confirm"/>   
+				          
+				          	<h:outputLabel /><h:outputLabel />
+				            <p:commandButton value="Submit" action="#{accountBean.changePassword}" update="account_panel"/>  
+				  
+				        </h:panelGrid>  
+				        
+				        <p:messages id="messages" autoUpdate="true"/>  
+					</p:panel>
+			    </h:form>
+			    
 	    	</p:panel>
 	    </div>
 	</h:body>

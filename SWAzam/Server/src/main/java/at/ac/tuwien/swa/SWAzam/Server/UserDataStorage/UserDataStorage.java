@@ -19,11 +19,12 @@ public interface UserDataStorage {
     
     // validates from hashed pw to hashed pw
 	public User getUser(String user, String password);
-	
 	// validates from pw to hashed pw
 	public User validate(String user, String password);
+	
 	public List<CoinLog> getLogForUser(User user);
 	public List<RecognitionRequest> getRequestHistory(User user);
 	public boolean addRequestEntry(RecognitionRequest request);
+	public String changePassword(User user, String passwordOld, String passwordNew);
 	
 }

@@ -89,6 +89,7 @@ public class UserController implements Serializable {
 			tableBean = this.<TableController> findBean("tableBean");
 			tableBean.setUser(user);
 			tableBean.updateRequestLog();
+			this.<AccountController> findBean("accountBean").setUser(user);
 			return "overview.xhtml?faces-redirect=true";
 		}
 		else 
