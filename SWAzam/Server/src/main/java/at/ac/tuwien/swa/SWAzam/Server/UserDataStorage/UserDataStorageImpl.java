@@ -44,13 +44,14 @@ public class UserDataStorageImpl implements UserDataStorage {
 			
 			pstmt.execute();
 			
-			pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+			pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
-			pstmt.setInt(3, 0);
+			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setInt(4, 0);
-			pstmt.setBoolean(5, false);
-			pstmt.setDate(6, new Date(System.currentTimeMillis()));
+			pstmt.setInt(5, 0);
+			pstmt.setBoolean(6, false);
+			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
 			
@@ -211,9 +212,11 @@ public class UserDataStorageImpl implements UserDataStorage {
         	}
 
             log.info("Adding coin to user!");
-            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
+			// TODO add request id as parameter!
+			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setInt(3, old_coins);
 			pstmt.setInt(4, old_coins+1);
 			pstmt.setBoolean(5, false);
@@ -252,9 +255,10 @@ public class UserDataStorageImpl implements UserDataStorage {
         	}
 
             log.info("Adding coin to user!");
-            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
+			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setInt(3, old_coins);
 			pstmt.setInt(4, old_coins+numCoins);
 			pstmt.setBoolean(5, false);
