@@ -131,8 +131,8 @@ public class Peer {
     private void testRequestToServerUserValidation(String serverAddress) {
         Peer2ServerConnector peer2ServerConnector = peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION);
         try {
-            UserInformation info = peer2ServerConnector.validateUser("Manu", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08");
-            if (info == null) log.severe("user Manu not found");
+            UserInformation info = peer2ServerConnector.validateUser("John", "fd53ef835b15485572a6e82cf470dcb41fd218ae5751ab7531c956a2a6bcd3c7");
+            if (info == null) log.severe("user John not found");
             else log.info(info.getUsername() + ": " + info.getCredits());
         } catch (UnableToConnectToServerException e) {
             log.severe(e.getMessage());
