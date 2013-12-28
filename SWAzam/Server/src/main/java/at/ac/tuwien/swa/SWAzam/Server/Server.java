@@ -19,6 +19,9 @@ import com.google.inject.Injector;
 import at.ac.tuwien.swa.SWAzam.Server.DebitManager.DebitManagerFactory;
 import at.ac.tuwien.swa.SWAzam.Server.Peer2ServerConnector.PeerWebService;
 import at.ac.tuwien.swa.SWAzam.Server.PermissionValidator.PermissionValidatorFactory;
+import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
+import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
+import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorageImpl;
 
 public class Server {
 	
@@ -58,15 +61,30 @@ public class Server {
     	//TODO remove - just for testing
     	System.out.println("Getting all stored users");
     	UserDataStorage uds = new UserDataStorageImpl();
-    	uds.getUsers();
-    	System.out.println("\nValidating users");
-    	System.out.println(uds.getUser("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"));
-    	System.out.println(uds.getUser("Johannes", "XX"));
+    	//System.out.println(uds.getUser("Manu", "2d00f5e3e65894165b9ec758a282f69784143a8029cb9e7f224a4e5aab159799"));
+    	//System.out.println(uds.getUser("Johannes", "XX"));
+    	//System.out.println(uds.getUsers());
+    	//System.out.println(uds.addUser(new User("XXX", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0)));
     	
+    	for (User user : uds.getUsers()) {
+    		System.out.println(user);
+    	}
+    	
+    	//uds.addCoins(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0));
+    	//uds.addCoins(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0));
+    	uds.reduceCoins(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0));
+    	
+    	System.out.println("");
+    	for (User user : uds.getUsers()) {
+    		System.out.println(user);
+    	}
+    	
+    	
+    	/*
     	System.out.println(uds.getUsers().size());
     	System.out.println(uds.removeUser(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0)));
     	System.out.println(uds.getUsers().size());
-    	System.out.println(uds.addUser(new User("Johannes", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 0)));
+    	
     	System.out.println(uds.getUsers().size());
     	
     	

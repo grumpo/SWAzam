@@ -3,6 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Server.UserDataStorage;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+
 
 
 public class UserDataStorageImpl implements UserDataStorage {
@@ -36,10 +38,19 @@ public class UserDataStorageImpl implements UserDataStorage {
 		PreparedStatement pstmt;
 		
 		try {
-			pstmt = con.prepareStatement("INSERT INTO user VALUES(?,?,?)");
+			pstmt = con.prepareStatement("INSERT INTO user VALUES(?,?)");
 			pstmt.setString(1, user.getUsername());
 			pstmt.setString(2, createPasswordHash(user.getPassword()));
-			pstmt.setInt(3, user.getCoins());
+			
+			pstmt.execute();
+			
+			pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+			pstmt.setNull(1, java.sql.Types.INTEGER);
+			pstmt.setString(2, user.getUsername());
+			pstmt.setInt(3, 0);
+			pstmt.setInt(4, 0);
+			pstmt.setBoolean(5, false);
+			pstmt.setDate(6, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
 			
@@ -48,6 +59,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			return "Username already exists. Please choose another one!";
 		}
 	}
+	
 
 	public boolean removeUser(User user) {
 		// TODO Auto-generated method stub
@@ -69,7 +81,9 @@ public class UserDataStorageImpl implements UserDataStorage {
 
 	public Set<User> getUsers() {
 		PreparedStatement pstmt;
+		PreparedStatement pstmt2;
         ResultSet rs;
+        ResultSet rs2;
         
         users.clear();
 
@@ -80,7 +94,19 @@ public class UserDataStorageImpl implements UserDataStorage {
             rs = pstmt.executeQuery();
 
             while(rs.next()){
-                users.add(new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getInt("COINS")));
+            	pstmt2 = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+            	pstmt2.setString(1, rs.getString("username"));
+            	
+            	rs2 = pstmt2.executeQuery();
+            	
+            	int coins = -1;
+            	
+            	// TODO: improve
+            	while (rs2.next()){
+            		coins = rs2.getInt("coins_new");
+            	}
+            	
+                users.add(new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), coins));
             }
         }
         catch(SQLException e){
@@ -90,21 +116,33 @@ public class UserDataStorageImpl implements UserDataStorage {
         return users;
 	}
 
-	public User getUser(String user, String password) {
+	public User getUser(String username, String password) {
 		PreparedStatement pstmt;
         ResultSet rs;
 
         try{
             log.info("Validating user!");
             pstmt = con.prepareStatement("SELECT * FROM USER WHERE USERNAME=? AND PASSWORD=?");
-            pstmt.setString(1, user);
+            pstmt.setString(1, username);
             pstmt.setString(2, password);
 
             rs = pstmt.executeQuery();
 
-            if(rs.next())
-                return new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getInt("COINS"));
- 
+            if(rs.next()) {
+            	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+            	pstmt.setString(1, rs.getString("username"));
+            	
+            	rs = pstmt.executeQuery();
+            	
+            	int coins = -1;
+            	
+            	// TODO: improve
+            	while (rs.next()){
+            		coins = rs.getInt("coins_new");
+            	}
+            	
+            	return new User(username, password, coins);
+            }
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -126,8 +164,22 @@ public class UserDataStorageImpl implements UserDataStorage {
 
             rs = pstmt.executeQuery();
             
-            if(rs.next())
-            	return new User(rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getInt("COINS"));
+            if(rs.next()) {
+            	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+            	pstmt.setString(1, rs.getString("username"));
+            	
+            	rs = pstmt.executeQuery();
+            	
+            	int coins = -1;
+            	
+            	// TODO: improve
+            	while (rs.next()){
+            		coins = rs.getInt("coins_new");
+            	}
+            	
+            	return new User(username, password, coins);
+            }
+            	
  
         }
         catch(SQLException e){
@@ -137,27 +189,78 @@ public class UserDataStorageImpl implements UserDataStorage {
         return null;   	        
     }
 	
+	
+	/**
+	 * if user gets an additional coin due to an resolved fp request
+	 */
 	public boolean addCoins(User user) {
 		PreparedStatement pstmt;
 		ResultSet rs;
 
         try{
-        	int currentCoins = -1;
+        	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+        	pstmt.setString(1, user.getUsername());
+        	
+        	rs = pstmt.executeQuery();
+        	
+        	int old_coins = -1;
+        	
+        	// TODO: improve
+        	while (rs.next()){
+        		old_coins = rs.getInt("coins_new");
+        	}
+
             log.info("Adding coin to user!");
-            pstmt = con.prepareStatement("SELECT * FROM user WHERE username=?");
-            pstmt.setString(1, user.getUsername());
+            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+			pstmt.setNull(1, java.sql.Types.INTEGER);
+			pstmt.setString(2, user.getUsername());
+			pstmt.setInt(3, old_coins);
+			pstmt.setInt(4, old_coins+1);
+			pstmt.setBoolean(5, false);
+			pstmt.setDate(6, new Date(System.currentTimeMillis()));
+			
+			pstmt.execute();
             
-            rs = pstmt.executeQuery();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        		
+		return false;
+	}
+	
+	
+	/**
+	 * if the User buys coins
+	 */
+	public boolean addCoins(User user, int numCoins) {
+		PreparedStatement pstmt;
+		ResultSet rs;
 
-            if(rs.next()) {
-                currentCoins = rs.getInt("COINS");
-            }
-                        
-            pstmt = con.prepareStatement("UPDATE user set coins=? WHERE username=?");
-            pstmt.setInt(1, currentCoins+1);
-            pstmt.setString(2, user.getUsername());
+        try{
+        	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+        	pstmt.setString(1, user.getUsername());
+        	
+        	rs = pstmt.executeQuery();
+        	
+        	int old_coins = -1;
+        	
+        	// TODO: improve
+        	while (rs.next()){
+        		old_coins = rs.getInt("coins_new");
+        	}
 
-            pstmt.execute(); 
+            log.info("Adding coin to user!");
+            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+			pstmt.setNull(1, java.sql.Types.INTEGER);
+			pstmt.setString(2, user.getUsername());
+			pstmt.setInt(3, old_coins);
+			pstmt.setInt(4, old_coins+numCoins);
+			pstmt.setBoolean(5, false);
+			pstmt.setDate(6, new Date(System.currentTimeMillis()));
+			
+			pstmt.execute();
             
             return true;
         }
@@ -168,27 +271,34 @@ public class UserDataStorageImpl implements UserDataStorage {
 		return false;
 	}
 
+
 	public boolean reduceCoins(User user) {
 		PreparedStatement pstmt;
 		ResultSet rs;
 
         try{
-        	int currentCoins = -1;
-            log.info("Reduced one coin from user!");
-            pstmt = con.prepareStatement("SELECT * FROM user WHERE username=?");
-            pstmt.setString(1, user.getUsername());
-            
-            rs = pstmt.executeQuery();
+        	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+        	pstmt.setString(1, user.getUsername());
+        	
+        	rs = pstmt.executeQuery();
+        	
+        	int old_coins = -1;
+        	
+        	// TODO: improve
+        	while (rs.next()){
+        		old_coins = rs.getInt("coins_new");
+        	}
 
-            if(rs.next()) {
-                currentCoins = rs.getInt("COINS");
-            }
-                        
-            pstmt = con.prepareStatement("UPDATE user set coins=? WHERE username=?");
-            pstmt.setInt(1, currentCoins-1);
-            pstmt.setString(2, user.getUsername());
-
-            pstmt.execute(); 
+            log.info("Adding coin to user!");
+            pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?)");
+			pstmt.setNull(1, java.sql.Types.INTEGER);
+			pstmt.setString(2, user.getUsername());
+			pstmt.setInt(3, old_coins);
+			pstmt.setInt(4, old_coins-1);
+			pstmt.setBoolean(5, false);
+			pstmt.setDate(6, new Date(System.currentTimeMillis()));
+			
+			pstmt.execute();
             
             return true;
         }

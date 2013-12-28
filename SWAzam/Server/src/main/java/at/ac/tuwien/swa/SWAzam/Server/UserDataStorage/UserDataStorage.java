@@ -9,6 +9,7 @@ public interface UserDataStorage {
     public boolean removeUser(User user);
     public boolean reduceCoins(User user);
     public boolean addCoins(User user);
+    public boolean addCoins(User user, int numCoins);
     public Set<User> getUsers();
     
     // validates from hashed pw to hashed pw
