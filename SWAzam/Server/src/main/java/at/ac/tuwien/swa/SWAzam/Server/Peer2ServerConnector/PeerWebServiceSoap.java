@@ -30,15 +30,19 @@ public class PeerWebServiceSoap implements PeerWebService {
         return permissionValidator.validateUser(user, password);
     }
 	
+	//TODO - add music string (filename? song title, artist?) if present and request id
 	@WebMethod
     public void addCoins (User user) {
         debitManager.addCoins(user);
     }
 	
+	//TODO - add music string (filename? song title, artist?) if present and request id
 	@WebMethod
     public void reduceCoins (User user) {
         debitManager.removeCoins(user);
     }
+	
+	//TODO - add method to initiate a music search, create new open recognitionrequest (vgl at.ac.tuwien.swa.SWAZAM.Server.RecognitionRequest.java)
 
     @WebMethod(exclude=true)
     public void run(int port, PermissionValidator pv, DebitManager dm) {
