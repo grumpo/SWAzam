@@ -10,12 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
+import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 
 
 
@@ -202,6 +204,8 @@ public class UserDataStorageImpl implements UserDataStorage {
             e.printStackTrace();
         }
         
+        //sort log descending
+        Collections.reverse(log);
 		
 		return log;
 	}
@@ -391,6 +395,36 @@ public class UserDataStorageImpl implements UserDataStorage {
         }
 
         return generatedPassword;
+	}
+
+
+	@Override
+	public List<RecognitionRequest> getRequestHistory(User user) {
+		List<RecognitionRequest> requests = new ArrayList<RecognitionRequest>();
+		
+		PreparedStatement pstmt;
+        ResultSet rs;
+        
+        try{
+            pstmt = con.prepareStatement("SELECT * FROM request where user_username=?");
+            pstmt.setString(1, user.getUsername());
+            
+            rs = pstmt.executeQuery();
+            
+        	while (rs.next()){
+        		requests.add(new RecognitionRequest(rs.getInt("id"), rs.getString("USER_USERNAME"), rs.getTimestamp("DATE"), rs.getString("SONG"), 
+        				rs.getString("PEER_URL"), rs.getBoolean("FINISHED"), rs.getBoolean("SUCCESS")));
+        	}
+            	
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        //sort log descending
+        Collections.reverse(requests);
+		
+		return requests;
 	}
 
 }

@@ -29,10 +29,4 @@ Execute "mvn compile exec:java" in the according component.
 			WebApp available at: http://localhost:8080 
 			(wait after server start till this line shows: Information: Starting ProtocolHandler ["http-bio-8080"])
 			
-			Available Users for Login
-			Username	Password
-			
-			Johannes	Johannes
-			Markus		Markus
-			Manu		Manu
-			Gernot		Gernot
+			Available Users for Login (Username: John, Password: Doe and Username: Jane, Password: Doe)

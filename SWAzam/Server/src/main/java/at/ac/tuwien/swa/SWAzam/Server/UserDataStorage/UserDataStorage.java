@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
+import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 
 
 public interface UserDataStorage {
@@ -22,5 +23,6 @@ public interface UserDataStorage {
 	// validates from pw to hashed pw
 	public User validate(String user, String password);
 	public List<CoinLog> getLogForUser(User user);
+	public List<RecognitionRequest> getRequestHistory(User user);
 	
 }

@@ -24,9 +24,8 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public List<RecognitionRequest> getRequestHistory() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RecognitionRequest> getRequestHistory(User user) {
+		return uds.getRequestHistory(user);
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package at.ac.tuwien.swa.SWAzam.Server.Controller;
 
 import java.io.Serializable;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
 import at.ac.tuwien.swa.SWAzam.Server.Model.LoginModel;
 import at.ac.tuwien.swa.SWAzam.Server.Model.LoginService;
 import at.ac.tuwien.swa.SWAzam.Server.Model.LoginServiceImpl;
@@ -26,6 +28,8 @@ public class UserController implements Serializable {
     private LoginService loginService;
     
     private LoginModel loginModel;
+    
+    private TableController tableBean;
     
     public UserController() {
     	loginService = new LoginServiceImpl();
@@ -65,15 +69,28 @@ public class UserController implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	/**
+	 * Helper
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T findBean(String beanName) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
+	}
 
 	public String validateLogin() { 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesContext facesContext = FacesContext.getCurrentInstance(); 
 		
     	loginModel = new LoginModel(username, password);
     	user = loginService.validate(loginModel);
     	    	    	
-		if(user != null)		
+		if(user != null) {
+			tableBean = this.<TableController> findBean("tableBean");
+			tableBean.setUser(user);
+			tableBean.updateRequestLog();
 			return "overview.xhtml?faces-redirect=true";
+		}
 		else 
 	        facesContext.addMessage("userBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username or password is incorrect!", ""));
 		

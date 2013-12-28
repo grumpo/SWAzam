@@ -6,8 +6,9 @@ import java.util.Date;
 public class RecognitionRequest {
 	
 	private int id;
+	private String username;
 	private Date date;
-	private Song song;
+	private String song;
 	private String peerURL;
 	private boolean finished;
 	private boolean success;
@@ -17,9 +18,10 @@ public class RecognitionRequest {
 	}
 	
 
-	public RecognitionRequest(int id, Date date, Song song, String peerURL, boolean finished, boolean success) {
+	public RecognitionRequest(int id, String username, Date date, String song, String peerURL, boolean finished, boolean success) {
 		super();
 		this.id = id;
+		this.username = username;
 		this.date = date;
 		this.song = song;
 		this.peerURL = peerURL;
@@ -34,6 +36,14 @@ public class RecognitionRequest {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public Date getDate() {
 		return date;
@@ -43,11 +53,11 @@ public class RecognitionRequest {
 		this.date = date;
 	}
 
-	public Song getSong() {
+	public String getSong() {
 		return song;
 	}
 
-	public void setSong(Song song) {
+	public void setSong(String song) {
 		this.song = song;
 	}
 

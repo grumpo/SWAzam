@@ -10,6 +10,6 @@ public interface TableService {
 	
 	public List<CoinLog> getCoinLog();
 	public List<CoinLog> getCoinLogforUser(User user);
-	public List<RecognitionRequest> getRequestHistory();
+	public List<RecognitionRequest> getRequestHistory(User user);
 
 }
