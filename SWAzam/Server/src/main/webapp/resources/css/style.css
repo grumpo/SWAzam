@@ -87,9 +87,17 @@ h1 {
 }
 
 .account_panel {
-	width: 40%;
+	width: 350px;
 	position:left;
 }
+
+.buyCoin_panel {
+	width: 350px;
+	position:left;
+	margin-top:30px;
+}
+
+
 
 .registration_text_panel {
 	float: right;

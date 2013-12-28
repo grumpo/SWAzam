@@ -28,7 +28,7 @@
 	    </div>
 	    
 	    <div>
-	    	<p:scrollPanel id="scrollpane"> 			    
+	    	<p:scrollPanel id="scrollpane" mode="native"> 			    
 			    <h3>Coin History</h3>
 			    
 			    <p:dataTable var="coinlog" value="#{tableBean.coinLog}" rowStyleClass="">
@@ -80,8 +80,9 @@
 			    
 			    <p:lineChart value="#{chartBean.linearModel}" legendPosition="e" zoom="true" animate="true"  
                 title="Last 8 Actions" style="width:500px;" xaxisLabel="Actions" yaxisLabel="# Coins" minY="0" minX="0" maxX="7"/>  
-			    
+			    <br /><br />
 	    	</p:scrollPanel>
+	    	
 	    </div>
 	    
 	</h:body>

@@ -17,4 +17,14 @@ public class AccountServiceImpl implements AccountService {
 		return uds.changePassword(user, passwordOld, passwordNew);
 	}
 
+	@Override
+	public String buyCoins(User user, int numCoins) {
+		boolean success = uds.addCoins(user, numCoins);
+		if (success)
+			return "Added " + numCoins + " to the account!";
+		
+		//TODO improve
+		return "Error";	
+	}
+
 }

@@ -6,4 +6,6 @@ public interface AccountService {
 	
 	public String changePassword(User user, String passwordOld, String passwordNew);
 
+	public String buyCoins(User user, int numCoins);
+
 }

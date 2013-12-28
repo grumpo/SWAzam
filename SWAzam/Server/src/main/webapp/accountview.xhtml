@@ -28,7 +28,7 @@
 	    </div>
 	    
 	    <div>
-	    	<p:panel id="scrollpane"> 
+	    	<p:panel id="scrollpane" mode="native"> 
 			    // TODO's
 			    <br />
 			    <ul>
@@ -44,7 +44,7 @@
 				            <h:outputLabel value="New Password: *" />  
 				            <p:password value="#{accountBean.passwordNew1}" label="Password" feedback="true"/>  
 				  
-				            <h:outputLabel value="New Password confirm: *" />  
+				            <h:outputLabel value="New Password 2: *" />  
 				            <p:password value="#{accountBean.passwordNew2}" label="Password confirm"/>   
 				          
 				          	<h:outputLabel /><h:outputLabel />
@@ -53,6 +53,19 @@
 				        </h:panelGrid>  
 				        
 				        <p:messages id="messages" autoUpdate="true"/>  
+					</p:panel>
+					
+					 <p:panel id="buyCoin_panel" styleClass="buyCoin_panel" header="Buy Coins">
+						<h:panelGrid columns="2" cellpadding="5">  
+				            <h:outputText value="Number of Coins" />  
+				            <p:spinner id="numCoinSpinner" value="#{accountBean.numCoins}"/> 
+				     
+				          	<h:outputLabel /><h:outputLabel />
+				            <p:commandButton value="Buy" action="#{accountBean.buyCoins}" update="buyCoin_panel"/>  
+				  
+				        </h:panelGrid>  
+				        
+				        <p:messages id="messages2" autoUpdate="true"/>  
 					</p:panel>
 			    </h:form>
 			    

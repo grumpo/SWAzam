@@ -18,6 +18,8 @@ public class AccountController {
 	private String passwordNew1;
 	private String passwordNew2;
 	
+	private int numCoins;
+	
 	private User user;
 	
 	private AccountService accountService;
@@ -52,7 +54,13 @@ public class AccountController {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+	public int getNumCoins() {
+		return numCoins;
+	}
+	public void setNumCoins(int numCoins) {
+		this.numCoins = numCoins;
+	}
+
 	public String changePassword() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();	
 		
@@ -72,6 +80,13 @@ public class AccountController {
 		}
 		else
 			facesContext.addMessage("accountBean", new FacesMessage(FacesMessage.SEVERITY_ERROR, "New password entries don't match!", ""));
+		
+		return "";
+	}
+	
+	public String buyCoins(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();	
+		facesContext.addMessage("accountBean", new FacesMessage(accountService.buyCoins(user, numCoins)));
 		
 		return "";
 	}
