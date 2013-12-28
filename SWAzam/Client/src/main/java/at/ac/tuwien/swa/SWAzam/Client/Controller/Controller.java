@@ -62,8 +62,6 @@ public class Controller implements PropertyChangeListener {
 
     private void initializeDatabase() {
         try {
-            System.out.println(this.getClass().getResource("/Database").getFile());
-
             con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
             log.info("Successfully connected to Database!");
         } catch (SQLException e) {

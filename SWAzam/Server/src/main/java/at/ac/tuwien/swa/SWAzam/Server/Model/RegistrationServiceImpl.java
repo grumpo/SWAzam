@@ -15,8 +15,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	@Override
 	public String register(User user) {
-		// TODO Auto-generated method stub
-		System.out.println(user.toString());
 		return uds.addUser(user);		
 	}
 

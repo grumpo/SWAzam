@@ -51,7 +51,7 @@ public class TableController {
 		chartBean = this.<ChartController> findBean("chartBean");
 		coinLog = tableService.getCoinLogforUser(user);
 		
-		chartBean.setValues(coinLog, user);
+		chartBean.setValues(coinLog);
 		chartBean.createLinearModel();
 	}
 	
