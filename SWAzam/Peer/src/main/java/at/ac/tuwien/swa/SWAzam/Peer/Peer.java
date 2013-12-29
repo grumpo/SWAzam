@@ -3,7 +3,6 @@ package at.ac.tuwien.swa.SWAzam.Peer;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
-import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage.FingerprintStorageFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierFactory;
@@ -112,19 +111,13 @@ public class Peer {
 
     private void testRequestToPeerForwardRequest(Integer port) {
         Fingerprint fingerprint = generateTestFingerprint();
-        FingerprintResult fingerprintResult = null;
         try {
-            fingerprintResult = peer2PeerConnectorFactory.create(String.format("http://localhost:%d/PeerWebService?wsdl", port)).
+            peer2PeerConnectorFactory.create(String.format("http://localhost:%d/PeerWebService?wsdl", port)).
                     identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {
                     });
         } catch (UnableToConnectToPeer e) {
             log.info("Peer is down: " + e.getMessage());
             // TODO: try next
-        }
-        if (fingerprintResult != null) {
-            log.info("Fingerprint was identified to be: " + fingerprintResult.getResult());
-        } else {
-            log.info("Fingerprint could not be identified.");
         }
     }
 

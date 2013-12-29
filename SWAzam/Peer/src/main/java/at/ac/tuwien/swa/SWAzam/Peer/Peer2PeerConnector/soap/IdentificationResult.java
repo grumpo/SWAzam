@@ -3,21 +3,20 @@ package at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for IdentifyMP3FingerprintResponse complex type.
+ * <p>Java class for identificationResult complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="IdentifyMP3FingerprintResponse">
+ * &lt;complexType name="identificationResult">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/}fingerprintResult" minOccurs="0"/>
+ *         &lt;element name="arg0" type="{http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/}fingerprintResult" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,36 +26,35 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "IdentifyMP3FingerprintResponse", propOrder = {
-    "_return"
+@XmlType(name = "identificationResult", propOrder = {
+    "arg0"
 })
-public class IdentifyMP3FingerprintResponse {
+public class IdentificationResult {
 
-    @XmlElement(name = "return")
-    protected FingerprintResult _return;
+    protected FingerprintResult arg0;
 
     /**
-     * Gets the value of the return property.
+     * Gets the value of the arg0 property.
      * 
      * @return
      *     possible object is
      *     {@link FingerprintResult }
      *     
      */
-    public FingerprintResult getReturn() {
-        return _return;
+    public FingerprintResult getArg0() {
+        return arg0;
     }
 
     /**
-     * Sets the value of the return property.
+     * Sets the value of the arg0 property.
      * 
      * @param value
      *     allowed object is
      *     {@link FingerprintResult }
      *     
      */
-    public void setReturn(FingerprintResult value) {
-        this._return = value;
+    public void setArg0(FingerprintResult value) {
+        this.arg0 = value;
     }
 
 }

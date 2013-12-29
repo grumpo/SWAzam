@@ -5,6 +5,7 @@ import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import com.google.gson.Gson;
 
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
@@ -20,12 +21,17 @@ public class PeerWebServiceSoap implements PeerWebService {
     private String peerUrl;
     private Endpoint endpoint;
 
-    @WebMethod
-    public FingerprintResult IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops) {
+    @Oneway
+    public void IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops) {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         hops.add(peerUrl);
-        return requestHandler.identifyMP3Fingerprint(fingerprint, user, hops);
+        requestHandler.identifyMP3Fingerprint(fingerprint, user, hops, null);
+    }
+
+    @Oneway
+    public void identificationResult(FingerprintResult result) {
+        requestHandler.identificationResult(result);
     }
 
     @WebMethod(exclude=true)
@@ -38,6 +44,7 @@ public class PeerWebServiceSoap implements PeerWebService {
     }
 
     @Override
+    @WebMethod(exclude=true)
     public void stop() {
         log.info("Stopping service...");
         endpoint.stop();

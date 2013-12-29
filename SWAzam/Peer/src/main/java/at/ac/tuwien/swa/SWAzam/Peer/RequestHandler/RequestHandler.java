@@ -7,6 +7,7 @@ import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import java.util.List;
 
 public interface RequestHandler {
-    FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops);
+    void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, ResultListener resultListener);
+    void identificationResult(FingerprintResult result);
     UserInformation getUserInformation(String user, String password);
 }

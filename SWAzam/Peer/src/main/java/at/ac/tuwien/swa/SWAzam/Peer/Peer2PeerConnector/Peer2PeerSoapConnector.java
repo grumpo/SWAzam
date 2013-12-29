@@ -24,29 +24,38 @@ public class Peer2PeerSoapConnector implements Peer2PeerConnector {
         this.peerWSDLLocation = peerWSDLLocation;
     }
 
-    public FingerprintResult identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) throws UnableToConnectToPeer {
+    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) throws UnableToConnectToPeer {
         log.info(String.format("Forwarding fingerprint request from user: %s to peer %s ",
                 user, peerWSDLLocation));
 
-        at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult result =
-                getFingerprintResult(fingerprint, user, hops);
-
-        if (result == null) return null;
-
-        FingerprintResult fingerprintResult = new FingerprintResult();
-        fingerprintResult.setResult(result.getResult());
-        fingerprintResult.setHops(result.getHops());
-        return fingerprintResult;
-    }
-
-    private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult getFingerprintResult(Fingerprint fingerprint, String user, List<String> hops) throws UnableToConnectToPeer {
         try {
             PeerWebServiceSoap peerWebServicePort =
-                new PeerWebServiceSoapService(toUrl(peerWSDLLocation)).getPeerWebServiceSoapPort();
-            return peerWebServicePort.identifyMP3Fingerprint(new Gson().toJson(fingerprint), user, hops);
+                    new PeerWebServiceSoapService(toUrl(peerWSDLLocation)).getPeerWebServiceSoapPort();
+            peerWebServicePort.identifyMP3Fingerprint(new Gson().toJson(fingerprint), user, hops);
         } catch (WebServiceException e) {
             throw new UnableToConnectToPeer(e);
         }
+    }
+
+    @Override
+    public void identificationResolved(FingerprintResult fingerprintResult) throws UnableToConnectToPeer {
+        log.info("Sending the fingerprint result back.");
+
+        try {
+            PeerWebServiceSoap peerWebServicePort =
+                    new PeerWebServiceSoapService(toUrl(peerWSDLLocation)).getPeerWebServiceSoapPort();
+            peerWebServicePort.identificationResult(convertFingerprint(fingerprintResult));
+        } catch (WebServiceException e) {
+            throw new UnableToConnectToPeer(e);
+        }
+    }
+
+    private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult convertFingerprint(FingerprintResult fingerprintResult) {
+        at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult result =
+                new at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult();
+        result.setResult(fingerprintResult.getResult());
+        result.getHops().addAll(fingerprintResult.getHops());
+        return result;
     }
 
     private URL toUrl(String url) throws UnableToConnectToPeer {

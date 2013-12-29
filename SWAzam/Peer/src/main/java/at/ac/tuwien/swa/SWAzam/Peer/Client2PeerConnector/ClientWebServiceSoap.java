@@ -4,6 +4,7 @@ import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
+import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.ResultListener;
 import com.google.gson.Gson;
 
 import javax.jws.WebMethod;
@@ -30,7 +31,16 @@ public class ClientWebServiceSoap implements ClientWebService {
     public FingerprintResult identifyMP3Fingerprint(String fingerprintJson, String user, String password) {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
-        return requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl));
+        ResultListener resultListener = new ResultListener();
+        requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl), resultListener);
+        try {
+            return resultListener.waitForResult();
+        } catch (InterruptedException e) {
+            log.severe("Waiting for result has been interrupted: " + e.getMessage());
+            FingerprintResult fingerprintResult = new FingerprintResult();
+            fingerprintResult.setHops(Arrays.asList(peerUrl));
+            return fingerprintResult;
+        }
     }
 
     @WebMethod
