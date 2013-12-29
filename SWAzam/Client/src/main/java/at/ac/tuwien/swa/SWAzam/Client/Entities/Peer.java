@@ -16,6 +16,8 @@ public class Peer {
         return this.url;
     }
 
+    public String getClientWebServiceUrl() {return this.getUrl() + "/ClientWebService?wsdl";}
+
     public int getFailure(){
         return this.failure;
     }
