@@ -1,3 +1,5 @@
+param([String]$defaultMP3s = "")
+
 $scriptDirectory = split-path -parent $MyInvocation.MyCommand.Definition
 $configBaseDirectory = "C:\\temp\\SWAzam"
 
@@ -132,6 +134,13 @@ function CreateConfigDirectories()
 	New-Item "$configBaseDirectory\\client2" -type Directory | Out-Null
 	New-Item "$configBaseDirectory\\client2\\database" -type Directory | Out-Null
 	
+	if($defaultMP3s -ne "")
+	{
+		Copy-Item $defaultMP3s\\* "$configBaseDirectory\\peer1\\mp3s"
+		Copy-Item $defaultMP3s\\* "$configBaseDirectory\\peer2\\mp3s"
+		Copy-Item $defaultMP3s\\* "$configBaseDirectory\\peer3\\mp3s"
+	}
+	
 	Write-Host "Configuration directories have been created at $configBaseDirectory." -ForegroundColor Green
 }
 
@@ -239,6 +248,7 @@ function CompileComponents()
 	CompileServer
 	CompilePeer
 	CompileClient
+	
 	Write-Host "Compilation of components has finished." -ForegroundColor Green
 }
 
@@ -255,12 +265,12 @@ function CreateDatabases()
 function RunComponents()
 {
 	StartServer @("9005")
-	Write-Host "Press any key when server is up and running..." -ForegroundColor Yellow
+	Write-Host "Press enter when server is up and running..." -ForegroundColor Yellow
 	Read-Host
 	StartPeer @("C:\\temp\\SWAzam\\peer1\\mp3s", "9000", "http://localhost:9005", "C:\\temp\\SWAzam\\peer1\\database")
 	StartPeer @("C:\\temp\\SWAzam\\peer2\\mp3s", "9001", "http://localhost:9005", "C:\\temp\\SWAzam\\peer2\\database")
 	StartPeer @("C:\\temp\\SWAzam\\peer3\\mp3s", "9002", "http://localhost:9005", "C:\\temp\\SWAzam\\peer3\\database")
-	Write-Host "Press any key when peers are up and running..." -ForegroundColor Yellow
+	Write-Host "Press enter when peers are up and running..." -ForegroundColor Yellow
 	Read-Host
 	StartClient @("C:\\temp\\SWAzam\\client1\\database")
 	StartClient @("C:\\temp\\SWAzam\\client2\\database")
@@ -274,4 +284,5 @@ CreateConfigDirectories
 CreateDatabases
 RunComponents
 
+start 'http://localhost:8080'
 Write-Host "Make sure to place MP3s in the peer libraries to allow successful track identification!" -ForegroundColor Yellow
