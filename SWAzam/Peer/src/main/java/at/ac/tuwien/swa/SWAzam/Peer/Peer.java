@@ -12,6 +12,9 @@ import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.UnableToConnectToPeer;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnectorFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.UnableToConnectToServerException;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorageFactory;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.StorageException;
+import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarderFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandlerFactory;
 import com.google.inject.Guice;
@@ -44,12 +47,21 @@ public class Peer {
     private FingerprintStorageFactory fingerprintStorageFactory;
     @Inject
     private Peer2ServerConnectorFactory peer2ServerConnectorFactory;
+    @Inject
+    private PeerStorageFactory peerStorageFactory;
+    @Inject
+    private RequestForwarderFactory requestForwarderFactory;
 
     public static void main(String[] argv) {
         Injector injector = Guice.createInjector(new PeerModule());
-        String msg = "Please pass: \n- the storagePath that contains the MP3 files \n- the port for the web services \n- the Address of the server \nas argument.";
+        String msg = "Usage: Please pass \n" +
+                "- the path to the dir that contains the MP3 files (storagePath) \n" +
+                "- the port for the web services \n" +
+                "- the address of the server \n" +
+                "- the path to the HSQLDB (dbPath) \n" +
+                "as argument.";
 
-        if (argv.length < 3) {
+        if (argv.length < 4) {
             log.log(Level.SEVERE, msg);
             return;
         }
@@ -70,9 +82,16 @@ public class Peer {
             return;
         }
         String serverAddress = argv[2];
+        String dbPath = argv[3];
+
         final Peer peer = injector.getInstance(Peer.class);
-        peer.run(storagePath, port, serverAddress);
-        log.info("Peer is up, press <enter> to quit.");
+        try {
+            peer.run(storagePath, port, serverAddress, dbPath);
+            log.info("Peer is up, press <enter> to quit.");
+        } catch (StorageException e) {
+            log.severe("Error reading peer database! Please pass a dbPath that represents a valid peer database! \n\n" + msg);
+            return;
+        }
         new Thread() {
             @Override
             public void run() {
@@ -97,10 +116,10 @@ public class Peer {
         peerWebService.stop();
     }
 
-    public void run(String storagePath, Integer port, String serverAddress) {
+    public void run(String storagePath, Integer port, String serverAddress, String dbPath) {
         log.info("Starting peer...");
 
-        startServices(port, createRequestHandler(storagePath, serverAddress));
+        startServices(port, createRequestHandler(storagePath, serverAddress, dbPath));
 
         // TODO: remove those or move to ITs
         // test request on self
@@ -117,7 +136,6 @@ public class Peer {
                     });
         } catch (UnableToConnectToPeer e) {
             log.info("Peer is down: " + e.getMessage());
-            // TODO: try next
         }
     }
 
@@ -144,9 +162,10 @@ public class Peer {
         peerWebService.run(port, requestHandler);
     }
 
-    private RequestHandler createRequestHandler(String storagePath, String serverAddress) {
+    private RequestHandler createRequestHandler(String storagePath, String serverAddress, String dbPath) {
         return requestHandlerFactory.create(
                 mp3IdentifierFactory.create(fingerprintStorageFactory.createStorageDirectory(storagePath)),
-                peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION));
+                peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION),
+                requestForwarderFactory.create(peerStorageFactory.create(dbPath)));
     }
 }

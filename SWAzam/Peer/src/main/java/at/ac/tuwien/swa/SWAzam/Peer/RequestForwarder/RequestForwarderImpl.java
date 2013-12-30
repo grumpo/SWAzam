@@ -7,6 +7,7 @@ import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.Peer;
 import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorage;
 import ch.lambdaj.function.convert.Converter;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import java.util.List;
 import java.util.Set;
@@ -20,10 +21,14 @@ public class RequestForwarderImpl implements RequestForwarder {
     private static final int INITIAL_FAIL_COUNT = 5;
     public static final int MAX_HOP_COUNT = 3;
 
-    @Inject
     private PeerStorage peerStorage;
     @Inject
     private Peer2PeerConnectorFactory peer2PeerConnectorFactory;
+
+    @Inject
+    public RequestForwarderImpl(@Assisted PeerStorage peerStorage) {
+        this.peerStorage = peerStorage;
+    }
 
     @Override
     public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) throws RequestForwarderException {

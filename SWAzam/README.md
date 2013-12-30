@@ -13,12 +13,25 @@ Requirements
     Run mvn install in the fingerprinting source directory.
 
 
-Run
----
+Usage
+-----
 
-Execute "mvn compile exec:java" in the according component.
+Execute "mvn compile exec:java" in the according component to start it.
 
-* Peer: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000 http://localhost:9003"
+* Peer:
+
+            Please pass:
+            - the path to the dir that contains the MP3 files (storagePath)
+            - the port for the web services
+            - the address of the server
+            - the path to the HSQLDB (dbPath)
+            as argument.
+
+            e.g.: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000 http://localhost:9003 /tmp/dbPeer1/localdb"
+
+            An example database can be found in the src/main/resources directory.
+
+            Quit the peer by pressing <enter>.
 
 
 * Server: 	mvn compile exec:java

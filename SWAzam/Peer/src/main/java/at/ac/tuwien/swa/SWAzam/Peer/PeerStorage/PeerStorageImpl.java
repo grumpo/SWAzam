@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Peer.PeerStorage;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.hsqldb.HsqlException;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -19,15 +20,16 @@ public class PeerStorageImpl implements PeerStorage {
     Set<Peer> peers;
     Connection con;
 
-    public PeerStorageImpl(){
-        this.peers = new HashSet<Peer>();
-        //TODO: this should be injected
+    @Inject
+    public PeerStorageImpl(@Assisted String dbPath){
+        this.peers = new HashSet<>();
         try {
-            this.con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
+            String url = "jdbc:hsqldb:file:" + dbPath;
+            this.con = DriverManager.getConnection(url, "SA", "");
+            log.info(String.format("Using %s as peer database.", url));
         } catch (SQLException e) {
-            log.warning("PeerStorage could not connect to database. Forwarding of requests will not be done.");
+            log.warning(String.format("PeerStorage could not connect to database (%s). Forwarding of requests will not be done.", dbPath));
         }
-
         readPeersFromDatabase();
     }
 
@@ -50,9 +52,8 @@ public class PeerStorageImpl implements PeerStorage {
 
             System.out.println(peers.size());
         }
-        catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+        catch(HsqlException | SQLException e){
+            throw new StorageException(e);
         }
     }
 
@@ -97,8 +98,7 @@ public class PeerStorageImpl implements PeerStorage {
             readPeersFromDatabase();
         }
         catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            throw new StorageException(e);
         }
     }
 

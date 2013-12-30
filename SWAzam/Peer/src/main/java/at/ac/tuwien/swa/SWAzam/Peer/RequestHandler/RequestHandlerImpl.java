@@ -27,15 +27,15 @@ public class RequestHandlerImpl implements RequestHandler {
     private final Peer2ServerConnector peer2ServerConnector;
     private ConcurrentHashMap<String, ResultListener> inProgress = new ConcurrentHashMap<>();
 
-    @Inject
     private RequestForwarder requestForwarder;
     @Inject
     private Peer2PeerConnectorFactory peer2PeerConnectorFactory;
 
     @Inject
-    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier, @Assisted Peer2ServerConnector peer2ServerConnector) {
+    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier, @Assisted Peer2ServerConnector peer2ServerConnector, @Assisted RequestForwarder requestForwarder) {
         this.mp3Identifier = mp3Identifier;
         this.peer2ServerConnector = peer2ServerConnector;
+        this.requestForwarder = requestForwarder;
     }
 
     public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, ResultListener resultListener) {

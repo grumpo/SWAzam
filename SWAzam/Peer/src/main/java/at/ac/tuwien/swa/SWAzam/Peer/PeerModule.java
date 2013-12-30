@@ -13,8 +13,10 @@ import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnectorFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerSoapConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorage;
+import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorageFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.PeerStorage.PeerStorageImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarder;
+import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarderFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestForwarder.RequestForwarderImpl;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandler;
 import at.ac.tuwien.swa.SWAzam.Peer.RequestHandler.RequestHandlerFactory;
@@ -27,8 +29,12 @@ public class PeerModule extends AbstractModule {
     protected void configure() {
         bind(ClientWebService.class).to(ClientWebServiceSoap.class);
         bind(PeerWebService.class).to(PeerWebServiceSoap.class);
-        bind(RequestForwarder.class).to(RequestForwarderImpl.class);
-        bind(PeerStorage.class).to(PeerStorageImpl.class);
+        install(new FactoryModuleBuilder()
+                .implement(RequestForwarder.class, RequestForwarderImpl.class)
+                .build(RequestForwarderFactory.class));
+        install(new FactoryModuleBuilder()
+                .implement(PeerStorage.class, PeerStorageImpl.class)
+                .build(PeerStorageFactory.class));
         install(new FactoryModuleBuilder()
                 .implement(Peer2PeerConnector.class, Peer2PeerSoapConnector.class)
                 .build(Peer2PeerConnectorFactory.class));
