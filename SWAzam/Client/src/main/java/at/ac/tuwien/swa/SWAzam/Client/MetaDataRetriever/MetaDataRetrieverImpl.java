@@ -38,8 +38,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
 
         //TODO: PeerManagement, WebServiceCall
         for(Peer p : ps.getPeers()){
-            con = conFac.create(p.getUrl());
-            ift = new IdentifyFingerprintThread(conFac.create(p.getUrl()), fp, user);
+            ift = new IdentifyFingerprintThread(conFac.create(p.getClientWebServiceUrl()), fp, user);
 
             t = new Thread(ift);
             t.start();
@@ -47,7 +46,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
             try {
                 t.join(FINGERPRINTTIMEOUT);
             } catch (InterruptedException e) {
-                log.info("Interruppted exception while waiting on a thread!");
+                log.info("Interrupted exception while waiting on a thread!");
             }
 
             if(!t.isAlive()){
@@ -85,8 +84,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
         //TODO: NO TIMEOUT NECESSARY: ONLY 1 PEER AND SERVER INVOLVED
 
         for(Peer p : ps.getPeers()){
-            con = conFac.create(p.getUrl());
-            vut = new VerifyUserThread(conFac.create(p.getUrl()), u);
+            vut = new VerifyUserThread(conFac.create(p.getClientWebServiceUrl()), u);
 
             t = new Thread(vut);
             t.start();
@@ -94,7 +92,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
             try {
                 t.join(VERIFICATIONTIMEOUT);
             } catch (InterruptedException e) {
-                log.info("Interruppted exception while waiting on a thread!");
+                log.info("Interrupted exception while waiting on a thread!");
             }
 
             if(!t.isAlive()){
