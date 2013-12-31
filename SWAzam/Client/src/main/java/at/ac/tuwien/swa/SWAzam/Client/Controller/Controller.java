@@ -42,9 +42,8 @@ public class Controller implements PropertyChangeListener {
     ProcessingTask pt;
 
     @Inject
-    public Controller(MetaDataRetrieverFactory retrieverFactory){
-        this.initializeDatabase();
-
+    public Controller(MetaDataRetrieverFactory retrieverFactory, String dbpath){
+        this.initializeDatabase(dbpath);
         retriever = retrieverFactory.create(con);
         mFrame = new MainFrame(this);
         lFrame = new LoginDialog(this, mFrame);
@@ -60,9 +59,9 @@ public class Controller implements PropertyChangeListener {
             mFrame.setVisible(true);
     }
 
-    private void initializeDatabase() {
+    private void initializeDatabase(String dbpath) {
         try {
-            con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
+            con = DriverManager.getConnection(dbpath, "SA", "");
             log.info("Successfully connected to Database!");
         } catch (SQLException e) {
             System.err.println("Error while connecting to Database!");

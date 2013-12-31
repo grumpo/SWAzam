@@ -20,7 +20,22 @@ public class Client {
     private Controller controller;
 
     public static void main(String[] argv) throws IOException {
+        String dbpath = "";
+
         Injector injector = Guice.createInjector(new ClientModule());
+
+        if(argv.length == 0){
+            dbpath = "jdbc:hsqldb:file:" + Client.class.getResource("/Database").getFile() + "/localdb";
+        }
+        else if(argv.length == 1){
+            dbpath = "jdbc:hsqldb:file:" + argv[0];
+        }
+        else{
+            System.exit(1);
+        }
+
+        //TODO: PASS DBPATH TO CLIENT
+        log.info("Database-String: " + dbpath);
         injector.getInstance(Client.class).run();
     }
 
