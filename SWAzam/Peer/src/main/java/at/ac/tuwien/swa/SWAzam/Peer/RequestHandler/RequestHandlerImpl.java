@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class RequestHandlerImpl implements RequestHandler {
 
     private final MP3Identifier mp3Identifier;
     private final Peer2ServerConnector peer2ServerConnector;
-    private ConcurrentHashMap<String, ResultListener> inProgress = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<UUID, ResultListener> inProgress = new ConcurrentHashMap<>();
 
     private RequestForwarder requestForwarder;
     @Inject
@@ -38,35 +39,29 @@ public class RequestHandlerImpl implements RequestHandler {
         this.requestForwarder = requestForwarder;
     }
 
-    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, ResultListener resultListener) {
+    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid, ResultListener resultListener) {
         if (!mp3Identifier.contains(fingerprint)) {
             log.info("Unable to handle request of user: " + user);
-            forwardRequest(fingerprint, user, hops, resultListener);
+            forwardRequest(fingerprint, user, hops, uuid, resultListener);
             return;
         }
         log.info("Resolving request of user: " + user);
-        FingerprintResult result = new FingerprintResult();
-        result.setResult(mp3Identifier.identify(fingerprint));
-        result.setHops(hops);
-        sendResult(result, resultListener);
+        sendResult(new FingerprintResult(mp3Identifier.identify(fingerprint), hops, uuid), resultListener);
     }
 
     /**
      * resultListener != null: Request was issued by client. In this case store the resultListener until #identificationResult is called.
      * resultListener == null: Request was issued by peer. Just forward unless an exception occurs, in this case report.
      */
-    private void forwardRequest(Fingerprint fingerprint, String user, List<String> hops, ResultListener resultListener) {
+    private void forwardRequest(Fingerprint fingerprint, String user, List<String> hops, UUID uuid, ResultListener resultListener) {
         try {
-            requestForwarder.identifyMP3Fingerprint(fingerprint, user, hops);
+            requestForwarder.identifyMP3Fingerprint(fingerprint, user, hops, uuid);
             if (resultListener != null) {
-                // TODO: we need to identify the requests with a UID
-                inProgress.put(hops.get(0), resultListener);
+                inProgress.put(uuid, resultListener);
             }
         } catch (RequestForwarderException e) {
             log.severe(e.getMessage());
-            FingerprintResult fingerprintResult = new FingerprintResult();
-            fingerprintResult.setHops(hops);
-            sendResult(fingerprintResult, resultListener);
+            sendResult(new FingerprintResult(null, hops, uuid), resultListener);
         }
     }
 
@@ -89,7 +84,7 @@ public class RequestHandlerImpl implements RequestHandler {
 
     @Override
     public void identificationResult(FingerprintResult fingerprintResult) {
-        inProgress.get(fingerprintResult.getHops().get(0)).setResult(fingerprintResult);
+        inProgress.get(fingerprintResult.getRequestID()).setResult(fingerprintResult);
     }
 
     @Override

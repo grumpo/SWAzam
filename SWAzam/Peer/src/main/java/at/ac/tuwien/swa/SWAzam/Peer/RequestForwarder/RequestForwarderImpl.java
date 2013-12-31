@@ -11,6 +11,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class RequestForwarderImpl implements RequestForwarder {
@@ -31,7 +32,7 @@ public class RequestForwarderImpl implements RequestForwarder {
     }
 
     @Override
-    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) throws RequestForwarderException {
+    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid) throws RequestForwarderException {
         addPeersToPeerStorage(hops);
         Set<Peer> peers = peerStorage.getPeers();
 
@@ -47,7 +48,7 @@ public class RequestForwarderImpl implements RequestForwarder {
             }
             try {
                 String peerUrl = peer.getUrl();
-                peer2PeerConnectorFactory.create(peerUrl + PEER_WEB_SERVICE_WSDL_LOCATION).identifyMP3Fingerprint(fingerprint, user, hops);
+                peer2PeerConnectorFactory.create(peerUrl + PEER_WEB_SERVICE_WSDL_LOCATION).identifyMP3Fingerprint(fingerprint, user, hops, uuid);
                 break; // just try one peer (no backtracking)
             } catch (UnableToConnectToPeer e) {
                 log.info("Peer seems down: " + e.getMessage());

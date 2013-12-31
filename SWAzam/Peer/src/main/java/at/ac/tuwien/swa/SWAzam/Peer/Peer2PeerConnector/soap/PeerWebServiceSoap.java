@@ -26,6 +26,7 @@ public interface PeerWebServiceSoap {
 
     /**
      * 
+     * @param arg3
      * @param arg2
      * @param arg1
      * @param arg0
@@ -40,7 +41,9 @@ public interface PeerWebServiceSoap {
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1,
         @WebParam(name = "arg2", targetNamespace = "")
-        List<String> arg2);
+        List<String> arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3);
 
     /**
      * 

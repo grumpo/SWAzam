@@ -12,6 +12,7 @@ import javax.xml.ws.WebServiceException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Peer2PeerSoapConnector implements Peer2PeerConnector {
@@ -24,14 +25,14 @@ public class Peer2PeerSoapConnector implements Peer2PeerConnector {
         this.peerWSDLLocation = peerWSDLLocation;
     }
 
-    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops) throws UnableToConnectToPeer {
+    public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid) throws UnableToConnectToPeer {
         log.info(String.format("Forwarding fingerprint request from user: %s to peer %s ",
                 user, peerWSDLLocation));
 
         try {
             PeerWebServiceSoap peerWebServicePort =
                     new PeerWebServiceSoapService(toUrl(peerWSDLLocation)).getPeerWebServiceSoapPort();
-            peerWebServicePort.identifyMP3Fingerprint(new Gson().toJson(fingerprint), user, hops);
+            peerWebServicePort.identifyMP3Fingerprint(new Gson().toJson(fingerprint), user, hops, uuid.toString());
         } catch (WebServiceException e) {
             throw new UnableToConnectToPeer(e);
         }

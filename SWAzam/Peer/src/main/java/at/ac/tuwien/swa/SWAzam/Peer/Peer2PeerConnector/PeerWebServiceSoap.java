@@ -10,6 +10,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @WebService()
@@ -22,11 +23,11 @@ public class PeerWebServiceSoap implements PeerWebService {
     private Endpoint endpoint;
 
     @Oneway
-    public void IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops) {
+    public void IdentifyMP3Fingerprint(String fingerprintJson, String user, List<String> hops, String uuid) {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         hops.add(peerUrl);
-        requestHandler.identifyMP3Fingerprint(fingerprint, user, hops, null);
+        requestHandler.identifyMP3Fingerprint(fingerprint, user, hops, UUID.fromString(uuid), null);
     }
 
     @Oneway

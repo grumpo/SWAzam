@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,7 +124,7 @@ public class Peer {
 
         // TODO: remove those or move to ITs
         // test request on self
-        testRequestToPeerForwardRequest(port);
+        //testRequestToPeerForwardRequest(port);
         // test request to server
         testRequestToServerUserValidation(serverAddress);
     }
@@ -132,8 +133,7 @@ public class Peer {
         Fingerprint fingerprint = generateTestFingerprint();
         try {
             peer2PeerConnectorFactory.create(String.format("http://localhost:%d/PeerWebService?wsdl", port)).
-                    identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {
-                    });
+                    identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {}, UUID.randomUUID());
         } catch (UnableToConnectToPeer e) {
             log.info("Peer is down: " + e.getMessage());
         }

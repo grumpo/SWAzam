@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="hops" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="requestID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -32,12 +33,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fingerprintResult", propOrder = {
     "hops",
+    "requestID",
     "result"
 })
 public class FingerprintResult {
 
     @XmlElement(nillable = true)
     protected List<String> hops;
+    protected String requestID;
     protected String result;
 
     /**
@@ -67,6 +70,30 @@ public class FingerprintResult {
             hops = new ArrayList<String>();
         }
         return this.hops;
+    }
+
+    /**
+     * Gets the value of the requestID property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRequestID() {
+        return requestID;
+    }
+
+    /**
+     * Sets the value of the requestID property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRequestID(String value) {
+        this.requestID = value;
     }
 
     /**

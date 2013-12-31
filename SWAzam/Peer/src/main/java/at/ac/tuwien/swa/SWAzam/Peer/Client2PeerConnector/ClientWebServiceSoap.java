@@ -11,6 +11,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -32,14 +33,13 @@ public class ClientWebServiceSoap implements ClientWebService {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         ResultListener resultListener = new ResultListener();
-        requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl), resultListener);
+        UUID uuid = UUID.randomUUID();// TODO: move to requesthandler maybe
+        requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl), uuid, resultListener);
         try {
             return resultListener.waitForResult();
         } catch (InterruptedException e) {
             log.severe("Waiting for result has been interrupted: " + e.getMessage());
-            FingerprintResult fingerprintResult = new FingerprintResult();
-            fingerprintResult.setHops(Arrays.asList(peerUrl));
-            return fingerprintResult;
+            return new FingerprintResult(null, Arrays.asList(peerUrl), uuid);
         }
     }
 
