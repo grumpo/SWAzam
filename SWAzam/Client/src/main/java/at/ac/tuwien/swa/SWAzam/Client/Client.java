@@ -1,6 +1,6 @@
 package at.ac.tuwien.swa.SWAzam.Client;
 
-import at.ac.tuwien.swa.SWAzam.Client.Controller.Controller;
+import at.ac.tuwien.swa.SWAzam.Client.Controller.ControllerFactory;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -17,7 +17,7 @@ public class Client {
     private final static Logger log = Logger.getLogger(Client.class.getName());
 
     @Inject
-    private Controller controller;
+    private ControllerFactory controllerFactory;
 
     public static void main(String[] argv) throws IOException {
         String dbpath = "";
@@ -34,13 +34,12 @@ public class Client {
             System.exit(1);
         }
 
-        //TODO: PASS DBPATH TO CLIENT
         log.info("Database-String: " + dbpath);
-        injector.getInstance(Client.class).run();
+        injector.getInstance(Client.class).run(dbpath);
     }
 
-    public void run() {
-    	controller.showComponents();
+    public void run(String dbPath) {
+    	controllerFactory.create(dbPath).showComponents();
     }
 
 }

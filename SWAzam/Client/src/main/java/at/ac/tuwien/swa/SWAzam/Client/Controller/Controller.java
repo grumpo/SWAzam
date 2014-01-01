@@ -13,6 +13,7 @@ import at.ac.tuwien.swa.SWAzam.Client.Recorder.FileRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.IRecorder;
 import at.ac.tuwien.swa.SWAzam.Client.Recorder.MicRecorder;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class Controller implements PropertyChangeListener {
     ProcessingTask pt;
 
     @Inject
-    public Controller(MetaDataRetrieverFactory retrieverFactory, String dbpath){
+    public Controller(MetaDataRetrieverFactory retrieverFactory, @Assisted String dbpath){
         this.initializeDatabase(dbpath);
         retriever = retrieverFactory.create(con);
         mFrame = new MainFrame(this);
