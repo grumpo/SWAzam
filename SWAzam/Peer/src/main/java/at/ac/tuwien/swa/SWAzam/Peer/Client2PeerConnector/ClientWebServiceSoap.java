@@ -33,6 +33,8 @@ public class ClientWebServiceSoap implements ClientWebService {
         log.info("Handling fingerprint identification request from: " + user);
         Fingerprint fingerprint = new Gson().fromJson(fingerprintJson, Fingerprint.class);
         ResultListener resultListener = new ResultListener();
+        resultListener.setUser(user);
+        resultListener.setPassword(password);
         UUID uuid = UUID.randomUUID();// TODO: move to requesthandler maybe
         requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl), uuid, resultListener);
         try {

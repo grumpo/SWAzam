@@ -84,7 +84,14 @@ public class RequestHandlerImpl implements RequestHandler {
 
     @Override
     public void identificationResult(FingerprintResult fingerprintResult) {
-        inProgress.get(fingerprintResult.getRequestID()).setResult(fingerprintResult);
+        ResultListener resultListener = inProgress.get(fingerprintResult.getRequestID());
+        resultListener.setResult(fingerprintResult);
+        try {
+            peer2ServerConnector.resolvedIdentification(resultListener.getUser(), resultListener.getPassword()); // TODO: get user that owns this peer, so add another arg
+            peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword());
+        } catch (UnableToConnectToServerException e) {
+            log.severe("Unable to book credits: " + e.getMessage());
+        }
     }
 
     @Override
