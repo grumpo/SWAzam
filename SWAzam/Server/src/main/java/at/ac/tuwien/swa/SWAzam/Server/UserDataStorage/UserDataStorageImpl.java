@@ -349,8 +349,11 @@ public class UserDataStorageImpl implements UserDataStorage {
         	while (rs.next()){
         		old_coins = rs.getInt("coins_new");
         	}
-
-        	//TODO - what if the user has 0 coins?
+        	
+        	// if the user has 0 coins
+        	if (old_coins == 0)
+        		return false;
+       	
             log.info("Reducing coins from user!");
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
