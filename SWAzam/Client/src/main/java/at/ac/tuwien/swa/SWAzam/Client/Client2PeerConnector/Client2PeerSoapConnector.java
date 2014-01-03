@@ -9,6 +9,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Client2PeerSoapConnector implements Client2PeerConnector {
@@ -26,12 +27,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
         log.info("Checking fingerprint: " + fingerprint.getShiftDuration());
         ClientWebServiceSoap peerWebServicePort = getClientWebService();
         String fingerprintJson = serialize(fingerprint);
-        at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.FingerprintResult result =
-                peerWebServicePort.identifyMP3Fingerprint(fingerprintJson, user, password);
-        FingerprintResult fingerprintResult = new FingerprintResult();
-        fingerprintResult.setResult(result.getResult());
-        fingerprintResult.setHops(result.getHops());
-        return fingerprintResult;
+        return convertFingerprint(peerWebServicePort.identifyMP3Fingerprint(fingerprintJson, user, password));
     }
 
     @Override
@@ -41,6 +37,21 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
                 getClientWebService().getUserInformation(user, password);
         if (userInformation == null) return null;
         return new UserInformation(userInformation.getUsername(), userInformation.getCredits());
+    }
+
+    private FingerprintResult convertFingerprint(at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.FingerprintResult fingerprintResult) {
+        FingerprintResult result = new FingerprintResult();
+        result.setResult(convertAudioInformation(fingerprintResult.getResult()));
+        result.getHops().addAll(fingerprintResult.getHops());
+        result.setRequestID(UUID.fromString(fingerprintResult.getRequestID()));
+        return result;
+    }
+
+    private AudioInformation convertAudioInformation(at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.AudioInformation audioInformation) {
+        AudioInformation result = new AudioInformation();
+        result.setArtist(audioInformation.getArtist());
+        result.setTitle(audioInformation.getTitle());
+        return result;
     }
 
     private String serialize(Fingerprint fingerprint) {

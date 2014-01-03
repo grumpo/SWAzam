@@ -4,6 +4,12 @@
 <xsd:import namespace="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/" schemaLocation="http://localhost:9000/ClientWebService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="stop">
+<part name="parameters" element="tns:stop"/>
+</message>
+<message name="stopResponse">
+<part name="parameters" element="tns:stopResponse"/>
+</message>
 <message name="identifyMP3Fingerprint">
 <part name="parameters" element="tns:identifyMP3Fingerprint"/>
 </message>
@@ -17,6 +23,10 @@
 <part name="parameters" element="tns:getUserInformationResponse"/>
 </message>
 <portType name="ClientWebServiceSoap">
+<operation name="stop">
+<input wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/stopRequest" message="tns:stop"/>
+<output wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/stopResponse" message="tns:stopResponse"/>
+</operation>
 <operation name="identifyMP3Fingerprint">
 <input wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintRequest" message="tns:identifyMP3Fingerprint"/>
 <output wsam:Action="http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/identifyMP3FingerprintResponse" message="tns:identifyMP3FingerprintResponse"/>
@@ -28,6 +38,15 @@
 </portType>
 <binding name="ClientWebServiceSoapPortBinding" type="tns:ClientWebServiceSoap">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="stop">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="identifyMP3Fingerprint">
 <soap:operation soapAction=""/>
 <input>

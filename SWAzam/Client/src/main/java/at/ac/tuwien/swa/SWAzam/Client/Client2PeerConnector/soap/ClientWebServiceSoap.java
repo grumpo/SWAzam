@@ -26,6 +26,15 @@ public interface ClientWebServiceSoap {
 
     /**
      * 
+     */
+    @WebMethod
+    @RequestWrapper(localName = "stop", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.Stop")
+    @ResponseWrapper(localName = "stopResponse", targetNamespace = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.StopResponse")
+    @Action(input = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/stopRequest", output = "http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/ClientWebServiceSoap/stopResponse")
+    public void stop();
+
+    /**
+     * 
      * @param arg2
      * @param arg1
      * @param arg0

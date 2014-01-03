@@ -20,7 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="hops" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="requestID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="result" type="{http://Client2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/}audioInformation" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,13 +33,15 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "fingerprintResult", propOrder = {
     "hops",
+    "requestID",
     "result"
 })
 public class FingerprintResult {
 
     @XmlElement(nillable = true)
     protected List<String> hops;
-    protected String result;
+    protected String requestID;
+    protected AudioInformation result;
 
     /**
      * Gets the value of the hops property.
@@ -70,14 +73,38 @@ public class FingerprintResult {
     }
 
     /**
-     * Gets the value of the result property.
+     * Gets the value of the requestID property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getResult() {
+    public String getRequestID() {
+        return requestID;
+    }
+
+    /**
+     * Sets the value of the requestID property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRequestID(String value) {
+        this.requestID = value;
+    }
+
+    /**
+     * Gets the value of the result property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AudioInformation }
+     *     
+     */
+    public AudioInformation getResult() {
         return result;
     }
 
@@ -86,10 +113,10 @@ public class FingerprintResult {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link AudioInformation }
      *     
      */
-    public void setResult(String value) {
+    public void setResult(AudioInformation value) {
         this.result = value;
     }
 
