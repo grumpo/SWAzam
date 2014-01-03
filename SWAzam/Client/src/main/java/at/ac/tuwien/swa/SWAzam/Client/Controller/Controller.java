@@ -37,6 +37,9 @@ public class Controller implements PropertyChangeListener {
     MetaDataRetriever retriever;
     User user;
 
+    //TODO: FIND BETTER SOLUTION
+    boolean requestRunning;
+
     Connection con;
 
     FingerprintExtractorTask fpet;
@@ -111,6 +114,10 @@ public class Controller implements PropertyChangeListener {
     private void processInputStream(AudioInputStream stream){
         fpet = new FingerprintExtractorTask(stream);
         fpet.addPropertyChangeListener(this);
+
+        //TODO: FIND BETTER SOLUTION
+        requestRunning = false;
+
         fpet.execute();
     }
 
@@ -195,8 +202,12 @@ public class Controller implements PropertyChangeListener {
             if(!fpet.isDone())
                 updateProgress(fpet.getProgress(), true);
             else{
-                updateProgress(50, false);
-                processFingerprint(fpet.getResult());
+                //TODO: FIND BETTER SOLUTION
+                if(!requestRunning){
+                    requestRunning = true;
+                    updateProgress(50, false);
+                    processFingerprint(fpet.getResult());
+                }
             }
         }
         else if(evt.getSource() == pt){
