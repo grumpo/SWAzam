@@ -54,6 +54,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
                     ps.failurePeer(p);
                 }
                 else{
+                    log.info("NO TIMEOUT: Fetching result from IdentifyFingerprintThread!!!");
                     fpr = ift.getResult();
 
                     if(fpr != null){
@@ -62,6 +63,9 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
 
                     return fpr;
                 }
+            }
+            else{
+                log.info("TIMEOUT while waiting for a response!!!");
             }
         }
 
