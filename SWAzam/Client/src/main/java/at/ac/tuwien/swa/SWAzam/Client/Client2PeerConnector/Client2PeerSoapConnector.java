@@ -43,7 +43,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
         if (fingerprintResult == null) return null;
         FingerprintResult result = new FingerprintResult();
         result.setResult(convertAudioInformation(fingerprintResult.getResult()));
-        result.getHops().addAll(fingerprintResult.getHops());
+        result.setHops(fingerprintResult.getHops());
         result.setRequestID(UUID.fromString(fingerprintResult.getRequestID()));
         return result;
     }

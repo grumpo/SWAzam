@@ -28,6 +28,7 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     public UserInformation validateUser(String user, String password) throws UnableToConnectToServerException {
         log.info("Validating user: " + user);
         at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.UserInformation userInformation = getValidateUserResult(user, password);
+        if (userInformation == null) return null;
         return new UserInformation(userInformation.getUsername(), userInformation.getCredits());
     }
 

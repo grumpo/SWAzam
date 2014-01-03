@@ -65,7 +65,7 @@ public class RequestForwarderImpl implements RequestForwarder {
                 return new Peer(url, INITIAL_FAIL_COUNT);
             }
         });
-        for (Peer peer : peers) {
+        for (Peer peer : peers) { // TODO: do not use current peer, so skip last
             if (peerStorage.getPeers().contains(peer)) continue;
             log.info("Adding peer to storage: " + peer);
             peerStorage.addPeer(peer);

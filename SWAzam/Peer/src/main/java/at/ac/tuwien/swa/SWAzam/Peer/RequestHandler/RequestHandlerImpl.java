@@ -88,7 +88,7 @@ public class RequestHandlerImpl implements RequestHandler {
      */
     private void sendResult(FingerprintResult result, ResultListener resultListener) {
         if (resultListener != null) {
-            resultListener.setResult(result);
+            setResult(result, resultListener);
             return;
         }
         Peer2PeerConnector peer2PeerConnector = peer2PeerConnectorFactory.create(result.getHops().get(0) + PEER_WEB_SERVICE_WSDL_LOCATION);
@@ -102,10 +102,16 @@ public class RequestHandlerImpl implements RequestHandler {
     @Override
     public void identificationResult(FingerprintResult fingerprintResult) {
         ResultListener resultListener = inProgress.get(fingerprintResult.getRequestID());
+        setResult(fingerprintResult, resultListener);
+    }
+
+    private void setResult(FingerprintResult fingerprintResult, ResultListener resultListener) {
         resultListener.setResult(fingerprintResult);
         try {
-            peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult);
-            peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult);
+            peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult); // TODO: move to correct peer
+            if (fingerprintResult.getResult() != null) { // only pay credits if successful
+                peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult);
+            }
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());
         }
