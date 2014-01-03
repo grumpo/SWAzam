@@ -25,9 +25,11 @@ Execute "mvn compile exec:java" in the according component to start it.
             - the port for the web services
             - the address of the server
             - the path to the HSQLDB (dbPath)
+            - the username of the peer owner
+            - the password of the peer owner
             as argument.
 
-            e.g.: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000 http://localhost:9003 /tmp/dbPeer1/localdb"
+            e.g.: mvn exec:java -Dexec.args="/tmp/mp3Storage 9000 http://localhost:9003 /tmp/dbPeer1/localdb username password"
 
             An example database can be found in the src/main/resources directory.
 

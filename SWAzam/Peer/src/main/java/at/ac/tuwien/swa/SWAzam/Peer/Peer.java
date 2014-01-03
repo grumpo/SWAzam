@@ -60,9 +60,11 @@ public class Peer {
                 "- the port for the web services \n" +
                 "- the address of the server \n" +
                 "- the path to the HSQLDB (dbPath) \n" +
+                "- the username of the peer owner \n" +
+                "- the password of the peer owner \n" +
                 "as argument.";
 
-        if (argv.length < 4) {
+        if (argv.length < 6) {
             log.log(Level.SEVERE, msg);
             return;
         }
@@ -82,12 +84,15 @@ public class Peer {
             log.log(Level.SEVERE, "Port is missing or malformed! " + msg);
             return;
         }
+        // TODO: validate those
         String serverAddress = argv[2];
         String dbPath = argv[3];
+        String username = argv[4];
+        String password = argv[5];
 
         final Peer peer = injector.getInstance(Peer.class);
         try {
-            peer.run(storagePath, port, serverAddress, dbPath);
+            peer.run(storagePath, port, serverAddress, dbPath, username, password);
             log.info("Peer is up, press <enter> to quit.");
         } catch (StorageException e) {
             log.severe("Error reading peer database! Please pass a dbPath that represents a valid peer database! \n\n" + msg);
@@ -117,10 +122,10 @@ public class Peer {
         peerWebService.stop();
     }
 
-    public void run(String storagePath, Integer port, String serverAddress, String dbPath) {
+    public void run(String storagePath, Integer port, String serverAddress, String dbPath, String username, String password) {
         log.info("Starting peer...");
 
-        startServices(port, createRequestHandler(storagePath, serverAddress, dbPath));
+        startServices(port, createRequestHandler(storagePath, serverAddress, dbPath, username, password));
 
         // TODO: remove those or move to ITs
         // test request on self
@@ -162,10 +167,12 @@ public class Peer {
         peerWebService.run(port, requestHandler);
     }
 
-    private RequestHandler createRequestHandler(String storagePath, String serverAddress, String dbPath) {
+    private RequestHandler createRequestHandler(String storagePath, String serverAddress, String dbPath, String username, String password) {
         return requestHandlerFactory.create(
                 mp3IdentifierFactory.create(fingerprintStorageFactory.createStorageDirectory(storagePath)),
                 peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION),
-                requestForwarderFactory.create(peerStorageFactory.create(dbPath)));
+                requestForwarderFactory.create(peerStorageFactory.create(dbPath)),
+                username, password
+                );
     }
 }

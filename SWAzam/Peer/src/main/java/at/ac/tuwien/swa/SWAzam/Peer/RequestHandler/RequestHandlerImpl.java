@@ -29,14 +29,20 @@ public class RequestHandlerImpl implements RequestHandler {
     private ConcurrentHashMap<UUID, ResultListener> inProgress = new ConcurrentHashMap<>();
 
     private RequestForwarder requestForwarder;
+    private final String username;
+    private final String password;
     @Inject
     private Peer2PeerConnectorFactory peer2PeerConnectorFactory;
 
     @Inject
-    public RequestHandlerImpl(@Assisted MP3Identifier mp3Identifier, @Assisted Peer2ServerConnector peer2ServerConnector, @Assisted RequestForwarder requestForwarder) {
+    public RequestHandlerImpl(
+            @Assisted MP3Identifier mp3Identifier, @Assisted Peer2ServerConnector peer2ServerConnector, @Assisted RequestForwarder requestForwarder,
+            @Assisted("username") String username, @Assisted("password") String password) {
         this.mp3Identifier = mp3Identifier;
         this.peer2ServerConnector = peer2ServerConnector;
         this.requestForwarder = requestForwarder;
+        this.username = username;
+        this.password = password;
     }
 
     public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid, ResultListener resultListener) {
@@ -87,7 +93,7 @@ public class RequestHandlerImpl implements RequestHandler {
         ResultListener resultListener = inProgress.get(fingerprintResult.getRequestID());
         resultListener.setResult(fingerprintResult);
         try {
-            peer2ServerConnector.resolvedIdentification(resultListener.getUser(), resultListener.getPassword()); // TODO: get user that owns this peer, so add another arg
+            peer2ServerConnector.resolvedIdentification(username, password);
             peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword());
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());
