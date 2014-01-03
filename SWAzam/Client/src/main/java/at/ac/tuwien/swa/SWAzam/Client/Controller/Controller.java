@@ -39,6 +39,7 @@ public class Controller implements PropertyChangeListener {
 
     //TODO: FIND BETTER SOLUTION
     boolean requestRunning;
+    boolean resultFetched;
 
     Connection con;
 
@@ -205,6 +206,7 @@ public class Controller implements PropertyChangeListener {
                 //TODO: FIND BETTER SOLUTION
                 if(!requestRunning){
                     requestRunning = true;
+                    resultFetched = false;
                     updateProgress(50, false);
                     processFingerprint(fpet.getResult());
                 }
@@ -214,8 +216,12 @@ public class Controller implements PropertyChangeListener {
             if(!pt.isDone())
                 updateProgress(50 + pt.getProgress()/2, true);
             else{
-                updateProgress(100, false);
-                storeFingerprintResult(pt.getResult());
+                //TODO: FIND BETTER SOLUTION
+                if(!resultFetched){
+                    resultFetched = true;
+                    updateProgress(100, false);
+                    storeFingerprintResult(pt.getResult());
+                }
             }
         }
     }
