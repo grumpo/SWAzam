@@ -1,6 +1,7 @@
 package at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.AudioInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.PeerWebServiceSoap;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.PeerWebServiceSoapService;
@@ -54,8 +55,16 @@ public class Peer2PeerSoapConnector implements Peer2PeerConnector {
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult convertFingerprint(FingerprintResult fingerprintResult) {
         at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult result =
                 new at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult();
-        result.setResult(fingerprintResult.getResult());
+        result.setResult(convertAudioInformation(fingerprintResult.getResult()));
         result.getHops().addAll(fingerprintResult.getHops());
+        return result;
+    }
+
+    private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation convertAudioInformation(AudioInformation audioInformation) {
+        at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation result =
+                new at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation();
+        result.setArtist(audioInformation.getArtist());
+        result.setTitle(audioInformation.getTitle());
         return result;
     }
 

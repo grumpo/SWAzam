@@ -4,24 +4,24 @@ import java.util.List;
 import java.util.UUID;
 
 public class FingerprintResult {
-    private String result;
+    private AudioInformation result;
     private List<String> hops;
     private String requestID;
 
     public FingerprintResult() {
     }
 
-    public FingerprintResult(String result, List<String> hops, UUID requestID) {
+    public FingerprintResult(AudioInformation result, List<String> hops, UUID requestID) {
         this.result = result;
         this.hops = hops;
         this.requestID = requestID.toString();
     }
 
-    public String getResult() {
+    public AudioInformation getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(AudioInformation result) {
         this.result = result;
     }
 

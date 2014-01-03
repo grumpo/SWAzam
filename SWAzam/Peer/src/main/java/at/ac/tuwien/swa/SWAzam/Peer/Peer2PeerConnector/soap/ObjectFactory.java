@@ -51,6 +51,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AudioInformation }
+     * 
+     */
+    public AudioInformation createAudioInformation() {
+        return new AudioInformation();
+    }
+
+    /**
      * Create an instance of {@link FingerprintResult }
      * 
      */

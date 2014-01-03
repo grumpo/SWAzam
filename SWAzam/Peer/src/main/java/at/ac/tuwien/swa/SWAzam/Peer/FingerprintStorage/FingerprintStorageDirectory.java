@@ -2,6 +2,7 @@ package at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage;
 
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.AudioInformation;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -48,13 +49,13 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
     }
 
     @Override
-    public String getTitleOf(Fingerprint fingerprint) {
+    public AudioInformation getAudioInformationOf(Fingerprint fingerprint) {
         try{
             for (File file : storage.listFiles()) {
                 AudioInputStream stream = getAudioStream(file);
                 Fingerprint storedFingerprint = getFingerprint(stream);
                 if(storedFingerprint.equals(fingerprint)){
-                    return getTitle(file);
+                    return new AudioInformation(getTitle(file), "TODO-Artist"); // TODO: extract ID3tags
                 }
             }
             return null;

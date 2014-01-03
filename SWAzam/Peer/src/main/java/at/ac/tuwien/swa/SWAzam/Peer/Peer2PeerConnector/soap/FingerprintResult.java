@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="hops" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="requestID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="result" type="{http://Peer2PeerConnector.Peer.SWAzam.swa.tuwien.ac.at/}audioInformation" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -41,7 +41,7 @@ public class FingerprintResult {
     @XmlElement(nillable = true)
     protected List<String> hops;
     protected String requestID;
-    protected String result;
+    protected AudioInformation result;
 
     /**
      * Gets the value of the hops property.
@@ -101,10 +101,10 @@ public class FingerprintResult {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link AudioInformation }
      *     
      */
-    public String getResult() {
+    public AudioInformation getResult() {
         return result;
     }
 
@@ -113,10 +113,10 @@ public class FingerprintResult {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link AudioInformation }
      *     
      */
-    public void setResult(String value) {
+    public void setResult(AudioInformation value) {
         this.result = value;
     }
 
