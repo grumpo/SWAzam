@@ -171,9 +171,6 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void setLookAndFeel() {
-//        UIManager.put("ProgressBar.repaintInterval", new Integer(50));
-//        UIManager.put("ProgressBar.cycleTime", new Integer(50));
-
         if(!System.getProperty("os.name").toLowerCase().contains("mac")){
             try {
                 for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -213,7 +210,36 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void storeFingerprintResult(FingerprintResult result) {
-        //TODO: Show new FingerprintResult and store it to the Database
+        PreparedStatement pstmt;
+
+        if(result != null){
+            log.info("Result is " + result.getResult().getArtist() + " - " + result.getResult().getTitle());
+
+            try {
+                pstmt = con.prepareStatement("INSERT INTO FINGERPRINTS (USERNAME, TIMESTAMP, ARTIST, SONGTITLE) VALUES (?, ?, ?, ?)");
+                pstmt.setString(1, this.user.getUsername());
+                pstmt.setTimestamp(2, new Timestamp((new java.util.Date()).getTime()));
+                pstmt.setString(3, result.getResult().getArtist());
+                pstmt.setString(4, result.getResult().getTitle());
+
+                if(pstmt.executeUpdate() == 1){
+                    log.info("Match successfully added to database!");
+                }
+
+                //TODO: REFRESH USER DATA (COINS)
+                this.user = verifyUser(user);
+                mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
+
+                updateResultTable();
+            } catch (SQLException e) {
+                //TODO: REMOVE STACKTRACE
+                e.printStackTrace();
+            }
+        }
+        else{
+            log.info("Result is empty. System couldn't find a match!");
+            mFrame.showNoMatchError();
+        }
     }
 
     private void processFingerprint(Fingerprint fp) {

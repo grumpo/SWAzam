@@ -31,6 +31,8 @@ public class Client {
             dbpath = "jdbc:hsqldb:file:" + argv[0];
         }
         else{
+            log.severe("Wrong parameter count. Please provide either no parameter (use default db) or the db-path as " +
+                    "single parameter!");
             System.exit(1);
         }
 
