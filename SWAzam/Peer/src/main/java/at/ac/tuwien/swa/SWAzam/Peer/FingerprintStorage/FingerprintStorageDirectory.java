@@ -11,11 +11,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by grumpo on 12/23/13.
  */
 public class FingerprintStorageDirectory implements FingerprintStorage{
+    private final static Logger log = Logger.getLogger(FingerprintStorageDirectory.class.getName());
 
     private File storage = null;
 
@@ -34,7 +36,13 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
             for (File file : storage.listFiles()) {
                 AudioInputStream stream = getAudioStream(file);
                 Fingerprint storedFingerprint = getFingerprint(stream);
-                if(storedFingerprint.equals(fingerprint)){
+                stream.close();
+                double matchValue1 = storedFingerprint.match(fingerprint);
+                double matchValue2 = fingerprint.match(storedFingerprint);
+                boolean match = matchValue1 >= 0 || matchValue2 >= 0;
+                log.info("MatchValues: " + matchValue1 + " " + matchValue2);
+                if(match){
+                    log.info("FingerprintStorage contains a matching track!");
                     return true;
                 }
             }
@@ -55,7 +63,12 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
                 AudioInputStream stream = getAudioStream(file);
                 Fingerprint storedFingerprint = getFingerprint(stream);
                 stream.close();
-                if(storedFingerprint.match(fingerprint) > -1){
+                double matchValue1 = storedFingerprint.match(fingerprint);
+                double matchValue2 = fingerprint.match(storedFingerprint);
+                boolean match = matchValue1 >= 0 || matchValue2 >= 0;
+                log.info("MatchValues: " + matchValue1 + " " + matchValue2);
+                if(match){
+                    log.info("Found matching track " + getTitle(file));
                     return new AudioInformation(getTitle(file), "TODO-Artist"); // TODO: extract ID3tags
                 }
             }
