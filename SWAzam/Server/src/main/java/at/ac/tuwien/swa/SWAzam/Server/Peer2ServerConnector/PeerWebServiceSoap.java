@@ -1,5 +1,6 @@
 package at.ac.tuwien.swa.SWAzam.Server.Peer2ServerConnector;
 
+import at.ac.tuwien.swa.SWAzam.Server.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Server.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Server.DebitManager.DebitManager;
 import at.ac.tuwien.swa.SWAzam.Server.PermissionValidator.PermissionValidator;
@@ -30,19 +31,22 @@ public class PeerWebServiceSoap implements PeerWebService {
         return permissionValidator.validateUser(user, password);
     }
 	
-	//TODO - add music string (filename? song title, artist?) if present and request id
 	@WebMethod
-    public void addCoins (User user) {
-        debitManager.addCoins(user);
+    public void addCoins (User user, FingerprintResult result) {
+        debitManager.addCoins(user, result);
     }
 	
-	//TODO - add music string (filename? song title, artist?) if present and request id
 	@WebMethod
-    public void reduceCoins (User user) {
-        debitManager.removeCoins(user);
+    public void reduceCoins (User user, FingerprintResult result) {
+        debitManager.removeCoins(user, result);
+    }
+
+	// initiate a recognition request - should be called directly after receiving the request from the client, before searching for music matches
+	@WebMethod
+    public void requestIssued (User user, String request_id) {
+        debitManager.requestIssued(user, request_id);
     }
 	
-	//TODO - add method to initiate a music search, create new open recognitionrequest (vgl at.ac.tuwien.swa.SWAZAM.Server.RecognitionRequest.java)
 
     @WebMethod(exclude=true)
     public void run(int port, PermissionValidator pv, DebitManager dm) {

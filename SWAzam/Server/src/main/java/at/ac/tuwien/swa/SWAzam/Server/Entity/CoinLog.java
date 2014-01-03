@@ -7,7 +7,7 @@ public class CoinLog {
 
 	private int id;
 	private String username;
-	private int request_id;
+	private String request_id;
 	private int coins_old;
 	private int coins_new;
 	private String action;
@@ -17,7 +17,7 @@ public class CoinLog {
 		
 	}
 	
-	public CoinLog(int id, String username, int request_id, int coins_old,
+	public CoinLog(int id, String username, String request_id, int coins_old,
 			int coins_new, String action, Date date) {
 		super();
 		this.id = id;
@@ -41,10 +41,10 @@ public class CoinLog {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getRequest_id() {
+	public String getRequest_id() {
 		return request_id;
 	}
-	public void setRequest_id(int request_id) {
+	public void setRequest_id(String request_id) {
 		this.request_id = request_id;
 	}
 	public int getCoins_old() {

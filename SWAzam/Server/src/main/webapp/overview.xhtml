@@ -51,6 +51,13 @@
 			            </f:facet>  
 			            <h:outputText value="#{recrequest.formattedTime}" />  
 			        </p:column>  
+			        
+			        <p:column>  
+			            <f:facet name="header">  
+			                    Request ID  
+			            </f:facet>  
+			            <h:outputText value="#{recrequest.request_id}" />  
+			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
@@ -58,19 +65,12 @@
 			            </f:facet>  
 			            <h:outputText value="#{recrequest.song}" />  
 			        </p:column>  
-			        
-			        <p:column>  
-			            <f:facet name="header">  
-			                    Status  
-			            </f:facet>  
-			            <h:outputText value="#{recrequest.searchFinished}" />  
-			        </p:column>  
 			  
 			        <p:column>  
 			            <f:facet name="header">  
 			                    Result  
 			            </f:facet>  
-			            <h:outputText value="#{recrequest.foundSong}" />  
+			            <h:outputText value="#{recrequest.result}" />  
 			        </p:column>  
 			    </p:dataTable>
 			    <br/>

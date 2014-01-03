@@ -6,27 +6,27 @@ import java.util.Date;
 public class RecognitionRequest {
 	
 	private int id;
+	private String request_id;
 	private String username;
 	private Date date;
 	private String song;
 	private String peerURL;
-	private boolean finished;
-	private boolean success;
+	private String result;
 	
 	public RecognitionRequest () {
 		
 	}
 	
 
-	public RecognitionRequest(int id, String username, Date date, String song, String peerURL, boolean finished, boolean success) {
+	public RecognitionRequest(int id, String request_id, String username, Date date, String song, String peerURL, String result) {
 		super();
 		this.id = id;
+		this.request_id = request_id;
 		this.username = username;
 		this.date = date;
 		this.song = song;
 		this.peerURL = peerURL;
-		this.finished = finished;
-		this.success = success;
+		this.result = result;
 	}
 
 	public int getId() {
@@ -35,6 +35,14 @@ public class RecognitionRequest {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getRequest_id() {
+		return request_id;
+	}
+	
+	public void setRequest_id(String request_id) {
+		this.request_id = request_id;
 	}
 	
 	public String getUsername() {
@@ -67,49 +75,24 @@ public class RecognitionRequest {
 
 	public void setPeerURL(String peerURL) {
 		this.peerURL = peerURL;
+	}	
+	
+	public String getResult() {
+		return result;
 	}
 
-	public boolean isSuccess() {
-		return success;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-	
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
-	
-	public String getSearchFinished() {
-		if (!finished)
-			return "open";
-		
-		return "done";
-	}
-	
-	public String getFoundSong() {
-		if (success && finished)
-			return "Song successfully identified.";
-		else if (!success && finished)
-			return "Song could not be identified.";
-		
-		return "";
-	}
-	
 	public String getRowColor() {
-	    if(success && finished)
+	    if(result.equals("Song successfully identified."))
 	    	return "green";
-	    if(!success && finished) 
+	    if(result.equals("Song could not be identified.")) 
 	    	return "red";
-	    if(!finished) 
-	    	return "orange";
 	    
-	    return "";
+	    return "orange";
+
 	}
 
 	public String getFormattedDate() {
@@ -117,7 +100,7 @@ public class RecognitionRequest {
     }
 	
 	public String getFormattedTime() {
-        return new SimpleDateFormat("HH:MM:ss").format(date);
+        return new SimpleDateFormat("HH:mm:ss").format(date);
     }
 
 }

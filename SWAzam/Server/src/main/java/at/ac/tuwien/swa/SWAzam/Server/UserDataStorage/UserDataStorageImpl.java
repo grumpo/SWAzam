@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import at.ac.tuwien.swa.SWAzam.Server.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 
@@ -54,7 +55,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
-			pstmt.setNull(3, java.sql.Types.INTEGER);
+			pstmt.setString(3, "");
 			pstmt.setInt(4, 0);
 			pstmt.setInt(5, 0);
 			pstmt.setString(6, "New User Account Created!");
@@ -171,7 +172,7 @@ public class UserDataStorageImpl implements UserDataStorage {
             rs = pstmt.executeQuery();
             
         	while (rs.next()){
-        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getInt("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
+        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getString("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
         	}
             	
         }
@@ -196,7 +197,7 @@ public class UserDataStorageImpl implements UserDataStorage {
             rs = pstmt.executeQuery();
             
         	while (rs.next()){
-        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getInt("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
+        		log.add(new CoinLog(rs.getInt("id"), rs.getString("user_username"), rs.getString("request_id"), rs.getInt("coins_old"), rs.getInt("coins_new"), rs.getString("action"), rs.getTimestamp("date")));
         	}
             	
         }
@@ -251,7 +252,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 	/**
 	 * if user gets an additional coin due to an resolved fp request
 	 */
-	public boolean addCoins(User user) {
+	public boolean addCoins(User user, FingerprintResult result) {
 		PreparedStatement pstmt;
 		ResultSet rs;
 
@@ -272,15 +273,14 @@ public class UserDataStorageImpl implements UserDataStorage {
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
-			// TODO add request id as parameter!
-			pstmt.setNull(3, java.sql.Types.INTEGER);
+			pstmt.setString(3, result.getRequestIDString());
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins+1);
 			pstmt.setString(6, "Successful Music Recognition -> +1 Coin!");
 			pstmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
 			
 			pstmt.execute();
-            
+			            
             return true;
         }
         catch(SQLException e){
@@ -315,7 +315,7 @@ public class UserDataStorageImpl implements UserDataStorage {
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
-			pstmt.setNull(3, java.sql.Types.INTEGER);
+			pstmt.setString(3, "");
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins+numCoins);
 			pstmt.setString(6, "Bought " + numCoins + " Coins!");
@@ -333,7 +333,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 	}
 
 
-	public boolean reduceCoins(User user) {
+	public boolean reduceCoins(User user, FingerprintResult result) {
 		PreparedStatement pstmt;
 		ResultSet rs;
 
@@ -354,8 +354,7 @@ public class UserDataStorageImpl implements UserDataStorage {
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
-			// TODO add request id as parameter!
-			pstmt.setNull(3, java.sql.Types.INTEGER);
+			pstmt.setString(3, result.getRequestIDString());
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins-1);
 			pstmt.setString(6, "Successful Music Request -> -1 Coin!");
@@ -412,8 +411,8 @@ public class UserDataStorageImpl implements UserDataStorage {
             rs = pstmt.executeQuery();
             
         	while (rs.next()){
-        		requests.add(new RecognitionRequest(rs.getInt("id"), rs.getString("USER_USERNAME"), rs.getTimestamp("DATE"), rs.getString("SONG"), 
-        				rs.getString("PEER_URL"), rs.getBoolean("FINISHED"), rs.getBoolean("SUCCESS")));
+        		requests.add(new RecognitionRequest(rs.getInt("ID"), rs.getString("REQUEST_ID"), rs.getString("USER_USERNAME"), rs.getTimestamp("DATE"), rs.getString("SONG"), 
+        				rs.getString("PEER_URL"), rs.getString("RESULT")));
         	}
             	
         }
@@ -427,22 +426,21 @@ public class UserDataStorageImpl implements UserDataStorage {
 		return requests;
 	}
 	
-	// untested!
 	@Override
-	public boolean addRequestEntry(RecognitionRequest request) {
+	public boolean addRequestEntry(User user, String request_id) {
 		PreparedStatement pstmt;
         
         try{
             pstmt = con.prepareStatement("INSERT INTO request VALUES(?,?,?,?,?,?,?)");
             pstmt.setNull(1, java.sql.Types.INTEGER);
-            pstmt.setString(2, request.getUsername());
-            pstmt.setDate(3, new Date(System.currentTimeMillis()));
-            pstmt.setString(4, request.getSong());
-            pstmt.setString(5, request.getPeerURL());
-            pstmt.setBoolean(6, request.isFinished());
-            pstmt.setBoolean(7, request.isSuccess());
+            pstmt.setString(2, request_id);
+            pstmt.setString(3, user.getUsername());
+            pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+            pstmt.setString(5, "");
+            pstmt.setString(6, "");
+            pstmt.setString(7, "");
             
-            pstmt.executeQuery();
+            pstmt.execute();
             
             return true;
             
