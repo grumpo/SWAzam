@@ -309,4 +309,8 @@ public class MainFrame extends JFrame implements ActionListener {
     public void showLoginError() {
         JOptionPane.showMessageDialog(this, "User couldn't be verified!", "Login Failure", JOptionPane.ERROR_MESSAGE);
     }
+
+    public void showNoMatchError(){
+        JOptionPane.showMessageDialog(this, "Song couldn't be recognized!", "No Match Found", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
