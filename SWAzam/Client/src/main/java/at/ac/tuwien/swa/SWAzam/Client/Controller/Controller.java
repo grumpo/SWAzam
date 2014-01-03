@@ -223,7 +223,7 @@ public class Controller implements PropertyChangeListener {
     private void storeFingerprintResult(FingerprintResult result) {
         PreparedStatement pstmt;
 
-        if(result != null){
+        if(result != null && result.getResult() != null){
             log.info("Result is " + result.getResult().getArtist() + " - " + result.getResult().getTitle());
 
             try {
