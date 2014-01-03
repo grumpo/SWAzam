@@ -34,6 +34,7 @@ h1 {
 	font-weight:bold;
 }
 
+
 #header_login { 
 	position:relative;
 	width:300px;
@@ -48,6 +49,14 @@ h1 {
 	float:left;
 }
 
+.coin_h3 {
+	padding-top:120px;
+	clear:both;
+}
+
+.pw_h3 {
+	margin-top:0px;
+}
 
 /* TabMenu */
 
@@ -107,6 +116,30 @@ h1 {
 	text-align: center;
 }
 
+
+.coin_image {
+	height:100px;
+	width:100px;
+	position: absolute;
+	margin: 0 auto;
+	left:50%;
+}
+
+
+.numcoin_text {
+	padding-top: 37px;
+	text-align: center;
+	width:100px;
+	font-size: 22px;
+	font-weight:bold;
+	position: absolute;
+	color: gray;
+	margin: 0 auto;
+	text-shadow: 2px 2px black;
+	left:50%;
+}
+
+
 /* Body */
 #mainHeader{
 	text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0px 2px 0 rgba(0, 0, 0, .5);
@@ -154,6 +187,14 @@ body {
 
 .errorMessage {
 	color: red;
+}
+
+.ui-messages-error, .ui-message-error  {
+	width: 335px!important;
+}
+
+.ui-messages-info, .ui-message-info {
+	width: 335px!important;
 }
 
 

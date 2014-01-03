@@ -29,12 +29,6 @@
 			        <p><p:password id="password" value="#{userBean.password}" placeholder="Password"/></p>
 			        <p:watermark for="password" value="Password"/>
 			        
-			        <p class="remember_me">
-			          <label>
-				            <input type="checkbox" name="remember_me" id="remember_me"/>
-				            Remember me on this computer
-			          </label>
-			        </p>
 			        <p class="submit"><p:commandButton value="Login" action="#{userBean.validateLogin}"/></p>
 					<p:messages id="messages" autoUpdate="true"/> 
 				</p:panel>

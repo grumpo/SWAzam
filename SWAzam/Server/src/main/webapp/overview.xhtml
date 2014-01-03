@@ -28,12 +28,13 @@
 	    </div>
 	    
 	    <div>
-	    	<p:scrollPanel id="scrollpane" mode="native"> 
-	    	    // TODO - format this nicely <br />
-				Current coins for user: #{userBean.user.coins}
-			    <br /><br />
-			    
-			    <h3>Recognition Request History</h3>
+	    	<p:scrollPanel id="scrollpane" mode="native"> 							
+				<div>
+				    <img class="coin_image" src="/resources/images/coins.png"/>
+				    <span class="numcoin_text">#{userBean.user.coins}</span>
+				</div>	
+						    
+			    <h3 class="coin_h3">Recognition Request History</h3>
 			    <p:dataTable id="table_requests" var="recrequest" value="#{tableBean.recognitionRequests}" rowStyleClass="#{recrequest.rowColor eq 'green' ? 'green' : 
 			    																											recrequest.rowColor eq 'red' ? 'red' :
 			    																											recrequest.rowColor eq 'orange' ? 'orange' : null}">  

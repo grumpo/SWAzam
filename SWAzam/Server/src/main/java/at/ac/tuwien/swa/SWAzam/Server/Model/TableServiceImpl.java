@@ -33,4 +33,9 @@ public class TableServiceImpl implements TableService {
 		return uds.getLogForUser(user);
 	}
 
+	@Override
+	public int getCurrentCoinsForUser(User user) {
+		return uds.getCurrentCoinsForUser(user);
+	}
+
 }

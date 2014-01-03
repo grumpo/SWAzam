@@ -61,12 +61,15 @@ public class TableController {
 	}
 
 
+	public void updateCurrentCoins() {
+		user.setCoins(tableService.getCurrentCoinsForUser(user));
+	}
 	
-
 
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
 	
 	/**
 	 * Helper
@@ -76,4 +79,5 @@ public class TableController {
 	    FacesContext context = FacesContext.getCurrentInstance();
 	    return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
 	}
+
 }

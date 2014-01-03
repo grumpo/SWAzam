@@ -29,13 +29,8 @@
 	    
 	    <div>
 	    	<p:panel id="scrollpane" mode="native"> 
-			    // TODO's
-			    <br />
-			    <ul>
-		            <li>delete Account</li>
-		            <li>move error message output to the right side of the panels?</li>
-			    </ul>
 			    <h:form>
+			    	<h3 class="pw_h3">Change the account password</h3>
 				    <p:panel id="account_panel" styleClass="account_panel" header="Change Password">
 						<h:panelGrid columns="2" cellpadding="5">  
 				            <h:outputText value="Old Password: *" />  
@@ -52,20 +47,23 @@
 				  
 				        </h:panelGrid>  
 					</p:panel>
-					
-					 <p:panel id="buyCoin_panel" styleClass="buyCoin_panel" header="Buy Coins">
+					<p:messages id="messages" autoUpdate="true" redisplay="false"/> 
+					<br />
+					<h3>Buy additional coins</h3>
+					<p:panel id="buyCoin_panel" styleClass="buyCoin_panel" header="Buy Coins">
 						<h:panelGrid columns="2" cellpadding="5">  
 				            <h:outputText value="Number of Coins" />  
-				            <p:spinner id="numCoinSpinner" value="#{accountBean.numCoins}"/> 
+				            <p:spinner id="numCoinSpinner" value="#{accountBean.numCoins}" min="0"/> 
 				     
 				          	<h:outputLabel /><h:outputLabel />
 				            <p:commandButton value="Buy" action="#{accountBean.buyCoins}" update="buyCoin_panel"/>  
 				  
-				        </h:panelGrid>  
-		
+				        </h:panelGrid>  		
 					</p:panel>
 					
-					<p:messages id="messages" autoUpdate="true" redisplay="false"/> 
+					
+					
+					<h3>Delete the account</h3>
 					
 					<p:growl id="messages3" showDetail="true" />  
   
@@ -78,7 +76,7 @@
 				        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
 				    </p:confirmDialog>  
 				    
-				    
+				    <br /><br />
 					
 			    </h:form>
 			    

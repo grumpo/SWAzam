@@ -43,6 +43,7 @@ public class TabController{
 		
 		if (activeTabIndex == 0) {
 			tableBean.updateRequestLog();
+			tableBean.updateCurrentCoins();
 		    return "overview.xhtml?faces-redirect=true";
 		}
 		else if (activeTabIndex == 1) {

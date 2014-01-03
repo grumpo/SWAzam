@@ -486,6 +486,40 @@ public class UserDataStorageImpl implements UserDataStorage {
         }
         return "";
 	}
+
+
+	@Override
+	public int getCurrentCoinsForUser(User user) {
+		PreparedStatement pstmt;
+        ResultSet rs;
+        int numCoins = -1;
+
+        try{
+            pstmt = con.prepareStatement("SELECT * FROM USER WHERE USERNAME=?");
+            pstmt.setString(1, user.getUsername());
+
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+            	pstmt = con.prepareStatement("SELECT coins_new FROM coinlog where USER_USERNAME=?");
+            	pstmt.setString(1, rs.getString("username"));
+            	
+            	rs = pstmt.executeQuery();
+            	            	
+            	// TODO: improve
+            	while (rs.next()){
+            		numCoins = rs.getInt("coins_new");
+            	}
+            	
+            	return numCoins;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        return numCoins;
+	}
 	
 
 }

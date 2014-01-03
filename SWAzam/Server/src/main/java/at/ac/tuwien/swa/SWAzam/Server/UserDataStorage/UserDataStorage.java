@@ -26,5 +26,6 @@ public interface UserDataStorage {
 	public List<RecognitionRequest> getRequestHistory(User user);
 	public boolean addRequestEntry(RecognitionRequest request);
 	public String changePassword(User user, String passwordOld, String passwordNew);
+	public int getCurrentCoinsForUser(User user);
 	
 }

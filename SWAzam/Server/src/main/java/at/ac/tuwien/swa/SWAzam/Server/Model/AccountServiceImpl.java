@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
 	public String buyCoins(User user, int numCoins) {
 		boolean success = uds.addCoins(user, numCoins);
 		if (success)
-			return "Added " + numCoins + " to the account!";
+			return "Added " + numCoins + " coins to the account!";
 		
 		//TODO improve
 		return "Error";	
