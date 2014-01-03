@@ -18,7 +18,7 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
     private final static Logger log = Logger.getLogger(MetaDataRetrieverImpl.class.getName());
     private final Client2PeerConnectorFactory conFac;
     final static int VERIFICATIONTIMEOUT = 2000;
-    final static int FINGERPRINTTIMEOUT = 10000;
+    final static int FINGERPRINTTIMEOUT = 100000;
 
     PeerStorage ps;
 
