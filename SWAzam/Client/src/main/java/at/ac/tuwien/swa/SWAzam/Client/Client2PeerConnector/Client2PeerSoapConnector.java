@@ -40,6 +40,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
     }
 
     private FingerprintResult convertFingerprint(at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.FingerprintResult fingerprintResult) {
+        if (fingerprintResult == null) return null;
         FingerprintResult result = new FingerprintResult();
         result.setResult(convertAudioInformation(fingerprintResult.getResult()));
         result.getHops().addAll(fingerprintResult.getHops());
@@ -48,6 +49,7 @@ public class Client2PeerSoapConnector implements Client2PeerConnector {
     }
 
     private AudioInformation convertAudioInformation(at.ac.tuwien.swa.SWAzam.Client.Client2PeerConnector.soap.AudioInformation audioInformation) {
+        if (audioInformation == null) return null;
         AudioInformation result = new AudioInformation();
         result.setArtist(audioInformation.getArtist());
         result.setTitle(audioInformation.getTitle());

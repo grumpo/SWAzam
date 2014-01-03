@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "PeerWebServiceSoapService", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", wsdlLocation = "http://localhost:9000/PeerWebService?wsdl")
+@WebServiceClient(name = "PeerWebServiceSoapService", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", wsdlLocation = "http://localhost:9003/PeerWebService?wsdl")
 public class PeerWebServiceSoapService
     extends Service
 {
@@ -30,7 +30,7 @@ public class PeerWebServiceSoapService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost:9000/PeerWebService?wsdl");
+            url = new URL("http://localhost:9003/PeerWebService?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

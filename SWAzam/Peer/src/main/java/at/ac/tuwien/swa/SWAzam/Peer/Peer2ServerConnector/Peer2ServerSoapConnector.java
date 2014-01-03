@@ -1,11 +1,13 @@
 package at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector;
 
+import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.PeerWebServiceSoap;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.PeerWebServiceSoapService;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.User;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.modelmapper.ModelMapper;
 
 import javax.xml.ws.WebServiceException;
 import java.net.MalformedURLException;
@@ -30,13 +32,10 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     }
 
     @Override
-    public boolean resolvedIdentification(String user, String password) throws UnableToConnectToServerException {
+    public boolean resolvedIdentification(String user, String password, FingerprintResult result) throws UnableToConnectToServerException {
         log.info("Adding some coins: " + user);
         try {
-            User userArg = new User();
-            userArg.setUsername(user);
-            userArg.setPassword(password);
-            getPeerWebService().addCoins(userArg);
+            getPeerWebService().addCoins(createUser(user, password), convert(result));
             return true; // TODO: adapt server webservice and use its result
         } catch (WebServiceException e) {
             throw new UnableToConnectToServerException(e);
@@ -44,17 +43,35 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     }
 
     @Override
-    public boolean requestedIdentification(String user, String password) throws UnableToConnectToServerException {
+    public boolean requestedIdentification(String user, String password, FingerprintResult result) throws UnableToConnectToServerException {
         log.info("Removing some coins: " + user);
         try {
-            User userArg = new User();
-            userArg.setUsername(user);
-            userArg.setPassword(password);
-            getPeerWebService().reduceCoins(userArg);
+            getPeerWebService().reduceCoins(createUser(user, password), convert(result));
             return true; // TODO: adapt server webservice and use its result
         } catch (WebServiceException e) {
             throw new UnableToConnectToServerException(e);
         }
+    }
+
+    private User createUser(String user, String password) {
+        User userArg = new User();
+        userArg.setUsername(user);
+        userArg.setPassword(password);
+        return userArg;
+    }
+
+    @Override
+    public void requestIssued(String user, String password, String requestId) throws UnableToConnectToServerException {
+        log.info("Removing some coins: " + user);
+        try {
+            getPeerWebService().requestIssued(createUser(user, password), requestId);
+        } catch (WebServiceException e) {
+            throw new UnableToConnectToServerException(e);
+        }
+    }
+
+    private at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult convert(FingerprintResult fingerprintResult) {
+        return new ModelMapper().map(fingerprintResult, at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult.class);
     }
 
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.UserInformation getValidateUserResult(String user, String password) throws UnableToConnectToServerException {

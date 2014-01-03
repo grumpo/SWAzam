@@ -28,7 +28,9 @@ public class ObjectFactory {
     private final static QName _AddCoins_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "addCoins");
     private final static QName _ValidateUser_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "validateUser");
     private final static QName _AddCoinsResponse_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "addCoinsResponse");
+    private final static QName _RequestIssuedResponse_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "requestIssuedResponse");
     private final static QName _ReduceCoinsResponse_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "reduceCoinsResponse");
+    private final static QName _RequestIssued_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "requestIssued");
     private final static QName _ValidateUserResponse_QNAME = new QName("http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", "validateUserResponse");
 
     /**
@@ -63,6 +65,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link RequestIssuedResponse }
+     * 
+     */
+    public RequestIssuedResponse createRequestIssuedResponse() {
+        return new RequestIssuedResponse();
+    }
+
+    /**
      * Create an instance of {@link ReduceCoins }
      * 
      */
@@ -79,11 +89,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link RequestIssued }
+     * 
+     */
+    public RequestIssued createRequestIssued() {
+        return new RequestIssued();
+    }
+
+    /**
      * Create an instance of {@link ReduceCoinsResponse }
      * 
      */
     public ReduceCoinsResponse createReduceCoinsResponse() {
         return new ReduceCoinsResponse();
+    }
+
+    /**
+     * Create an instance of {@link FingerprintResult }
+     * 
+     */
+    public FingerprintResult createFingerprintResult() {
+        return new FingerprintResult();
     }
 
     /**
@@ -139,12 +165,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RequestIssuedResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", name = "requestIssuedResponse")
+    public JAXBElement<RequestIssuedResponse> createRequestIssuedResponse(RequestIssuedResponse value) {
+        return new JAXBElement<RequestIssuedResponse>(_RequestIssuedResponse_QNAME, RequestIssuedResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ReduceCoinsResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", name = "reduceCoinsResponse")
     public JAXBElement<ReduceCoinsResponse> createReduceCoinsResponse(ReduceCoinsResponse value) {
         return new JAXBElement<ReduceCoinsResponse>(_ReduceCoinsResponse_QNAME, ReduceCoinsResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RequestIssued }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", name = "requestIssued")
+    public JAXBElement<RequestIssued> createRequestIssued(RequestIssued value) {
+        return new JAXBElement<RequestIssued>(_RequestIssued_QNAME, RequestIssued.class, null, value);
     }
 
     /**

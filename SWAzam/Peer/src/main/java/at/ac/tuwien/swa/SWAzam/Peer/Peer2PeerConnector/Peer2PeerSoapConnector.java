@@ -53,14 +53,17 @@ public class Peer2PeerSoapConnector implements Peer2PeerConnector {
     }
 
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult convertFingerprint(FingerprintResult fingerprintResult) {
+        if (fingerprintResult == null) return null;
         at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult result =
                 new at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.FingerprintResult();
         result.setResult(convertAudioInformation(fingerprintResult.getResult()));
         result.getHops().addAll(fingerprintResult.getHops());
+        result.setRequestID(fingerprintResult.getRequestID().toString());
         return result;
     }
 
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation convertAudioInformation(AudioInformation audioInformation) {
+        if (audioInformation == null) return null;
         at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation result =
                 new at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.soap.AudioInformation();
         result.setArtist(audioInformation.getArtist());

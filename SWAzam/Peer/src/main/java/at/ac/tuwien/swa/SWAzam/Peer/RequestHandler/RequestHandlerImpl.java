@@ -46,6 +46,9 @@ public class RequestHandlerImpl implements RequestHandler {
     }
 
     public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid, ResultListener resultListener) {
+        if (resultListener != null) {
+            registerIdentificationRequest(uuid, resultListener);
+        }
         if (!mp3Identifier.contains(fingerprint)) {
             log.info("Unable to handle request of user: " + user);
             forwardRequest(fingerprint, user, hops, uuid, resultListener);
@@ -53,6 +56,14 @@ public class RequestHandlerImpl implements RequestHandler {
         }
         log.info("Resolving request of user: " + user);
         sendResult(new FingerprintResult(mp3Identifier.identify(fingerprint), hops, uuid), resultListener);
+    }
+
+    private void registerIdentificationRequest(UUID uuid, ResultListener resultListener) {
+        try {
+            peer2ServerConnector.requestIssued(resultListener.getUser(), resultListener.getPassword(), uuid.toString());
+        } catch (UnableToConnectToServerException e) {
+            log.severe("Unable to contact server to register identification request: " + e.getMessage());
+        }
     }
 
     /**
@@ -93,8 +104,8 @@ public class RequestHandlerImpl implements RequestHandler {
         ResultListener resultListener = inProgress.get(fingerprintResult.getRequestID());
         resultListener.setResult(fingerprintResult);
         try {
-            peer2ServerConnector.resolvedIdentification(username, password);
-            peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword());
+            peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult);
+            peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult);
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());
         }

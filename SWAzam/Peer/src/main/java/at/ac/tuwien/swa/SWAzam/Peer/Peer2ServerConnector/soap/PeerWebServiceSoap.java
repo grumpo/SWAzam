@@ -26,6 +26,22 @@ public interface PeerWebServiceSoap {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "reduceCoins", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoins")
+    @ResponseWrapper(localName = "reduceCoinsResponse", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoinsResponse")
+    @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsResponse")
+    public void reduceCoins(
+        @WebParam(name = "arg0", targetNamespace = "")
+        User arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        FingerprintResult arg1);
+
+    /**
+     * 
+     * @param arg1
      * @param arg0
      */
     @WebMethod
@@ -34,7 +50,9 @@ public interface PeerWebServiceSoap {
     @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/addCoinsRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/addCoinsResponse")
     public void addCoins(
         @WebParam(name = "arg0", targetNamespace = "")
-        User arg0);
+        User arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        FingerprintResult arg1);
 
     /**
      * 
@@ -56,14 +74,17 @@ public interface PeerWebServiceSoap {
 
     /**
      * 
+     * @param arg1
      * @param arg0
      */
     @WebMethod
-    @RequestWrapper(localName = "reduceCoins", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoins")
-    @ResponseWrapper(localName = "reduceCoinsResponse", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoinsResponse")
-    @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsResponse")
-    public void reduceCoins(
+    @RequestWrapper(localName = "requestIssued", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.RequestIssued")
+    @ResponseWrapper(localName = "requestIssuedResponse", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.RequestIssuedResponse")
+    @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/requestIssuedRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/requestIssuedResponse")
+    public void requestIssued(
         @WebParam(name = "arg0", targetNamespace = "")
-        User arg0);
+        User arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1);
 
 }
