@@ -55,7 +55,7 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
                 AudioInputStream stream = getAudioStream(file);
                 Fingerprint storedFingerprint = getFingerprint(stream);
                 stream.close();
-                if(storedFingerprint.equals(fingerprint)){
+                if(storedFingerprint.match(fingerprint) > -1){
                     return new AudioInformation(getTitle(file), "TODO-Artist"); // TODO: extract ID3tags
                 }
             }
