@@ -6,8 +6,8 @@ import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
 
 public interface DebitManager {
 	
-	public void addCoins(User user, FingerprintResult result);
-	public void removeCoins(User user, FingerprintResult result);
+	public boolean addCoins(User user, FingerprintResult result);
+	public boolean removeCoins(User user, FingerprintResult result);
 	public void requestIssued(User user, String request_id);
 
 }

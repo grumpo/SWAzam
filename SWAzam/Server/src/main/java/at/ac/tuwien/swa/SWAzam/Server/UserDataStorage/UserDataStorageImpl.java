@@ -25,7 +25,6 @@ import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 public class UserDataStorageImpl implements UserDataStorage {
 
 	private final static Logger log = Logger.getLogger(UserDataStorageImpl.class.getName());
-    static final int MAX_FAILURE = 5;
 
     private Connection con;
     private Set<User> users;
@@ -130,7 +129,7 @@ public class UserDataStorageImpl implements UserDataStorage {
         ResultSet rs;
 
         try{
-            log.info("Validating user!");
+            log.info("Validating user (client app)!");
             pstmt = con.prepareStatement("SELECT * FROM USER WHERE USERNAME=? AND PASSWORD=?");
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -216,7 +215,7 @@ public class UserDataStorageImpl implements UserDataStorage {
         ResultSet rs;
 
         try{
-            log.info("Validating user!");
+            log.info("Validating user (web gui)!");
             pstmt = con.prepareStatement("SELECT * FROM user WHERE username=? AND password=?");
             pstmt.setString(1, username);
             pstmt.setString(2, createPasswordHash(password));
@@ -278,7 +277,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setInt(5, old_coins+1);
 			pstmt.setString(6, "Successful Music Recognition -> +1 Coin!");
 			pstmt.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
-			
+						
 			pstmt.execute();
 			            
             return true;
@@ -333,6 +332,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 	}
 
 
+	@SuppressWarnings("resource")
 	public boolean reduceCoins(User user, FingerprintResult result) {
 		PreparedStatement pstmt;
 		ResultSet rs;
@@ -350,7 +350,8 @@ public class UserDataStorageImpl implements UserDataStorage {
         		old_coins = rs.getInt("coins_new");
         	}
 
-            log.info("Adding coin to user!");
+        	//TODO - what if the user has 0 coins?
+            log.info("Reducing coins from user!");
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
 			pstmt.setNull(1, java.sql.Types.INTEGER);
 			pstmt.setString(2, user.getUsername());
@@ -361,7 +362,27 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
-            
+			
+			System.out.println("Result artist: " + result.getResult().getArtist() + " + Result title: " + result.getResult().getTitle());
+			
+			// update the request history UPDATE user set password=? where username=?
+			if (result.getResult().getArtist() == null && result.getResult().getTitle() == null) {
+				pstmt = con.prepareStatement("Update request set result=?, song=? where REQUEST_ID=?");
+	        	pstmt.setString(1, "Song could not be identified.");
+	        	pstmt.setString(2, "");
+	        	pstmt.setString(3, result.getRequestIDString());
+				
+	        	pstmt.execute();
+			}
+			else {
+				pstmt = con.prepareStatement("Update request set result=?, song=? where REQUEST_ID=?");
+	        	pstmt.setString(1, "Song successfully identified.");
+	        	pstmt.setString(2, result.getResult().getArtist() + " - " + result.getResult().getTitle());
+	        	pstmt.setString(3, result.getRequestIDString());
+				
+	        	pstmt.execute();
+			}
+        	
             return true;
         }
         catch(SQLException e){
@@ -431,6 +452,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 		PreparedStatement pstmt;
         
         try{
+        	log.info("Added request entry for user " + user.getUsername() + "!");
             pstmt = con.prepareStatement("INSERT INTO request VALUES(?,?,?,?,?,?,?)");
             pstmt.setNull(1, java.sql.Types.INTEGER);
             pstmt.setString(2, request_id);

@@ -32,13 +32,13 @@ public class PeerWebServiceSoap implements PeerWebService {
     }
 	
 	@WebMethod
-    public void addCoins (User user, FingerprintResult result) {
-        debitManager.addCoins(user, result);
+    public boolean addCoins (User user, FingerprintResult result) {
+        return debitManager.addCoins(user, result);
     }
 	
 	@WebMethod
-    public void reduceCoins (User user, FingerprintResult result) {
-        debitManager.removeCoins(user, result);
+    public boolean reduceCoins (User user, FingerprintResult result) {
+		return debitManager.removeCoins(user, result);
     }
 
 	// initiate a recognition request - should be called directly after receiving the request from the client, before searching for music matches

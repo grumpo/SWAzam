@@ -11,13 +11,13 @@ public class DebitManagerImpl implements DebitManager {
 	@Inject
     private UserDataStorage userStorage;
 
-	public void addCoins(User user, FingerprintResult result) {
-		userStorage.addCoins(user, result);
+	public boolean addCoins(User user, FingerprintResult result) {
+		return userStorage.addCoins(user, result);
 		
 	}
 
-	public void removeCoins(User user, FingerprintResult result) {
-		userStorage.reduceCoins(user, result);
+	public boolean removeCoins(User user, FingerprintResult result) {
+		return userStorage.reduceCoins(user, result);
 		
 	}
 

@@ -63,6 +63,4 @@ INSERT INTO REQUEST VALUES(3, '', 'Jane', '2013-12-26 08:45:22', '', '', 'Song c
 INSERT INTO REQUEST VALUES(4, '', 'John', '2013-12-26 12:17:00', 'Rise Against - Saviour (Appeal to Reason, 2008)', '192.168.0.24', 'Song successfully identified.')
 INSERT INTO REQUEST VALUES(5, '', 'Jane', '2013-12-27 03:15:22', '', '', 'Song could not be identified.')
 INSERT INTO REQUEST VALUES(6, '', 'Jane', '2013-12-27 05:20:00', 'Rise Against - Saviour (Appeal to Reason, 2008)', '192.168.0.24', 'Song successfully identified.')
-INSERT INTO REQUEST VALUES(7, '', 'Jane', '2013-12-28 06:05:22', '', '', '')
 INSERT INTO REQUEST VALUES(8, '', 'John', '2013-12-28 07:05:22', '', '', 'Song could not be identified.')
-INSERT INTO REQUEST VALUES(9, '', 'John', '2013-12-28 14:20:00', '', '', '')
