@@ -167,7 +167,6 @@ CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,P
 CREATE MEMORY TABLE PUBLIC.FINGERPRINTS(USERNAME VARCHAR(128) NOT NULL,TIMESTAMP TIMESTAMP NOT NULL,ARTIST VARCHAR(128) NOT NULL,SONGTITLE VARCHAR(128) NOT NULL,PRIMARY KEY(USERNAME,TIMESTAMP))
 "@
 	$data = @"
-INSERT INTO PEERS VALUES('http://localhost:9000',10)
 INSERT INTO PEERS VALUES('http://localhost:9001',5)
 "@
 	
@@ -184,7 +183,7 @@ CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,P
 CREATE MEMORY TABLE PUBLIC.FINGERPRINTS(USERNAME VARCHAR(128) NOT NULL,TIMESTAMP TIMESTAMP NOT NULL,ARTIST VARCHAR(128) NOT NULL,SONGTITLE VARCHAR(128) NOT NULL,PRIMARY KEY(USERNAME,TIMESTAMP))
 "@
 	$data = @"
-INSERT INTO PEERS VALUES('http://localhost:9001',10)
+INSERT INTO PEERS VALUES('http://localhost:9000',5)
 INSERT INTO PEERS VALUES('http://localhost:9002',5)
 "@
 	
@@ -201,8 +200,7 @@ CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,P
 CREATE MEMORY TABLE PUBLIC.FINGERPRINTS(USERNAME VARCHAR(128) NOT NULL,TIMESTAMP TIMESTAMP NOT NULL,ARTIST VARCHAR(128) NOT NULL,SONGTITLE VARCHAR(128) NOT NULL,PRIMARY KEY(USERNAME,TIMESTAMP))
 "@
 	$data = @"
-INSERT INTO PEERS VALUES('http://localhost:9001',10)
-INSERT INTO PEERS VALUES('http://localhost:9002',5)
+INSERT INTO PEERS VALUES('http://localhost:9001',5)
 "@
 	
 	CreateDatabase $location $name $schema $data
@@ -218,8 +216,8 @@ CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,P
 CREATE MEMORY TABLE PUBLIC.FINGERPRINTS(USERNAME VARCHAR(128) NOT NULL,TIMESTAMP TIMESTAMP NOT NULL,ARTIST VARCHAR(128) NOT NULL,SONGTITLE VARCHAR(128) NOT NULL,PRIMARY KEY(USERNAME,TIMESTAMP))
 "@
 	$data = @"
-INSERT INTO PEERS VALUES('http://localhost:9000',17)
-INSERT INTO FINGERPRINTS VALUES('Markus','2008-08-08 20:08:08.000000','Testartist','Testsongtitle')
+INSERT INTO PEERS VALUES('http://localhost:9000',5)
+INSERT INTO FINGERPRINTS VALUES('John','2008-08-08 20:08:08.000000','Testartist','Testsongtitle')
 "@
 	
 	CreateDatabase $location $name $schema $data
@@ -235,8 +233,9 @@ CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,P
 CREATE MEMORY TABLE PUBLIC.FINGERPRINTS(USERNAME VARCHAR(128) NOT NULL,TIMESTAMP TIMESTAMP NOT NULL,ARTIST VARCHAR(128) NOT NULL,SONGTITLE VARCHAR(128) NOT NULL,PRIMARY KEY(USERNAME,TIMESTAMP))
 "@
 	$data = @"
-INSERT INTO PEERS VALUES('http://localhost:9000',17)
-INSERT INTO FINGERPRINTS VALUES('Markus','2008-08-08 20:08:08.000000','Testartist','Testsongtitle')
+INSERT INTO PEERS VALUES('http://localhost:9001',5)
+INSERT INTO PEERS VALUES('http://localhost:9002',5)
+INSERT INTO FINGERPRINTS VALUES('Jane','2008-08-08 20:08:08.000000','Someone','Something')
 "@
 	
 	CreateDatabase $location $name $schema $data
@@ -266,9 +265,9 @@ function RunComponents()
 	StartServer @("9005")
 	Write-Host "Press enter when server is up and running..." -ForegroundColor Yellow
 	Read-Host
-	StartPeer @("C:\\temp\\SWAzam\\peer1\\mp3s", "9000", "http://localhost:9005", "C:\\temp\\SWAzam\\peer1\\database\\localdb")
-	StartPeer @("C:\\temp\\SWAzam\\peer2\\mp3s", "9001", "http://localhost:9005", "C:\\temp\\SWAzam\\peer2\\database\\localdb")
-	StartPeer @("C:\\temp\\SWAzam\\peer3\\mp3s", "9002", "http://localhost:9005", "C:\\temp\\SWAzam\\peer3\\database\\localdb")
+	StartPeer @("C:\\temp\\SWAzam\\peer1\\mp3s", "9000", "http://localhost:9005", "C:\\temp\\SWAzam\\peer1\\database\\localdb", "John", "Doe")
+	StartPeer @("C:\\temp\\SWAzam\\peer2\\mp3s", "9001", "http://localhost:9005", "C:\\temp\\SWAzam\\peer2\\database\\localdb", "Jane", "Doe")
+	StartPeer @("C:\\temp\\SWAzam\\peer3\\mp3s", "9002", "http://localhost:9005", "C:\\temp\\SWAzam\\peer3\\database\\localdb", "John", "Doe")
 	Write-Host "Press enter when peers are up and running..." -ForegroundColor Yellow
 	Read-Host
 	StartClient @("C:\\temp\\SWAzam\\client1\\database\\localdb")
