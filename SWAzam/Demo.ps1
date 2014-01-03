@@ -3,15 +3,15 @@ param([String]$defaultMP3s = "")
 $scriptDirectory = split-path -parent $MyInvocation.MyCommand.Definition
 $configBaseDirectory = "C:\\temp\\SWAzam"
 
-$HSQLDBproperties = 
-"#HSQL Database Engine 2.3.0
+$HSQLDBproperties = @"
+#HSQL Database Engine 2.3.0
 #Sat Dec 21 20:59:34 CET 2013
 version=2.3.0
 modified=no
-"
+"@
 
-$HSQLDBscriptTemplate = 
-"SET DATABASE UNIQUE NAME @@NAME_PLACEHOLDER@@
+$HSQLDBscriptTemplate = @"
+SET DATABASE UNIQUE NAME @@NAME_PLACEHOLDER@@
 SET DATABASE GC 0
 SET DATABASE DEFAULT RESULT MEMORY ROWS 0
 SET DATABASE EVENT LOG LEVEL 0
@@ -47,7 +47,6 @@ ALTER USER SA SET LOCAL TRUE
 CREATE SCHEMA PUBLIC AUTHORIZATION DBA
 SET SCHEMA PUBLIC
 @@SCHEMA_PLACEHOLDER@@
-KEY(USERNAME,TIMESTAMP))
 ALTER SEQUENCE SYSTEM_LOBS.LOB_ID RESTART WITH 1
 SET DATABASE DEFAULT INITIAL SCHEMA PUBLIC
 GRANT USAGE ON DOMAIN INFORMATION_SCHEMA.SQL_IDENTIFIER TO PUBLIC
@@ -60,7 +59,7 @@ SET SCHEMA SYSTEM_LOBS
 INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
 @@TESTDATA_PLACEHOLDER@@
-"
+"@
 
 function CompileServer()
 {
@@ -161,7 +160,7 @@ function CreateDatabase([string] $databaseFolder, [string] $databaseName, [strin
 function CreateDatabaseForPeer1()
 {
 	$location = "$configBaseDirectory\\peer1\\database"
-	$name = "HSQLDBPeer1"
+	$name = "HSQLDB43066372BA"
 	$schema = @"
 CREATE MEMORY TABLE PUBLIC.PEERS(URL VARCHAR(256) NOT NULL PRIMARY KEY,FAILURE INTEGER NOT NULL)
 CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,PASSWORD VARCHAR(64) NOT NULL)
@@ -178,7 +177,7 @@ INSERT INTO PEERS VALUES('http://localhost:9001',5)
 function CreateDatabaseForPeer2()
 {
 	$location = "$configBaseDirectory\\peer2\\database"
-	$name = "HSQLDBPeer2"
+	$name = "HSQLDB43066372BB"
 	$schema = @"
 CREATE MEMORY TABLE PUBLIC.PEERS(URL VARCHAR(256) NOT NULL PRIMARY KEY,FAILURE INTEGER NOT NULL)
 CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,PASSWORD VARCHAR(64) NOT NULL)
@@ -195,7 +194,7 @@ INSERT INTO PEERS VALUES('http://localhost:9002',5)
 function CreateDatabaseForPeer3()
 {
 	$location = "$configBaseDirectory\\peer3\\database"
-	$name = "HSQLDBPeer2"
+	$name = "HSQLDB43066372BC"
 	$schema = @"
 CREATE MEMORY TABLE PUBLIC.PEERS(URL VARCHAR(256) NOT NULL PRIMARY KEY,FAILURE INTEGER NOT NULL)
 CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,PASSWORD VARCHAR(64) NOT NULL)
@@ -212,7 +211,7 @@ INSERT INTO PEERS VALUES('http://localhost:9002',5)
 function CreateDatabaseForClient1()
 {
 	$location = "$configBaseDirectory\\client1\\database"
-	$name = "HSQLDBClient1"
+	$name = "HSQLDB43066372BD"
 	$schema = @"
 CREATE MEMORY TABLE PUBLIC.PEERS(URL VARCHAR(256) NOT NULL PRIMARY KEY,FAILURE INTEGER NOT NULL)
 CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,PASSWORD VARCHAR(64) NOT NULL)
@@ -229,7 +228,7 @@ INSERT INTO FINGERPRINTS VALUES('Markus','2008-08-08 20:08:08.000000','Testartis
 function CreateDatabaseForClient2()
 {
 	$location = "$configBaseDirectory\\client2\\database"
-	$name = "HSQLDBClient2"
+	$name = "HSQLDB43066372BE"
 	$schema = @"
 CREATE MEMORY TABLE PUBLIC.PEERS(URL VARCHAR(256) NOT NULL PRIMARY KEY,FAILURE INTEGER NOT NULL)
 CREATE MEMORY TABLE PUBLIC.LOGGEDIN(USERNAME VARCHAR(128) NOT NULL PRIMARY KEY,PASSWORD VARCHAR(64) NOT NULL)
@@ -267,13 +266,13 @@ function RunComponents()
 	StartServer @("9005")
 	Write-Host "Press enter when server is up and running..." -ForegroundColor Yellow
 	Read-Host
-	StartPeer @("C:\\temp\\SWAzam\\peer1\\mp3s", "9000", "http://localhost:9005", "C:\\temp\\SWAzam\\peer1\\database")
-	StartPeer @("C:\\temp\\SWAzam\\peer2\\mp3s", "9001", "http://localhost:9005", "C:\\temp\\SWAzam\\peer2\\database")
-	StartPeer @("C:\\temp\\SWAzam\\peer3\\mp3s", "9002", "http://localhost:9005", "C:\\temp\\SWAzam\\peer3\\database")
+	StartPeer @("C:\\temp\\SWAzam\\peer1\\mp3s", "9000", "http://localhost:9005", "C:\\temp\\SWAzam\\peer1\\database\\localdb")
+	StartPeer @("C:\\temp\\SWAzam\\peer2\\mp3s", "9001", "http://localhost:9005", "C:\\temp\\SWAzam\\peer2\\database\\localdb")
+	StartPeer @("C:\\temp\\SWAzam\\peer3\\mp3s", "9002", "http://localhost:9005", "C:\\temp\\SWAzam\\peer3\\database\\localdb")
 	Write-Host "Press enter when peers are up and running..." -ForegroundColor Yellow
 	Read-Host
-	StartClient @("C:\\temp\\SWAzam\\client1\\database")
-	StartClient @("C:\\temp\\SWAzam\\client2\\database")
+	StartClient @("C:\\temp\\SWAzam\\client1\\database\\localdb")
+	StartClient @("C:\\temp\\SWAzam\\client2\\database\\localdb")
 	Write-Host "All components for SWAzam demo are running now!" -ForegroundColor Green
 }
 
