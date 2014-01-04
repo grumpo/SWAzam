@@ -22,6 +22,7 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
 
     @Inject
     public Peer2ServerSoapConnector(@Assisted String serverWSDLLocation) {
+        log.info("Using server: " + serverWSDLLocation);
         this.serverWSDLLocation = serverWSDLLocation;
     }
 

@@ -60,7 +60,6 @@ public class ClientWebServiceSoap implements ClientWebService {
         String address = peerUrl + "/ClientWebService";
         endpoint = Endpoint.publish(address, this);
         log.info("ClientWebService listens on: " + address);
-
     }
 
     @Override

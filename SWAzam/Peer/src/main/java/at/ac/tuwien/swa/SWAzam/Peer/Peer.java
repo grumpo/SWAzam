@@ -3,6 +3,7 @@ package at.ac.tuwien.swa.SWAzam.Peer;
 import ac.at.tuwien.infosys.swa.audio.Fingerprint;
 import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
+import at.ac.tuwien.swa.SWAzam.Peer.Common.Encryption;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage.FingerprintStorageFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierFactory;
@@ -92,6 +93,12 @@ public class Peer {
 
         final Peer peer = injector.getInstance(Peer.class);
         try {
+            peer.validate(serverAddress, username, password);
+        } catch (InvalidArgumentException | UnableToConnectToServerException e) {
+            log.severe(e.getMessage() + "\n" + msg);
+            return;
+        }
+        try {
             peer.run(storagePath, port, serverAddress, dbPath, username, password);
             log.info("Peer is up, press <enter> to quit.");
         } catch (StorageException e) {
@@ -111,6 +118,12 @@ public class Peer {
                 }
             }
         }.run();
+    }
+
+    private void validate(String serverAddress, String username, String password) throws UnableToConnectToServerException, InvalidArgumentException {
+        Peer2ServerConnector peer2ServerConnector = peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION);
+        UserInformation userInformation = peer2ServerConnector.validateUser(username, Encryption.encrypt(password));
+        if (userInformation == null) throw new InvalidArgumentException("Invalid username or password for user: " + username);
     }
 
     public void stop() {
