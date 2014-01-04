@@ -131,7 +131,7 @@ public class Peer {
         // test request on self
         //testRequestToPeerForwardRequest(port);
         // test request to server
-        testRequestToServerUserValidation(serverAddress);
+        //testRequestToServerUserValidation(serverAddress);
     }
 
     private void testRequestToPeerForwardRequest(Integer port) {

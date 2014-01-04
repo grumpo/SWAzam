@@ -55,7 +55,22 @@ public class RequestHandlerImpl implements RequestHandler {
             return;
         }
         log.info("Resolving request: " + uuid);
-        sendResult(new FingerprintResult(mp3Identifier.identify(fingerprint), hops, uuid), resultListener);
+        FingerprintResult fingerprintResult = new FingerprintResult(mp3Identifier.identify(fingerprint), hops, uuid);
+        sendResult(fingerprintResult, resultListener);
+        bookCreditsRequestResolved(fingerprintResult);
+    }
+
+    private void bookCreditsRequestResolved(FingerprintResult fingerprintResult) {
+        try {
+            if (fingerprintResult.getResult() != null) { // only pay credits if successful
+                if (!peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult)) { // TODO: move to correct peer
+                    log.severe("Unable to book credits. ");
+                    // TODO: throw exception
+                }
+            }
+        } catch (UnableToConnectToServerException e) {
+            log.severe("Unable to book credits: " + e.getMessage());
+        }
     }
 
     private void registerIdentificationRequest(UUID uuid, ResultListener resultListener) {
@@ -108,16 +123,14 @@ public class RequestHandlerImpl implements RequestHandler {
 
     private void setResult(FingerprintResult fingerprintResult, ResultListener resultListener) {
         resultListener.setResult(fingerprintResult);
+        bookCreditsRequestRequested(fingerprintResult, resultListener);
+    }
+
+    private void bookCreditsRequestRequested(FingerprintResult fingerprintResult, ResultListener resultListener) {
         try {
             if (!peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult)) {
                 log.severe("Unable to book credits. ");
                 // TODO: throw exception
-            }
-            if (fingerprintResult.getResult() != null) { // only pay credits if successful
-                if (!peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult)) { // TODO: move to correct peer
-                    log.severe("Unable to book credits. ");
-                    // TODO: throw exception
-                }
             }
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());
