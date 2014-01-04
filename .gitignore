@@ -1,5 +1,6 @@
 *.class
 target
+*.swp
 
 # Package Files #
 *.jar
@@ -13,3 +14,5 @@ target
 # db
 SWAzam/database/
 *.lck
+
+Database*

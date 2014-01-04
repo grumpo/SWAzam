@@ -33,6 +33,7 @@ public class RequestForwarderImpl implements RequestForwarder {
 
     @Override
     public void identifyMP3Fingerprint(Fingerprint fingerprint, String user, List<String> hops, UUID uuid) throws RequestForwarderException {
+        log.info("Forwarding request: " + uuid);
         addPeersToPeerStorage(hops);
         Set<Peer> peers = peerStorage.getPeers();
 
@@ -40,6 +41,7 @@ public class RequestForwarderImpl implements RequestForwarder {
             throw new RequestForwarderException("Tried too many hops, giving up...");
         }
 
+        boolean triedOne = false;
         for(Peer peer : peers)
         {
             if (hops.contains(peer.getUrl())) {
@@ -48,14 +50,16 @@ public class RequestForwarderImpl implements RequestForwarder {
             }
             try {
                 String peerUrl = peer.getUrl();
+                log.info(String.format("Forwarding request %s to peer %s.", uuid, peerUrl));
                 peer2PeerConnectorFactory.create(peerUrl + PEER_WEB_SERVICE_WSDL_LOCATION).identifyMP3Fingerprint(fingerprint, user, hops, uuid);
+                triedOne = true;
                 break; // just try one peer (no backtracking)
             } catch (UnableToConnectToPeer e) {
                 log.info("Peer seems down: " + e.getMessage());
                 peer.failure();
             }
         }
-        throw new RequestForwarderException("Tried all known Peers, none could resolve the fingerprint...");
+        if (!triedOne) throw new RequestForwarderException("No more peer left to try...");
     }
 
     private void addPeersToPeerStorage(List<String> hops) {
@@ -65,7 +69,7 @@ public class RequestForwarderImpl implements RequestForwarder {
                 return new Peer(url, INITIAL_FAIL_COUNT);
             }
         });
-        for (Peer peer : peers) { // TODO: do not use current peer, so skip last
+        for (Peer peer : peers.subList(0, peers.size() - 1)) {
             if (peerStorage.getPeers().contains(peer)) continue;
             log.info("Adding peer to storage: " + peer);
             peerStorage.addPeer(peer);

@@ -50,11 +50,11 @@ public class RequestHandlerImpl implements RequestHandler {
             registerIdentificationRequest(uuid, resultListener);
         }
         if (!mp3Identifier.contains(fingerprint)) {
-            log.info("Unable to handle request of user: " + user);
+            log.info("Unable to handle request: " + uuid);
             forwardRequest(fingerprint, user, hops, uuid, resultListener);
             return;
         }
-        log.info("Resolving request of user: " + user);
+        log.info("Resolving request: " + uuid);
         sendResult(new FingerprintResult(mp3Identifier.identify(fingerprint), hops, uuid), resultListener);
     }
 
@@ -101,6 +101,7 @@ public class RequestHandlerImpl implements RequestHandler {
 
     @Override
     public void identificationResult(FingerprintResult fingerprintResult) {
+        log.info("Retrieved result of: " + fingerprintResult.getRequestID());
         ResultListener resultListener = inProgress.get(fingerprintResult.getRequestID());
         setResult(fingerprintResult, resultListener);
     }
@@ -108,9 +109,15 @@ public class RequestHandlerImpl implements RequestHandler {
     private void setResult(FingerprintResult fingerprintResult, ResultListener resultListener) {
         resultListener.setResult(fingerprintResult);
         try {
-            peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult); // TODO: move to correct peer
+            if (!peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult)) {
+                log.severe("Unable to book credits. ");
+                // TODO: throw exception
+            }
             if (fingerprintResult.getResult() != null) { // only pay credits if successful
-                peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult);
+                if (!peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult)) { // TODO: move to correct peer
+                    log.severe("Unable to book credits. ");
+                    // TODO: throw exception
+                }
             }
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());

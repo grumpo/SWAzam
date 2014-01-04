@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -32,8 +33,14 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
 
     @Override
     public Boolean contains(Fingerprint fingerprint) {
-        try{
-            for (File file : storage.listFiles()) {
+        try {
+            FilenameFilter filter = new FilenameFilter() {
+                @Override
+                public boolean accept(File file, String name) {
+                    return name.toLowerCase().endsWith(".mp3");
+                }
+            };
+            for (File file : storage.listFiles(filter)) {
                 AudioInputStream stream = getAudioStream(file);
                 Fingerprint storedFingerprint = getFingerprint(stream);
                 stream.close();
@@ -58,11 +65,16 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
 
     @Override
     public AudioInformation getAudioInformationOf(Fingerprint fingerprint) {
-        try{
             for (File file : storage.listFiles()) {
-                AudioInputStream stream = getAudioStream(file);
-                Fingerprint storedFingerprint = getFingerprint(stream);
-                stream.close();
+                Fingerprint storedFingerprint;
+                try {
+                    storedFingerprint = getFingerprint(getAudioStream(file));
+                    getAudioStream(file).close();
+                } catch (UnsupportedAudioFileException | IOException e) {
+                    log.severe("Unable to load mp3: " + e.getMessage());
+                    continue;
+                }
+
                 double matchValue1 = storedFingerprint.match(fingerprint);
                 double matchValue2 = fingerprint.match(storedFingerprint);
                 boolean match = matchValue1 >= 0 || matchValue2 >= 0;
@@ -73,13 +85,7 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
                 }
             }
             return null;
-        }catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+
     }
 
     private Fingerprint getFingerprint(AudioInputStream stream) throws IOException {

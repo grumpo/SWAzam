@@ -1,5 +1,6 @@
 package at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector;
 
+import at.ac.tuwien.swa.SWAzam.Peer.Common.AudioInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.PeerWebServiceSoap;
@@ -36,8 +37,7 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     public boolean resolvedIdentification(String user, String password, FingerprintResult result) throws UnableToConnectToServerException {
         log.info("Adding some coins: " + user);
         try {
-            getPeerWebService().addCoins(createUser(user, password), convert(result));
-            return true; // TODO: adapt server webservice and use its result
+            return getPeerWebService().addCoins(createUser(user, password), convert(result));
         } catch (WebServiceException e) {
             throw new UnableToConnectToServerException(e);
         }
@@ -47,8 +47,7 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     public boolean requestedIdentification(String user, String password, FingerprintResult result) throws UnableToConnectToServerException {
         log.info("Removing some coins: " + user);
         try {
-            getPeerWebService().reduceCoins(createUser(user, password), convert(result));
-            return true; // TODO: adapt server webservice and use its result
+            return getPeerWebService().reduceCoins(createUser(user, password), convert(result));
         } catch (WebServiceException e) {
             throw new UnableToConnectToServerException(e);
         }
@@ -63,7 +62,7 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
 
     @Override
     public void requestIssued(String user, String password, String requestId) throws UnableToConnectToServerException {
-        log.info("Removing some coins: " + user);
+        log.info("Request issued: " + user);
         try {
             getPeerWebService().requestIssued(createUser(user, password), requestId);
         } catch (WebServiceException e) {
@@ -72,7 +71,18 @@ public class Peer2ServerSoapConnector implements Peer2ServerConnector {
     }
 
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult convert(FingerprintResult fingerprintResult) {
-        return new ModelMapper().map(fingerprintResult, at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult.class);
+        if (fingerprintResult == null) return null;
+        at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult result =
+                new  at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.FingerprintResult();
+        result.setResult(convert(fingerprintResult.getResult()));
+        result.setRequestID(fingerprintResult.getRequestID().toString());
+        result.getHops().addAll(fingerprintResult.getHops());
+        return result;
+    }
+
+    private at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.AudioInformation convert(AudioInformation audioInformation) {
+        if (audioInformation == null) return null;
+        return new ModelMapper().map(audioInformation, at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.AudioInformation.class);
     }
 
     private at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.UserInformation getValidateUserResult(String user, String password) throws UnableToConnectToServerException {

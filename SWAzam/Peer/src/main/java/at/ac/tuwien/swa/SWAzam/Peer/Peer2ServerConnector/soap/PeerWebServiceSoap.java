@@ -28,12 +28,15 @@ public interface PeerWebServiceSoap {
      * 
      * @param arg1
      * @param arg0
+     * @return
+     *     returns boolean
      */
     @WebMethod
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "reduceCoins", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoins")
     @ResponseWrapper(localName = "reduceCoinsResponse", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.ReduceCoinsResponse")
     @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/reduceCoinsResponse")
-    public void reduceCoins(
+    public boolean reduceCoins(
         @WebParam(name = "arg0", targetNamespace = "")
         User arg0,
         @WebParam(name = "arg1", targetNamespace = "")
@@ -43,12 +46,15 @@ public interface PeerWebServiceSoap {
      * 
      * @param arg1
      * @param arg0
+     * @return
+     *     returns boolean
      */
     @WebMethod
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "addCoins", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.AddCoins")
     @ResponseWrapper(localName = "addCoinsResponse", targetNamespace = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/", className = "at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.soap.AddCoinsResponse")
     @Action(input = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/addCoinsRequest", output = "http://Peer2ServerConnector.Server.SWAzam.swa.tuwien.ac.at/PeerWebServiceSoap/addCoinsResponse")
-    public void addCoins(
+    public boolean addCoins(
         @WebParam(name = "arg0", targetNamespace = "")
         User arg0,
         @WebParam(name = "arg1", targetNamespace = "")
