@@ -365,11 +365,9 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
-			
-			System.out.println("Result artist: " + result.getResult().getArtist() + " + Result title: " + result.getResult().getTitle());
-			
-			// update the request history UPDATE user set password=? where username=?
-			if (result.getResult().getArtist() == null && result.getResult().getTitle() == null) {
+						
+			// update the request history
+			if (result.getResult() == null) {
 				pstmt = con.prepareStatement("Update request set result=?, song=? where REQUEST_ID=?");
 	        	pstmt.setString(1, "Song could not be identified.");
 	        	pstmt.setString(2, "");
