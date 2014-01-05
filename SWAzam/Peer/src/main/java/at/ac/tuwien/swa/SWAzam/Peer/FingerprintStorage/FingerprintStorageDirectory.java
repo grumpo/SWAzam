@@ -5,6 +5,14 @@ import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.AudioInformation;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -81,11 +89,35 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
                 log.info("MatchValues: " + matchValue1 + " " + matchValue2);
                 if(match){
                     log.info("Found matching track " + getTitle(file));
-                    return new AudioInformation(getTitle(file), "TODO-Artist"); // TODO: extract ID3tags
+
+                    return getAudioInformation(file);
                 }
             }
             return null;
 
+    }
+
+    private AudioInformation getAudioInformation(File file) {
+        AudioInformation audioInformation = new AudioInformation();
+        try {
+            audioInformation = getAudioInformationByID3(file);
+        } catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+            log.severe("Unable to read id3 tags!");
+        }
+        if (audioInformation.getTitle() == null) {
+            audioInformation.setTitle(getTitle(file));
+        }
+        if (audioInformation.getArtist() == null) {
+            audioInformation.setArtist("unknown");
+        }
+
+        return audioInformation;
+    }
+
+    private AudioInformation getAudioInformationByID3(File file) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException {
+        AudioFile f = AudioFileIO.read(file);
+        Tag tag = f.getTag();
+        return new AudioInformation(tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST));
     }
 
     private Fingerprint getFingerprint(AudioInputStream stream) throws IOException {
