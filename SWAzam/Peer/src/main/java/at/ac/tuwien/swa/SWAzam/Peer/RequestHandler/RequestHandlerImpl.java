@@ -122,19 +122,23 @@ public class RequestHandlerImpl implements RequestHandler {
     }
 
     private void setResult(FingerprintResult fingerprintResult, ResultListener resultListener) {
+        if (!bookCreditsRequestRequested(fingerprintResult, resultListener)) {
+            fingerprintResult.setResult(null); // throw away result if user has not enough credits, TODO: pass message back to client?
+        }
         resultListener.setResult(fingerprintResult);
-        bookCreditsRequestRequested(fingerprintResult, resultListener);
     }
 
-    private void bookCreditsRequestRequested(FingerprintResult fingerprintResult, ResultListener resultListener) {
+    private boolean bookCreditsRequestRequested(FingerprintResult fingerprintResult, ResultListener resultListener) {
         try {
             if (!peer2ServerConnector.requestedIdentification(resultListener.getUser(), resultListener.getPassword(), fingerprintResult)) {
                 log.severe("Unable to book credits. ");
-                // TODO: throw exception
+                return false;
             }
         } catch (UnableToConnectToServerException e) {
             log.severe("Unable to book credits: " + e.getMessage());
+            return false;
         }
+        return true;
     }
 
     @Override
