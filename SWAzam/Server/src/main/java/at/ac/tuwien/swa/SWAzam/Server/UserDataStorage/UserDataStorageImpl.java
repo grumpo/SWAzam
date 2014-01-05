@@ -361,7 +361,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setString(3, result.getRequestIDString());
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins-1);
-			pstmt.setString(6, "Successful Music Request -> -1 Coin!");
+			pstmt.setString(6, "Music Request -> -1 Coin!");
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
