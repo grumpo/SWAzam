@@ -20,6 +20,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -29,6 +31,7 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
     private final static Logger log = Logger.getLogger(FingerprintStorageDirectory.class.getName());
 
     private File storage = null;
+    private Map<File, Fingerprint> cache = new HashMap<>();
 
     @Inject
     public FingerprintStorageDirectory(@Assisted String direcoryPath) {
@@ -49,14 +52,11 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
                 }
             };
             for (File file : storage.listFiles(filter)) {
-                AudioInputStream stream = getAudioStream(file);
-                Fingerprint storedFingerprint = getFingerprint(stream);
-                stream.close();
-                double matchValue1 = storedFingerprint.match(fingerprint);
-                double matchValue2 = fingerprint.match(storedFingerprint);
-                boolean match = matchValue1 >= 0 || matchValue2 >= 0;
-                log.info("MatchValues: " + matchValue1 + " " + matchValue2);
-                if(match){
+                if (!cache.containsKey(file)) {
+                    updateCache(file);
+                }
+                Fingerprint storedFingerprint = cache.get(file);
+                if (fingerprintsMatch(fingerprint, storedFingerprint)){
                     log.info("FingerprintStorage contains a matching track!");
                     return true;
                 }
@@ -71,30 +71,28 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
         }
     }
 
+    private boolean fingerprintsMatch(Fingerprint fingerprint, Fingerprint storedFingerprint) {
+        double matchValue1 = storedFingerprint.match(fingerprint);
+        double matchValue2 = fingerprint.match(storedFingerprint);
+        boolean match = matchValue1 >= 0 || matchValue2 >= 0;
+        log.info("MatchValues: " + matchValue1 + " " + matchValue2);
+        return match;
+    }
+
+    private void updateCache(File file) throws IOException, UnsupportedAudioFileException {
+        AudioInputStream stream = getAudioStream(file);
+        Fingerprint storedFingerprint = getFingerprint(stream);
+        stream.close();
+        cache.put(file, storedFingerprint);
+    }
+
     @Override
     public AudioInformation getAudioInformationOf(Fingerprint fingerprint) {
-            for (File file : storage.listFiles()) {
-                Fingerprint storedFingerprint;
-                try {
-                    storedFingerprint = getFingerprint(getAudioStream(file));
-                    getAudioStream(file).close();
-                } catch (UnsupportedAudioFileException | IOException e) {
-                    log.severe("Unable to load mp3: " + e.getMessage());
-                    continue;
-                }
-
-                double matchValue1 = storedFingerprint.match(fingerprint);
-                double matchValue2 = fingerprint.match(storedFingerprint);
-                boolean match = matchValue1 >= 0 || matchValue2 >= 0;
-                log.info("MatchValues: " + matchValue1 + " " + matchValue2);
-                if(match){
-                    log.info("Found matching track " + getTitle(file));
-
-                    return getAudioInformation(file);
-                }
-            }
-            return null;
-
+        for (Map.Entry<File, Fingerprint> entry: cache.entrySet()) {
+            if (!fingerprintsMatch(entry.getValue(), fingerprint)) continue;
+            return getAudioInformation(entry.getKey());
+        }
+        return null;
     }
 
     private AudioInformation getAudioInformation(File file) {
