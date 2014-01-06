@@ -4,10 +4,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import at.ac.tuwien.swa.SWAzam.Server.Model.RegistrationService;
 import at.ac.tuwien.swa.SWAzam.Server.Model.RegistrationServiceImpl;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
+
 
 
 @ManagedBean(name="registrationBean")
@@ -61,7 +61,6 @@ public class RegistrationController {
     		return "";
     	}
     	
-		//TODO check if username already exists
 		if (password.equals(password2)) {
 			facesContext.addMessage("registrationBean", new FacesMessage(registrationService.register(new User(username, password, 0))));
 			

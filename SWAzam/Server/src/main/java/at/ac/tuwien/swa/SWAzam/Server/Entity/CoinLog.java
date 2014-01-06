@@ -3,6 +3,8 @@ package at.ac.tuwien.swa.SWAzam.Server.Entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+
 public class CoinLog {
 
 	private int id;

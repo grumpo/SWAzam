@@ -1,10 +1,11 @@
 package at.ac.tuwien.swa.SWAzam.Server.Model;
 
 import java.util.List;
-
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
+
+
 
 public interface TableService {
 	
