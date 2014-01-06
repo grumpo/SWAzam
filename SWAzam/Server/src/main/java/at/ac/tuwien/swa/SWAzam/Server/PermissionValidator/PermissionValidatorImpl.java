@@ -6,6 +6,7 @@ import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
 
 
+
 public class PermissionValidatorImpl implements PermissionValidator {
 
 	@Inject

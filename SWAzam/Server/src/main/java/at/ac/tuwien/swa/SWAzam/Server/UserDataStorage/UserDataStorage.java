@@ -2,10 +2,10 @@ package at.ac.tuwien.swa.SWAzam.Server.UserDataStorage;
 
 import java.util.List;
 import java.util.Set;
-
 import at.ac.tuwien.swa.SWAzam.Server.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
+
 
 
 public interface UserDataStorage {

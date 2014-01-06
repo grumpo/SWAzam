@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import at.ac.tuwien.swa.SWAzam.Server.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.CoinLog;
 import at.ac.tuwien.swa.SWAzam.Server.Entity.RecognitionRequest;
@@ -31,8 +30,8 @@ public class UserDataStorageImpl implements UserDataStorage {
 
     public UserDataStorageImpl(){
     	users = new HashSet<User>();
-        //TODO: this should be injected
-        try {
+
+    	try {
             this.con = DriverManager.getConnection("jdbc:hsqldb:file:" + this.getClass().getResource("/Database").getFile() + "/localdb", "SA", "");
         } catch (SQLException e) {
             log.warning("UserDataStorage could not connect to database.");
@@ -70,7 +69,6 @@ public class UserDataStorageImpl implements UserDataStorage {
 	
 
 	public boolean removeUser(User user) {
-		// TODO Auto-generated method stub
 		PreparedStatement pstmt;
 		
 		try {
@@ -109,7 +107,6 @@ public class UserDataStorageImpl implements UserDataStorage {
             	
             	int coins = -1;
             	
-            	// TODO: improve
             	while (rs2.next()){
             		coins = rs2.getInt("coins_new");
             	}
@@ -144,7 +141,6 @@ public class UserDataStorageImpl implements UserDataStorage {
             	
             	int coins = -1;
             	
-            	// TODO: improve
             	while (rs.next()){
             		coins = rs.getInt("coins_new");
             	}
@@ -230,7 +226,6 @@ public class UserDataStorageImpl implements UserDataStorage {
             	
             	int coins = -1;
             	
-            	// TODO: improve
             	while (rs.next()){
             		coins = rs.getInt("coins_new");
             	}
@@ -263,7 +258,6 @@ public class UserDataStorageImpl implements UserDataStorage {
         	
         	int old_coins = -1;
         	
-        	// TODO: improve
         	while (rs.next()){
         		old_coins = rs.getInt("coins_new");
         	}
@@ -305,7 +299,6 @@ public class UserDataStorageImpl implements UserDataStorage {
         	
         	int old_coins = -1;
         	
-        	// TODO: improve
         	while (rs.next()){
         		old_coins = rs.getInt("coins_new");
         	}
@@ -345,14 +338,21 @@ public class UserDataStorageImpl implements UserDataStorage {
         	
         	int old_coins = -1;
         	
-        	// TODO: improve
         	while (rs.next()){
         		old_coins = rs.getInt("coins_new");
         	}
         	
         	// if the user has 0 coins
-        	if (old_coins == 0)
+        	if (old_coins == 0) {
+        		pstmt = con.prepareStatement("Update request set result=?, song=? where REQUEST_ID=?");
+	        	pstmt.setString(1, "Song could not be identified.");
+	        	pstmt.setString(2, "");
+	        	pstmt.setString(3, result.getRequestIDString());
+				
+	        	pstmt.execute();
+        		
         		return false;
+        	}
        	
             log.info("Reducing coins from user!");
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
@@ -361,7 +361,7 @@ public class UserDataStorageImpl implements UserDataStorage {
 			pstmt.setString(3, result.getRequestIDString());
 			pstmt.setInt(4, old_coins);
 			pstmt.setInt(5, old_coins-1);
-			pstmt.setString(6, "Successful Music Request -> -1 Coin!");
+			pstmt.setString(6, "Music Request -> -1 Coin!");
 			pstmt.setDate(7, new Date(System.currentTimeMillis()));
 			
 			pstmt.execute();
@@ -527,7 +527,6 @@ public class UserDataStorageImpl implements UserDataStorage {
             	
             	rs = pstmt.executeQuery();
             	            	
-            	// TODO: improve
             	while (rs.next()){
             		numCoins = rs.getInt("coins_new");
             	}

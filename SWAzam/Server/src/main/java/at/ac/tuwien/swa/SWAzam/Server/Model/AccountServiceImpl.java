@@ -4,6 +4,8 @@ import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorageImpl;
 
+
+
 public class AccountServiceImpl implements AccountService {
 
 	UserDataStorage uds;
@@ -23,7 +25,6 @@ public class AccountServiceImpl implements AccountService {
 		if (success)
 			return "Added " + numCoins + " coins to the account!";
 		
-		//TODO improve
 		return "Error";	
 	}
 

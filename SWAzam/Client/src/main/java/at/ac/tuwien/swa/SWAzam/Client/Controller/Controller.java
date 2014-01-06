@@ -37,7 +37,6 @@ public class Controller implements PropertyChangeListener {
     MetaDataRetriever retriever;
     User user;
 
-    //TODO: FIND BETTER SOLUTION
     boolean requestRunning;
     boolean resultFetched;
 
@@ -88,8 +87,7 @@ public class Controller implements PropertyChangeListener {
                 return true;
             }
         } catch (SQLException e) {
-            //TODO: Remove Stacktrace
-            e.printStackTrace();
+            //SQLException while selecting from loggedin
         }
 
         return false;
@@ -116,7 +114,6 @@ public class Controller implements PropertyChangeListener {
         fpet = new FingerprintExtractorTask(stream);
         fpet.addPropertyChangeListener(this);
 
-        //TODO: FIND BETTER SOLUTION
         requestRunning = false;
 
         fpet.execute();
@@ -152,8 +149,7 @@ public class Controller implements PropertyChangeListener {
 
                         pstmt.execute();
                     } catch (SQLException e) {
-                        //TODO: Remove StackTrace
-                        e.printStackTrace();
+                        //SQLException while inserting into loggedin
                     }
                 }
 
@@ -166,8 +162,7 @@ public class Controller implements PropertyChangeListener {
                 stmt = con.createStatement();
                 stmt.execute("DELETE FROM LoggedIn");
             } catch (SQLException e) {
-                //TODO: Remove StackTrace
-                e.printStackTrace();
+                //SQLException while deleting from loggedin
             }
         }
 
@@ -203,7 +198,6 @@ public class Controller implements PropertyChangeListener {
             if(!fpet.isDone())
                 updateProgress(fpet.getProgress(), true);
             else{
-                //TODO: FIND BETTER SOLUTION
                 if(!requestRunning){
                     requestRunning = true;
                     resultFetched = false;
@@ -216,7 +210,6 @@ public class Controller implements PropertyChangeListener {
             if(!pt.isDone())
                 updateProgress(50 + pt.getProgress()/2, true);
             else{
-                //TODO: FIND BETTER SOLUTION
                 if(!resultFetched){
                     resultFetched = true;
                     updateProgress(100, false);
@@ -229,41 +222,53 @@ public class Controller implements PropertyChangeListener {
     private void storeFingerprintResult(FingerprintResult result) {
         PreparedStatement pstmt;
 
-        if(result != null && result.getResult() != null){
-            log.info("Result is " + result.getResult().getArtist() + " - " + result.getResult().getTitle());
+        if(result != null){
+            if(result.getResult() != null){
+                log.info("Result is " + result.getResult().getArtist() + " - " + result.getResult().getTitle());
 
-            try {
-                pstmt = con.prepareStatement("INSERT INTO FINGERPRINTS (USERNAME, TIMESTAMP, ARTIST, SONGTITLE) VALUES (?, ?, ?, ?)");
-                pstmt.setString(1, this.user.getUsername());
-                pstmt.setTimestamp(2, new Timestamp((new java.util.Date()).getTime()));
-                pstmt.setString(3, result.getResult().getArtist());
-                pstmt.setString(4, result.getResult().getTitle());
+                try {
+                    pstmt = con.prepareStatement("INSERT INTO FINGERPRINTS (USERNAME, TIMESTAMP, ARTIST, SONGTITLE) VALUES (?, ?, ?, ?)");
+                    pstmt.setString(1, this.user.getUsername());
+                    pstmt.setTimestamp(2, new Timestamp((new java.util.Date()).getTime()));
+                    pstmt.setString(3, result.getResult().getArtist());
+                    pstmt.setString(4, result.getResult().getTitle());
 
-                if(pstmt.executeUpdate() == 1){
-                    log.info("Match successfully added to database!");
+                    if(pstmt.executeUpdate() == 1){
+                        log.info("Match successfully added to database!");
+                    }
+
+                    updateResultTable();
+                } catch (SQLException e) {
+                    //SQLException while inserting fingerprint
                 }
-
-                //TODO: REFRESH USER DATA (COINS)
-                this.user = verifyUser(user);
-                mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
-
-                updateResultTable();
-            } catch (SQLException e) {
-                //TODO: REMOVE STACKTRACE
-                e.printStackTrace();
             }
+            else{
+                //NO RESULT FOUND
+                log.info("Result is empty. System couldn't find a match!");
+                mFrame.showNoMatchError();
+            }
+
+            this.user = verifyUser(user);
+            mFrame.updateUI(user, retriever.getRegisteredPeersAmount());
         }
         else{
-            log.info("Result is empty. System couldn't find a match!");
+            //TIMEOUT
+            log.info("Timeout. Result is empty. System couldn't find a match!");
             mFrame.showNoMatchError();
         }
     }
 
     private void processFingerprint(Fingerprint fp) {
         log.info("Processing Fingerprint!");
-        pt = new ProcessingTask(retriever, fp, user);
-        pt.addPropertyChangeListener(this);
-        pt.execute();
+
+        if(fp != null){
+            pt = new ProcessingTask(retriever, fp, user);
+            pt.addPropertyChangeListener(this);
+            pt.execute();
+        }
+        else{
+            mFrame.showTooShortError();
+        }
     }
 
     private void updateResultTable(){
@@ -284,8 +289,7 @@ public class Controller implements PropertyChangeListener {
             mFrame.updateResultTable(fingerprints);
         }
         catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            //SQLException while selecting for resulttable
         }
     }
 }

@@ -4,7 +4,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import at.ac.tuwien.swa.SWAzam.Server.Model.AccountService;
 import at.ac.tuwien.swa.SWAzam.Server.Model.AccountServiceImpl;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
@@ -67,7 +66,6 @@ public class AccountController {
     		return "";
     	}	
     	
-		//TODO check if username already exists
 		if (passwordNew1.equals(passwordNew2)) {
 			FacesContext.getCurrentInstance().addMessage("accountBean", new FacesMessage(accountService.changePassword(user, passwordOld, passwordNew1)));
 			

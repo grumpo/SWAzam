@@ -145,6 +145,7 @@ public class MainFrame extends JFrame implements ActionListener {
         historyTable.setBackground(Color.lightGray);
         historyTable.setForeground(Color.darkGray);
         historyTable.setOpaque(false);
+
         JScrollPane tableScroll = new JScrollPane(historyTable);
 
         progressBar = new JProgressBar(0, 100);
@@ -238,8 +239,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 " <strong>Rumpold Gernot</strong> (0728159)<br/>" +
                 "<strong>Binder Johannes</strong> (0727990)<br/>" +
                 "<strong>Weilharter Manuela</strong> (0826002)<br/>" +
-                "<strong>Wolf Markus</strong> (0825595)<br/>" +
-                "<strong>El-Isa Kamil</strong> (0726881)</body></html>");
+                "<strong>Wolf Markus</strong> (0825595)<br/></body></html>");
 
         panel_center.add(text);
         text.setHorizontalAlignment(SwingConstants.CENTER);
@@ -298,12 +298,21 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     public void updateResultTable(List<StoredFingerprint> fingerprints) {
-        DefaultTableModel model = (DefaultTableModel) historyTable.getModel();
+        DefaultTableModel model = (DefaultTableModel)historyTable.getModel();
+        /*DefaultTableModel model = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };*/
+
         model.setRowCount(0);
 
         for(StoredFingerprint sfp : fingerprints){
             model.addRow(new Object[]{sfp.getArtist(), sfp.getSongtitle(), sfp.getTimestamp()});
         }
+
+        historyTable.setModel(model);
     }
 
     public void showLoginError() {
@@ -312,5 +321,9 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public void showNoMatchError(){
         JOptionPane.showMessageDialog(this, "Song couldn't be recognized!", "No Match Found", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showTooShortError() {
+        JOptionPane.showMessageDialog(this, "Recording was too short. Fingerprint couldn't be extracted!", "Too Short Recording", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -4,24 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.loader.WebappLoader;
 import org.apache.catalina.startup.Tomcat;
-
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-
 import at.ac.tuwien.swa.SWAzam.Server.DebitManager.DebitManagerFactory;
 import at.ac.tuwien.swa.SWAzam.Server.Peer2ServerConnector.PeerWebService;
 import at.ac.tuwien.swa.SWAzam.Server.PermissionValidator.PermissionValidatorFactory;
-import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
-import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
-import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorageImpl;
 
 
 public class Server {
@@ -57,11 +50,7 @@ public class Server {
              log.log(Level.SEVERE, "Port is missing or malformed! " + msg);
              return;
          }
-         
-         //TODO: just for testing - remove!
-         UserDataStorage uds = new UserDataStorageImpl();
-         uds.addRequestEntry(new User("Jane", "", 0), "test request ID");
-          
+
          injector.getInstance(Server.class).run(port);
          startTomcatEmbedded();	  	
     }

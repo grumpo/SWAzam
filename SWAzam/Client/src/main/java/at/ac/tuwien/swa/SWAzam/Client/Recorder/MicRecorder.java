@@ -80,7 +80,7 @@ public class MicRecorder implements Runnable, IRecorder{
 
                 result = new AudioInputStream(bais, format, out.toByteArray().length / format.getFrameSize());
             } catch (LineUnavailableException e) {
-                e.printStackTrace();
+                //LineUnavailableException while recording
             }
         }
     }

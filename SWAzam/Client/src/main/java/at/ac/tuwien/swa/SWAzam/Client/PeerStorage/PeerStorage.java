@@ -46,8 +46,7 @@ public class PeerStorage {
             System.out.println(peers.size());
         }
         catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            //SQLException while fetching peers from database
         }
     }
 
@@ -108,8 +107,7 @@ public class PeerStorage {
             readPeersFromDatabase();
         }
         catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            //SQLException while updating peers
         }
     }
 

@@ -3,8 +3,9 @@ package at.ac.tuwien.swa.SWAzam.Server.DebitManager;
 import at.ac.tuwien.swa.SWAzam.Server.Common.FingerprintResult;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.UserDataStorage;
-
 import com.google.inject.Inject;
+
+
 
 public class DebitManagerImpl implements DebitManager {
 	

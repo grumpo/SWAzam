@@ -5,11 +5,9 @@ import at.ac.tuwien.swa.SWAzam.Server.Common.UserInformation;
 import at.ac.tuwien.swa.SWAzam.Server.DebitManager.DebitManager;
 import at.ac.tuwien.swa.SWAzam.Server.PermissionValidator.PermissionValidator;
 import at.ac.tuwien.swa.SWAzam.Server.UserDataStorage.User;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;
-
 import java.util.logging.Logger;
 
 
