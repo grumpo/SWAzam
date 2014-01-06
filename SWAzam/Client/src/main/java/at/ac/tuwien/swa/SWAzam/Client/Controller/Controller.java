@@ -37,7 +37,6 @@ public class Controller implements PropertyChangeListener {
     MetaDataRetriever retriever;
     User user;
 
-    //TODO: FIND BETTER SOLUTION
     boolean requestRunning;
     boolean resultFetched;
 
@@ -88,8 +87,7 @@ public class Controller implements PropertyChangeListener {
                 return true;
             }
         } catch (SQLException e) {
-            //TODO: Remove Stacktrace
-            e.printStackTrace();
+            //SQLException while selecting from loggedin
         }
 
         return false;
@@ -116,7 +114,6 @@ public class Controller implements PropertyChangeListener {
         fpet = new FingerprintExtractorTask(stream);
         fpet.addPropertyChangeListener(this);
 
-        //TODO: FIND BETTER SOLUTION
         requestRunning = false;
 
         fpet.execute();
@@ -152,8 +149,7 @@ public class Controller implements PropertyChangeListener {
 
                         pstmt.execute();
                     } catch (SQLException e) {
-                        //TODO: Remove StackTrace
-                        e.printStackTrace();
+                        //SQLException while inserting into loggedin
                     }
                 }
 
@@ -166,8 +162,7 @@ public class Controller implements PropertyChangeListener {
                 stmt = con.createStatement();
                 stmt.execute("DELETE FROM LoggedIn");
             } catch (SQLException e) {
-                //TODO: Remove StackTrace
-                e.printStackTrace();
+                //SQLException while deleting from loggedin
             }
         }
 
@@ -203,7 +198,6 @@ public class Controller implements PropertyChangeListener {
             if(!fpet.isDone())
                 updateProgress(fpet.getProgress(), true);
             else{
-                //TODO: FIND BETTER SOLUTION
                 if(!requestRunning){
                     requestRunning = true;
                     resultFetched = false;
@@ -216,7 +210,6 @@ public class Controller implements PropertyChangeListener {
             if(!pt.isDone())
                 updateProgress(50 + pt.getProgress()/2, true);
             else{
-                //TODO: FIND BETTER SOLUTION
                 if(!resultFetched){
                     resultFetched = true;
                     updateProgress(100, false);
@@ -246,8 +239,7 @@ public class Controller implements PropertyChangeListener {
 
                     updateResultTable();
                 } catch (SQLException e) {
-                    //TODO: REMOVE STACKTRACE
-                    e.printStackTrace();
+                    //SQLException while inserting fingerprint
                 }
             }
             else{
@@ -268,9 +260,15 @@ public class Controller implements PropertyChangeListener {
 
     private void processFingerprint(Fingerprint fp) {
         log.info("Processing Fingerprint!");
-        pt = new ProcessingTask(retriever, fp, user);
-        pt.addPropertyChangeListener(this);
-        pt.execute();
+
+        if(fp != null){
+            pt = new ProcessingTask(retriever, fp, user);
+            pt.addPropertyChangeListener(this);
+            pt.execute();
+        }
+        else{
+            mFrame.showTooShortError();
+        }
     }
 
     private void updateResultTable(){
@@ -291,8 +289,7 @@ public class Controller implements PropertyChangeListener {
             mFrame.updateResultTable(fingerprints);
         }
         catch(SQLException e){
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            //SQLException while selecting for resulttable
         }
     }
 }

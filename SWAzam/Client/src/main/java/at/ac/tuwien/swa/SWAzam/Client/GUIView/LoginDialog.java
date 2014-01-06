@@ -174,8 +174,7 @@ public class LoginDialog extends JDialog implements ActionListener, KeyListener 
 
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            //TODO: Remove StackTrace
-            e.printStackTrace();
+            //NoSuchAlgorithmException while encryption
         }
 
         return null;

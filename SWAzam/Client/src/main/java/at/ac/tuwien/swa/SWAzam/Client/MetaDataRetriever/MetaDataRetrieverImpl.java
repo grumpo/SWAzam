@@ -36,7 +36,6 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
         Thread t;
         log.info("Starting to contact peers and ask for FingerprintResults!");
 
-        //TODO: PeerManagement, WebServiceCall
         for(Peer p : ps.getPeers()){
             ift = new IdentifyFingerprintThread(conFac.create(p.getClientWebServiceUrl()), fp, user);
 
@@ -84,8 +83,6 @@ public class MetaDataRetrieverImpl implements MetaDataRetriever {
         UserInformation ui = null;
         Thread t;
         VerifyUserThread vut;
-
-        //TODO: NO TIMEOUT NECESSARY: ONLY 1 PEER AND SERVER INVOLVED
 
         for(Peer p : ps.getPeers()){
             vut = new VerifyUserThread(conFac.create(p.getClientWebServiceUrl()), u);

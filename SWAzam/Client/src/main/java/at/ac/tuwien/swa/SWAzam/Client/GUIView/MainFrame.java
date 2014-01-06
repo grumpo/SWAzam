@@ -323,4 +323,8 @@ public class MainFrame extends JFrame implements ActionListener {
     public void showNoMatchError(){
         JOptionPane.showMessageDialog(this, "Song couldn't be recognized!", "No Match Found", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void showTooShortError() {
+        JOptionPane.showMessageDialog(this, "Recording was too short. Fingerprint couldn't be extracted!", "Too Short Recording", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
