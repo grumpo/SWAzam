@@ -343,8 +343,16 @@ public class UserDataStorageImpl implements UserDataStorage {
         	}
         	
         	// if the user has 0 coins
-        	if (old_coins == 0)
+        	if (old_coins == 0) {
+        		pstmt = con.prepareStatement("Update request set result=?, song=? where REQUEST_ID=?");
+	        	pstmt.setString(1, "Song could not be identified.");
+	        	pstmt.setString(2, "");
+	        	pstmt.setString(3, result.getRequestIDString());
+				
+	        	pstmt.execute();
+        		
         		return false;
+        	}
        	
             log.info("Reducing coins from user!");
             pstmt = con.prepareStatement("INSERT INTO coinlog VALUES(?,?,?,?,?,?,?)");
