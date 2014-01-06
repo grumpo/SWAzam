@@ -1,7 +1,5 @@
 package at.ac.tuwien.swa.SWAzam.Peer;
 
-import ac.at.tuwien.infosys.swa.audio.Fingerprint;
-import ac.at.tuwien.infosys.swa.audio.FingerprintSystem;
 import at.ac.tuwien.swa.SWAzam.Peer.Client2PeerConnector.ClientWebService;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.Encryption;
 import at.ac.tuwien.swa.SWAzam.Peer.Common.UserInformation;
@@ -9,7 +7,6 @@ import at.ac.tuwien.swa.SWAzam.Peer.FingerprintStorage.FingerprintStorageFactory
 import at.ac.tuwien.swa.SWAzam.Peer.MP3Identifier.MP3IdentifierFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.Peer2PeerConnectorFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.PeerWebService;
-import at.ac.tuwien.swa.SWAzam.Peer.Peer2PeerConnector.UnableToConnectToPeer;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnector;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.Peer2ServerConnectorFactory;
 import at.ac.tuwien.swa.SWAzam.Peer.Peer2ServerConnector.UnableToConnectToServerException;
@@ -24,9 +21,6 @@ import com.google.inject.Injector;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,7 +79,6 @@ public class Peer {
             log.log(Level.SEVERE, "Port is missing or malformed! " + msg);
             return;
         }
-        // TODO: validate those
         String serverAddress = argv[2];
         String dbPath = argv[3];
         String username = argv[4];
@@ -98,6 +91,7 @@ public class Peer {
             log.severe(e.getMessage() + "\n" + msg);
             return;
         }
+        Logger.getLogger("org.jaudiotagger").setLevel(Level.OFF);
         try {
             peer.run(storagePath, port, serverAddress, dbPath, username, password);
             log.info("Peer is up, press <enter> to quit.");
@@ -139,40 +133,6 @@ public class Peer {
         log.info("Starting peer...");
 
         startServices(port, createRequestHandler(storagePath, serverAddress, dbPath, username, password));
-
-        // TODO: remove those or move to ITs
-        // test request on self
-        //testRequestToPeerForwardRequest(port);
-        // test request to server
-        //testRequestToServerUserValidation(serverAddress);
-    }
-
-    private void testRequestToPeerForwardRequest(Integer port) {
-        Fingerprint fingerprint = generateTestFingerprint();
-        try {
-            peer2PeerConnectorFactory.create(String.format("http://localhost:%d/PeerWebService?wsdl", port)).
-                    identifyMP3Fingerprint(fingerprint, "user", new ArrayList<String>() {}, UUID.randomUUID());
-        } catch (UnableToConnectToPeer e) {
-            log.info("Peer is down: " + e.getMessage());
-        }
-    }
-
-    private void testRequestToServerUserValidation(String serverAddress) {
-        Peer2ServerConnector peer2ServerConnector = peer2ServerConnectorFactory.create(serverAddress + PEER_WEB_SERVICE_WSDL_LOCATION);
-        try {
-            UserInformation info = peer2ServerConnector.validateUser("John", "fd53ef835b15485572a6e82cf470dcb41fd218ae5751ab7531c956a2a6bcd3c7");
-            if (info == null) log.severe("user John not found");
-            else log.info(info.getUsername() + ": " + info.getCredits());
-        } catch (UnableToConnectToServerException e) {
-            log.severe(e.getMessage());
-        }
-    }
-
-    private Fingerprint generateTestFingerprint() {
-        FingerprintSystem fingerprintSystem = new FingerprintSystem(44f);
-        byte[] fakeMp3 = new byte[23000];
-        new Random().nextBytes(fakeMp3);
-        return fingerprintSystem.fingerprint(fakeMp3);
     }
 
     private void startServices(Integer port, RequestHandler requestHandler) {

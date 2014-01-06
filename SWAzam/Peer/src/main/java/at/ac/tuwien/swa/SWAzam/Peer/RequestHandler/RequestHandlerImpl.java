@@ -63,9 +63,8 @@ public class RequestHandlerImpl implements RequestHandler {
     private void bookCreditsRequestResolved(FingerprintResult fingerprintResult) {
         try {
             if (fingerprintResult.getResult() != null) { // only pay credits if successful
-                if (!peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult)) { // TODO: move to correct peer
+                if (!peer2ServerConnector.resolvedIdentification(username, password, fingerprintResult)) {
                     log.severe("Unable to book credits. ");
-                    // TODO: throw exception
                 }
             }
         } catch (UnableToConnectToServerException e) {
@@ -110,7 +109,7 @@ public class RequestHandlerImpl implements RequestHandler {
         try {
             peer2PeerConnector.identificationResolved(result);
         } catch (UnableToConnectToPeer unableToConnectToPeer) {
-            log.severe("Unable to reach initial peer! This is fatal. " + result.getHops().get(0)); // TODO: how to handle this?
+            log.severe("Unable to reach initial peer! This is fatal. " + result.getHops().get(0));
         }
     }
 
@@ -123,7 +122,7 @@ public class RequestHandlerImpl implements RequestHandler {
 
     private void setResult(FingerprintResult fingerprintResult, ResultListener resultListener) {
         if (!bookCreditsRequestRequested(fingerprintResult, resultListener)) {
-            fingerprintResult.setResult(null); // throw away result if user has not enough credits, TODO: pass message back to client?
+            fingerprintResult.setResult(null); // throw away result if user has not enough credits,
         }
         resultListener.setResult(fingerprintResult);
     }

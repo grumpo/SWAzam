@@ -35,7 +35,7 @@ public class ClientWebServiceSoap implements ClientWebService {
         ResultListener resultListener = new ResultListener();
         resultListener.setUser(user);
         resultListener.setPassword(password);
-        UUID uuid = UUID.randomUUID();// TODO: move to requesthandler maybe
+        UUID uuid = UUID.randomUUID();
         requestHandler.identifyMP3Fingerprint(fingerprint, user, Arrays.asList(peerUrl), uuid, resultListener);
         try {
             return resultListener.waitForResult();

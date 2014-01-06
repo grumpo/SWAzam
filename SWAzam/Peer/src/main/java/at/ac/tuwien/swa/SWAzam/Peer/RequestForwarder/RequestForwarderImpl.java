@@ -18,7 +18,6 @@ public class RequestForwarderImpl implements RequestForwarder {
 
     private final static Logger log = Logger.getLogger(RequestForwarderImpl.class.getName());
     private static final String PEER_WEB_SERVICE_WSDL_LOCATION = "/PeerWebService?wsdl";
-    // TODO: do not hardcode this
     private static final int INITIAL_FAIL_COUNT = 5;
     public static final int MAX_HOP_COUNT = 3;
 
