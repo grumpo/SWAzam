@@ -145,6 +145,7 @@ public class MainFrame extends JFrame implements ActionListener {
         historyTable.setBackground(Color.lightGray);
         historyTable.setForeground(Color.darkGray);
         historyTable.setOpaque(false);
+
         JScrollPane tableScroll = new JScrollPane(historyTable);
 
         progressBar = new JProgressBar(0, 100);
@@ -298,12 +299,20 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     public void updateResultTable(List<StoredFingerprint> fingerprints) {
-        DefaultTableModel model = (DefaultTableModel) historyTable.getModel();
+        DefaultTableModel model = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+
         model.setRowCount(0);
 
         for(StoredFingerprint sfp : fingerprints){
             model.addRow(new Object[]{sfp.getArtist(), sfp.getSongtitle(), sfp.getTimestamp()});
         }
+
+        historyTable.setModel(model);
     }
 
     public void showLoginError() {
