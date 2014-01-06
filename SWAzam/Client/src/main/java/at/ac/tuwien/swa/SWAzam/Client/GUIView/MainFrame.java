@@ -239,8 +239,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 " <strong>Rumpold Gernot</strong> (0728159)<br/>" +
                 "<strong>Binder Johannes</strong> (0727990)<br/>" +
                 "<strong>Weilharter Manuela</strong> (0826002)<br/>" +
-                "<strong>Wolf Markus</strong> (0825595)<br/>" +
-                "<strong>El-Isa Kamil</strong> (0726881)</body></html>");
+                "<strong>Wolf Markus</strong> (0825595)<br/></body></html>");
 
         panel_center.add(text);
         text.setHorizontalAlignment(SwingConstants.CENTER);
