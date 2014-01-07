@@ -22,6 +22,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -113,8 +114,11 @@ public class FingerprintStorageDirectory implements FingerprintStorage{
     }
 
     private AudioInformation getAudioInformationByID3(File file) throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException {
+        // the lib is too verbose... shut it up
+        LogManager.getLogManager().reset();
         AudioFile f = AudioFileIO.read(file);
         Tag tag = f.getTag();
+        LogManager.getLogManager().readConfiguration();
         return new AudioInformation(tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST));
     }
 
